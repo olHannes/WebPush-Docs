@@ -1,0 +1,144 @@
+openapi: 3.0.3
+info:
+  title: Webengineering WebPush (Gamification-project)
+  version: "0.0.1"
+  description: >
+    Konzeptuelle Beschreibung der REST-Endpunkte für Admin, Push und Gamification.
+    Dient der organisatorischen Planung, nicht der Implementierung.
+
+servers:
+  - url: https://scl.fh-bielefeld.de/SmartDataAirquality/api
+
+paths:
+
+  #########################################################
+  # Admin APIs
+  #########################################################
+  /messages:
+    get:
+      tags: [Admin]
+      summary: Liste aller gespeicherten Nachrichten
+      description: Gibt alle gespeicherten Nachrichten zurück (inkl. Status, Trigger, Datum).
+      responses:
+        '200':
+          description: Liste von Nachrichten
+          content:
+            application/json:
+              example:
+                - id: "123"
+                  title: "Level erreicht!"
+                  text: "Du bist jetzt auf Stufe 3!"
+                  members: ["Pi01", "Pi03"]
+                  trigger: "dataChange"
+                  createdAt: "2025-10-22T12:00:00Z"
+
+  /messages/{id}/stats:
+    get:
+      tags: [Admin]
+      summary: Detail- und Statistikdaten zu einer Nachricht
+      description: Gibt zu einer Nachricht alle Informationen und Interaktionsstatistiken zurück.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Nachricht mit Statistiken
+          content:
+            application/json:
+              example:
+                id: "123"
+                title: "Level erreicht!"
+                text: "Du bist jetzt auf Stufe 3!"
+                members: ["Pi01"]
+                trigger: "dataChange"
+                clicks: 12
+                swipes: 5
+                createdAt: "2025-10-22T12:00:00Z"
+
+    post:
+      tags: [Admin]
+      summary: Neue Nachricht anlegen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              title: "Erinnerung"
+              text: "Mach deine Messung für heute!"
+              image_url: "../file.png"
+              trigger:
+                type: "time"
+                repeat: false
+                value: "2025-10-23T09:00:00Z"
+              members: ["Pi03"]
+      responses:
+        '201':
+          description: Nachricht erfolgreich erstellt
+
+  /messages/send:
+    post:
+      tags: [Admin]
+      summary: Nachricht sofort versenden
+      description: Sendet eine Nachricht an alle angegebenen Clients.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              title: "Tagesziel erreicht!"
+              text: "Glückwunsch, du hast dein Ziel für heute erfüllt!"
+              image_url: "../file.png"
+              trigger:
+                type: "instant"
+              members: ["Pi01", "Pi02"]
+      responses:
+        '200':
+          description: Nachricht gesendet
+
+  #########################################################
+  # Gamification APIs
+  #########################################################
+  /gamification/ranking:
+    get:
+      tags: [Gamification]
+      summary: Ranking aller teilnehmenden Gruppen
+      description: Ranking basierend auf bestimmten Kriterien (z. B. Datenpunkte, Streckenlänge, Messdauer).
+      responses:
+        '200':
+          description: Ranking erfolgreich abgefragt
+          content:
+            application/json:
+              example:
+                - name: "Pi02"
+                  ranking: 1
+                  data_count: 15
+                - name: "Pi04"
+                  ranking: 2
+                  data_count: 3
+
+  /gamification/streak/{memberId}:
+    get:
+      tags: [Gamification]
+      summary: Aktueller Streak einer Gruppe
+      description: Gibt an, wie viele Tage in Folge ein Datensatz erfasst wurde.
+      parameters:
+        - name: memberId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Streak erfolgreich abgefragt
+          content:
+            application/json:
+              example:
+                name: "Pi01"
+                streak: 2
+
+  #########################################################
+  # Push APIs
+  #########################################################

@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Webengineering WebPush (Gamification-project)
+  title: Webengineering WebPush (Gamification Project)
   version: "0.0.1"
   description: >
     Konzeptuelle Beschreibung der REST-Endpunkte für Admin, Push und Gamification.
@@ -18,25 +18,43 @@ paths:
     get:
       tags: [Admin]
       summary: Liste aller gespeicherten Nachrichten
-      description: Gibt alle gespeicherten Nachrichten zurück (inkl. Status, Trigger, Datum).
+      description: Gibt alle gespeicherten Nachrichten zurück (inkl. id, Title, Body, Image, Icon, settings, created_at, ...)
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer, default: 20 }
+        - name: sort
+          in: query
+          schema: { type: string, default: creation_date }
+
       responses:
         '200':
           description: Liste von Nachrichten
           content:
             application/json:
-              example:
-                - id: "123"
-                  title: "Level erreicht!"
-                  text: "Du bist jetzt auf Stufe 3!"
-                  members: ["Pi01", "Pi03"]
-                  trigger: "dataChange"
-                  createdAt: "2025-10-22T12:00:00Z"
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationOverview'
+          
+
+    post:
+      tags: [Admin]
+      summary: Neue Nachricht anlegen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationCreation'
+      responses:
+        '201':
+          description: Nachricht erfolgreich erstellt
 
   /messages/{id}/stats:
     get:
       tags: [Admin]
       summary: Detail- und Statistikdaten zu einer Nachricht
-      description: Gibt zu einer Nachricht alle Informationen und Interaktionsstatistiken zurück.
       parameters:
         - name: id
           in: path
@@ -48,55 +66,12 @@ paths:
           description: Nachricht mit Statistiken
           content:
             application/json:
-              example:
-                id: "123"
-                title: "Level erreicht!"
-                text: "Du bist jetzt auf Stufe 3!"
-                members: ["Pi01"]
-                trigger: "dataChange"
-                clicks: 12
-                swipes: 5
-                createdAt: "2025-10-22T12:00:00Z"
+              schema:
+                $ref: '#/components/schemas/NotificationStats'
+        '404':
+          description: Nachricht mit dieser Id wurde nicht gefunden
+          
 
-    post:
-      tags: [Admin]
-      summary: Neue Nachricht anlegen
-      requestBody:
-        required: true
-        content:
-          application/json:
-            example:
-              title: "Erinnerung"
-              text: "Mach deine Messung für heute!"
-              image_url: "../file.png"
-              trigger:
-                type: "time"
-                repeat: false
-                value: "2025-10-23T09:00:00Z"
-              members: ["Pi03"]
-      responses:
-        '201':
-          description: Nachricht erfolgreich erstellt
-
-  /messages/send:
-    post:
-      tags: [Admin]
-      summary: Nachricht sofort versenden
-      description: Sendet eine Nachricht an alle angegebenen Clients.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            example:
-              title: "Tagesziel erreicht!"
-              text: "Glückwunsch, du hast dein Ziel für heute erfüllt!"
-              image_url: "../file.png"
-              trigger:
-                type: "instant"
-              members: ["Pi01", "Pi02"]
-      responses:
-        '200':
-          description: Nachricht gesendet
 
   #########################################################
   # Gamification APIs
@@ -105,40 +80,246 @@ paths:
     get:
       tags: [Gamification]
       summary: Ranking aller teilnehmenden Gruppen
-      description: Ranking basierend auf bestimmten Kriterien (z. B. Datenpunkte, Streckenlänge, Messdauer).
       responses:
         '200':
           description: Ranking erfolgreich abgefragt
           content:
             application/json:
-              example:
-                - name: "Pi02"
-                  ranking: 1
-                  data_count: 15
-                - name: "Pi04"
-                  ranking: 2
-                  data_count: 3
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupRanking'
 
-  /gamification/streak/{memberId}:
+  /gamification/groupStats/{groupId}:
     get:
       tags: [Gamification]
-      summary: Aktueller Streak einer Gruppe
-      description: Gibt an, wie viele Tage in Folge ein Datensatz erfasst wurde.
+      summary: Aktueller Statistiken und Daten einer Gruppe
       parameters:
-        - name: memberId
+        - name: groupId
           in: path
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Streak erfolgreich abgefragt
+          description: Daten erfolgreich abgefragt
           content:
             application/json:
-              example:
-                name: "Pi01"
-                streak: 2
+              schema:
+                $ref: '#/components/schemas/GroupStats'
+        '404':
+          description: Gruppe mit der Id nicht gefunden
 
-  #########################################################
-  # Push APIs
-  #########################################################
+#########################################################
+# COMPONENTS
+#########################################################
+components:
+  schemas:
+
+# Notification View
+###########################################
+    NotificationOverview:
+      type: object
+      description: Struktur einer Notification zur Anzeige in der Übersicht.
+      properties:
+        id: 
+          type: integer
+          example: 1
+        title:  
+          type: string
+          example: "Level erreicht!"
+        body: 
+          type: string
+          example: "Text..."
+        icon:
+          type: string
+          example: "https://example.com/icon.png"
+        image:
+          type: string
+          example: "https://example.com/banner.png"
+        group:
+          type: string
+          example: "Pi01"
+        createdAt:
+          type: string
+          format: date-time
+        renotify:
+          type: boolean
+          example: true
+        silent:
+          type: boolean
+          example: true
+
+# Notification creation
+###########################################
+    NotificationCreation:
+      allOf:
+        - $ref: '#/components/schemas/NotificationOverview'
+      description: Eingabeobjekt für das Erstellen einer Nachricht.
+      properties:
+        trigger:
+          $ref: '#/components/schemas/Trigger'
+      required:
+        - title
+        - body
+        - group
+        - trigger
+
+
+# Trigger Types
+###########################################
+    Trigger:
+      type: object
+      description: Definiert den Auslöser (Trigger) für eine Notification.
+      properties:
+        type:
+          type: string
+          description: Typ des Triggers.
+          enum: [time_once, time_recurring, data_threshold, streak_reminder]
+          example: time_once
+        config:
+          type: object
+          description: Typabhängige Konfiguration des Triggers.
+          oneOf:
+            - $ref: '#/components/schemas/TriggerTimeOnce'
+            - $ref: '#/components/schemas/TriggerTimeRecurring'
+            - $ref: '#/components/schemas/TriggerDataThreshold'
+            - $ref: '#/components/schemas/TriggerStreakReminder'
+          example:
+            datetime: "2025-11-01T09:00:00Z"
+
+    TriggerTimeOnce:
+      type: object
+      properties:
+        datetime:
+          type: string
+          format: date-time
+          example: "2025-11-01T09:00:00Z"
+
+    TriggerTimeRecurring:
+      type: object
+      properties:
+        frequency:
+          type: string
+          enum: [daily, weekly, monthly]
+          example: weekly
+        days_of_week:
+          type: array
+          items:
+            type: string
+            example: monday
+        time:
+          type: string
+          example: "09:00"
+
+    TriggerDataThreshold:
+      type: object
+      properties:
+        sensor_id:
+          type: string
+          example: "raspi_23_temp"
+        operator:
+          type: string
+          enum: [">", "<", ">=", "<=", "==", "!="]
+          example: ">"
+        threshold:
+          type: number
+          example: 35.0
+        unit:
+          type: string
+          example: "°C"
+        duration:
+          type: string
+          example: "5m"
+
+    TriggerStreakReminder:
+      type: object
+      properties:
+        group_id:
+          type: string
+          example: "Pi01"
+        streak_target:
+          type: integer
+          example: 7
+        last_activity_before:
+          type: string
+          example: "24h"
+
+# Stats for notification
+###########################################
+    NotificationStats:
+      properties:
+        notification_id:
+          type: integer
+          example: 1
+        group:
+          type: string
+          example: "Pi01"
+        created_at:
+          type: object
+          example: "2025-11-01T09:00:00Z"
+        clicks:
+          type: integer
+          example: 15
+        swipes:
+          type: integer
+          example: 30
+
+# Gamification aspects (streak / ranking, ...)
+###########################################
+    GroupRanking:
+      type: object
+      properties:
+        ranking:
+          type: array
+          description: Liste mit Gruppen und deren Platzierungen.
+          items:
+            type: object
+            properties:
+              group:
+                type: string
+                example: "Pi01"
+              rank:
+                type: integer
+                example: 1
+              xp:
+                type: integer
+                example: 120
+              level:
+                type: integer
+                example: 5
+          example:
+            - group: "Pi01"
+              rank: 1
+              xp: 120
+              level: 5
+            - group: "Pi02"
+              rank: 2
+              xp: 95
+              level: 4
+
+
+    GroupStats:
+      type: object
+      properties:
+        group:
+          type: string
+          example: "Pi01"
+        streak:
+          type: integer
+          example: 7
+        level:
+          type: integer
+          example: 3
+        xp:
+          type: integer
+          example: 50
+        badges:
+          type: array
+          description: Liste von erhaltenen Auszeichnungen
+          items:
+            type: string
+          example:
+            - "Erste Messung"
+            - "..."
+

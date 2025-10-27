@@ -14,6 +14,9 @@ paths:
   #########################################################
   # Admin APIs
   #########################################################
+
+  #########################
+  # Messages
   /messages:
     get:
       tags: [Admin]
@@ -71,6 +74,43 @@ paths:
         '404':
           description: Nachricht mit dieser Id wurde nicht gefunden
           
+  #########################
+  # groups
+  /groups:
+    get:
+      tags: [Admin]
+      summary: Liste aller Gruppen
+      responses:
+        '200':
+          description: Liste der Gruppen
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  groups: 
+                    type: array
+                    items:
+                      type: object
+                      example: "Pi01, Pi02, Pi03"
+                        
+    post:
+      tags: [Admin]
+      summary: Neue Gruppe anlegen
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string, example: "Pi07" }
+      responses:
+        '200':
+          description: Gruppe erfolgreich hinzugefügt
+        
+
+                    
+
 
 
   #########################################################

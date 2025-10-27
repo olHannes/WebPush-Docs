@@ -1,11 +1,102 @@
--- create table: notification
+-- =========================================================
+--  Base Entities
+-- =========================================================
 
--- create table: notification_statistics
+CREATE TABLE Member (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    subscription JSONB NOT NULL  -- { endpoint, key, auth }
+);
 
--- create table: triggers
+CREATE TABLE Groups (
+    id SERIAL PRIMARY KEY,
+    data_table TEXT,                   -- optional, quick and dirty
+    streak INT NOT NULL DEFAULT 0,
+    level INT NOT NULL DEFAULT 0,
+    xp INT NOT NULL DEFAULT 0
+);
 
--- create table: action
+CREATE TABLE Group_Member (
+    member_id INT NOT NULL REFERENCES Member(id) ON DELETE CASCADE,
+    group_id INT NOT NULL REFERENCES Groups(id) ON DELETE CASCADE,
+    PRIMARY KEY (member_id, group_id)
+);
 
--- create table: member
+-- =========================================================
+--  Notifications & Trigger System
+-- =========================================================
 
--- create table: group_data
+CREATE TABLE Triggers (
+    id SERIAL PRIMARY KEY,
+    type TEXT NOT NULL,                   -- e.g. time_once, data_threshold, ...
+    config JSONB NOT NULL,                -- flexible configuration
+    last_triggered_at TIMESTAMP,
+    active BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE Notifications (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    body TEXT,
+    icon_url TEXT,
+    image_url TEXT,
+    renotify BOOLEAN DEFAULT FALSE,
+    silent BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    trigger_id INT REFERENCES Triggers(id) ON DELETE SET NULL,
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE Notification_actions (
+    id SERIAL PRIMARY KEY,
+    notification_id INT NOT NULL REFERENCES Notifications(id) ON DELETE CASCADE,
+    action TEXT NOT NULL,
+    title TEXT,
+    icon TEXT
+);
+
+CREATE TABLE Notification_statistics (
+    id SERIAL PRIMARY KEY,
+    notification_id INT NOT NULL REFERENCES Notifications(id) ON DELETE CASCADE,
+    group_id INT REFERENCES Groups(id) ON DELETE CASCADE,
+    event_type TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE History (
+    id SERIAL PRIMARY KEY,
+    notification_id INT NOT NULL REFERENCES Notifications(id) ON DELETE CASCADE,
+    group_id INT REFERENCES Groups(id) ON DELETE CASCADE,
+    timestamp TIMESTAMP DEFAULT NOW()
+);
+
+-- =========================================================
+--  Achievements / Gamification
+-- =========================================================
+
+CREATE TABLE Achievement (
+    id SERIAL PRIMARY KEY,
+    type TEXT NOT NULL,
+    message TEXT NOT NULL,
+    image_url TEXT,
+    config JSONB NOT NULL  -- conditions
+);
+
+CREATE TABLE Group_Achievement (
+    group_id INT NOT NULL REFERENCES Groups(id) ON DELETE CASCADE,
+    achievement_id INT NOT NULL REFERENCES Achievement(id) ON DELETE CASCADE,
+    PRIMARY KEY (group_id, achievement_id)
+);
+
+-- =========================================================
+--  Optional: Constraints and Checks
+-- =========================================================
+
+ALTER TABLE Notification_statistics
+  ADD CONSTRAINT chk_event_type CHECK (event_type IN ('click', 'swipe'));
+
+-- Useful indexes
+CREATE INDEX idx_trigger_active ON Triggers(active);
+CREATE INDEX idx_notifications_active ON Notifications(is_active);
+CREATE INDEX idx_notification_stats_group ON Notification_statistics(group_id);
+CREATE INDEX idx_history_group ON History(group_id);

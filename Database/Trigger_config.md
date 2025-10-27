@@ -1,7 +1,7 @@
-# 🧩 Trigger-Konfiguration (JSONB in PostgreSQL)
+# Trigger-Konfiguration (JSONB in PostgreSQL)
 
 Jeder Trigger in der Tabelle `triggers` besitzt:
-- ein Feld `type` (`ENUM`): definiert den Typ des Auslösers  
+- ein Feld `type` (`Text`): definiert den Typ des Auslösers  
 - ein Feld `config` (`JSONB`): enthält die Parameter (siehe unten)  
 - optionale Felder `active` & `last_fired_at` für Steuerung und Logging  
 
@@ -18,7 +18,6 @@ Einmaliger, zeitbasierter Auslöser zu einem bestimmten Zeitpunkt.
 
 **Beschreibung:**
 - Wird zu dem angegebenen Zeitpunkt ausgelöst.  
-- Nach Ausführung kann `active = false` gesetzt werden.  
 
 ---
 

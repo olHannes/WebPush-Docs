@@ -74,3 +74,100 @@ Gamification-Auslöser zur Erinnerung an tägliche/wöchentliche Aktivität („
 - Typischer Einsatz: Erinnerungen an tägliche Daten-Uploads oder Messungen.  
 
 ---
+
+## Verbesserte Idee
+```json
+{
+  "when": {
+    "schedule": {
+      "type": "recurring",
+      "frequency": "daily",
+      "time": "09:00"
+    },
+    "conditions": [
+      {
+        "type": "data_threshold",
+        "sensor_id": "raspi_23_temp",
+        "operator": ">",
+        "threshold": 35.0,
+        "duration": "5m"
+      },
+      {
+        "type": "streak_check",
+        "group_id": "Pi01",
+        "streak_target": 7,
+        "last_activity_before": "24h"
+      }
+    ]
+  },
+  "action": {
+    "notification_id": 123,
+    "delay": "0s"
+  }
+}
+```
+# Anwendungsfälle
+**Einmaliger Reminder**
+```json
+{
+  "when": {
+    "schedule": { "type": "once", "datetime": "2025-11-01T09:00:00Z" }
+  },
+  "action": { "notification_id": 123 }
+}
+```
+
+**wöchentliche Datenabhängige Erinnerung**
+```json
+{
+  "when": {
+    "schedule": {
+      "type": "recurring",
+      "frequency": "weekly",
+      "days_of_week": ["monday"],
+      "time": "09:00"
+    },
+    "conditions": [
+      { "type": "data_threshold", "sensor_id": "2.5pm", "operator": ">", "threshold": 35 }
+    ]
+  },
+  "action": { "notification_id": 321 }
+}
+```
+
+**streak reminder**
+```json
+{
+  "when": {
+    "schedule": { "type": "daily", "time": "18:00" },
+    "conditions": [
+      { 
+        "type": "streak_check", 
+        "group_id": "Pi01", 
+        "missing_activity_for": "24h" 
+      }
+    ]
+  },
+  "action": { "notification_id": 777 }
+}
+```
+
+**Datenbasierter Trigger**
+```json
+{
+  "when": {
+    "conditions": [
+      {
+        "type": "data_count",
+        "group_id": "Pi01",
+        "time_range": "today",
+        "operator": ">=",
+        "threshold": 100
+      }
+    ]
+  },
+  "action": {
+    "notification_id": 42
+  }
+}
+```

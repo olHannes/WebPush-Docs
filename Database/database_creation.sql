@@ -1,4 +1,30 @@
 -- =========================================================
+--  SCHEMA RESET
+-- =========================================================
+
+-- Schema neu erstellen
+DROP SCHEMA IF EXISTS gamification CASCADE;
+CREATE SCHEMA gamification;
+SET search_path TO gamification;
+
+
+-- Reihenfolge ist wichtig wegen Foreign Keys.
+-- Erst die abhängigen Tabellen löschen, dann die Basistabellen.
+
+DROP TABLE IF EXISTS 
+    Notification_statistics,
+    History,
+    Notification_actions,
+    Notifications,
+    Triggers,
+    Group_Achievement,
+    Achievement,
+    Group_Member,
+    Groups,
+    Member
+CASCADE;
+
+-- =========================================================
 --  Base Entities
 -- =========================================================
 
@@ -10,7 +36,7 @@ CREATE TABLE Member (
 
 CREATE TABLE Groups (
     id SERIAL PRIMARY KEY,
-    data_table TEXT,                   -- optional, quick and dirty
+    data_table TEXT,
     streak INT NOT NULL DEFAULT 0,
     level INT NOT NULL DEFAULT 0,
     xp INT NOT NULL DEFAULT 0
@@ -28,8 +54,8 @@ CREATE TABLE Group_Member (
 
 CREATE TABLE Triggers (
     id SERIAL PRIMARY KEY,
-    type TEXT NOT NULL,                   -- e.g. time_once, data_threshold, ...
-    config JSONB NOT NULL,                -- flexible configuration
+    type TEXT NOT NULL,
+    config JSONB NOT NULL,  -- condition (time / data)
     last_triggered_at TIMESTAMP,
     active BOOLEAN DEFAULT TRUE
 );
@@ -55,14 +81,6 @@ CREATE TABLE Notification_actions (
     icon TEXT
 );
 
-CREATE TABLE Notification_statistics (
-    id SERIAL PRIMARY KEY,
-    notification_id INT NOT NULL REFERENCES Notifications(id) ON DELETE CASCADE,
-    group_id INT REFERENCES Groups(id) ON DELETE CASCADE,
-    event_type TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW()
-);
-
 CREATE TABLE History (
     id SERIAL PRIMARY KEY,
     notification_id INT NOT NULL REFERENCES Notifications(id) ON DELETE CASCADE,
@@ -70,8 +88,16 @@ CREATE TABLE History (
     timestamp TIMESTAMP DEFAULT NOW()
 );
 
+CREATE TABLE Notification_statistics (
+    id SERIAL PRIMARY KEY,
+    history_id INT NOT NULL REFERENCES History(id) ON DELETE CASCADE,
+    group_id INT REFERENCES Groups(id) ON DELETE CASCADE,
+    event_type TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
 -- =========================================================
---  Achievements / Gamification
+--  Achievements / gamification
 -- =========================================================
 
 CREATE TABLE Achievement (
@@ -79,7 +105,7 @@ CREATE TABLE Achievement (
     type TEXT NOT NULL,
     message TEXT NOT NULL,
     image_url TEXT,
-    config JSONB NOT NULL  -- conditions
+    config JSONB NOT NULL   -- condition (time / data)
 );
 
 CREATE TABLE Group_Achievement (
@@ -93,9 +119,12 @@ CREATE TABLE Group_Achievement (
 -- =========================================================
 
 ALTER TABLE Notification_statistics
-  ADD CONSTRAINT chk_event_type CHECK (event_type IN ('click', 'swipe'));
+  ADD CONSTRAINT chk_event_type CHECK (event_type IN ('click', 'swipe', 'view', 'sent'));
 
--- Useful indexes
+-- =========================================================
+--  Useful Indexes
+-- =========================================================
+
 CREATE INDEX idx_trigger_active ON Triggers(active);
 CREATE INDEX idx_notifications_active ON Notifications(is_active);
 CREATE INDEX idx_notification_stats_group ON Notification_statistics(group_id);

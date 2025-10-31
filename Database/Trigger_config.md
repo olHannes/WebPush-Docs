@@ -28,10 +28,6 @@ Jeder Trigger in der Tabelle besitzt ein config Feld. Dieses wird im Backend aus
         "last_activity_before": "24h"
       }
     ]
-  },
-  "action": {
-    "notification_id": 123,
-    "delay": "0s"
   }
 }
 ```

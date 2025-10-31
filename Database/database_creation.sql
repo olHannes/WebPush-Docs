@@ -129,3 +129,62 @@ CREATE INDEX idx_trigger_active ON Triggers(active);
 CREATE INDEX idx_notifications_active ON Notifications(is_active);
 CREATE INDEX idx_notification_stats_group ON Notification_statistics(group_id);
 CREATE INDEX idx_history_group ON History(group_id);
+CREATE INDEX idx_groups_xp_level ON Groups(xp DESC, level DESC);
+
+-- =========================================================
+-- Useful Views
+-- =========================================================
+CREATE OR REPLACE VIEW view_group_ranking AS
+SELECT
+    g.id AS group_id,
+    g.data_table,
+    g.level,
+    g.xp,
+    g.streak,
+    RANK() OVER (ORDER BY g.xp DESC, g.level DESC) AS rank
+FROM Groups g;
+
+
+CREATE OR REPLACE VIEW view_group_achievements AS
+SELECT
+    g.id AS group_id,
+    g.data_table,
+    a.id AS achievement_id,
+    a.type AS achievement_type,
+    a.message,
+    a.image_url,
+    a.config
+FROM Group_Achievement ga
+JOIN Groups g ON ga.group_id = g.id
+JOIN Achievement a ON ga.achievement_id = a.id;
+
+
+CREATE OR REPLACE VIEW view_triggers_with_schedule AS
+SELECT
+    id AS trigger_id,
+    type,
+    active,
+    last_triggered_at,
+    config,
+    config->'when'->'schedule' AS schedule_config,
+    config->'when'->'conditions' AS conditions_config
+FROM gamification.Triggers
+WHERE active = TRUE
+  AND config ? 'when'
+  AND config->'when' ? 'schedule';
+
+
+CREATE OR REPLACE VIEW view_triggers_without_schedule AS
+SELECT
+    id AS trigger_id,
+    type,
+    active,
+    last_triggered_at,
+    config,
+    config->'when'->'conditions' AS conditions_config
+FROM gamification.Triggers
+WHERE active = TRUE
+    AND (
+        NOT (config ? 'when')
+        OR NOT (config->'when' ? 'schedule')
+    );

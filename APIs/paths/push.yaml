@@ -2,6 +2,18 @@
   # PUSH APIs
   #########################################################
 paths:
+  push/key:
+    get:
+      tags: [Push]
+      summary: Erzeugt einen Key für die Push API und gibt diesen zurück
+      responses:
+        '200':
+          description: Key der Registrierung
+          content:
+            application/json:
+              type: object
+              properties:
+                key: { type: string, example: fhdslfhdaffiudfzf76ds87faf6 }
   push/subscribe:
     post:
       tags: [Push]
@@ -13,13 +25,28 @@ paths:
             schema:
               type: object
               properties:
-                name: { type: string, example: "Member_01" }
-                endpoint: { type: string, example: "https://fcm.googleapis.com/fcm/send/..." }
-                member_key: { type: string, example: "abc123" }
-                auth: { type: string, example: "tokenXYZ" }
+                PushSubscription: { type: string, example: "???" }
+                
       responses:
         '201':
           description: Registrierung erfolgreich
+          content:
+            application/json:
+              type: object
+              properties:
+                status: { type: string, example: subscriped }
+  push/send:
+    post:
+      tags: [Push]
+      summary: Sendet eine Beispielnachricht (test)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message: { type: string, example: Test Notification }
 
   push/unsubscribe/{id}:
     delete:

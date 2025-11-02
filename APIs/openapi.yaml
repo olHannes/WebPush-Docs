@@ -43,8 +43,12 @@ paths:
     $ref: './paths/gamification.yaml#/paths/gamification~1actions~1report'
 
 
+  /push/key:
+    $ref: './paths/push.yaml#/paths/push~1key'
   /push/subscribe:
     $ref: './paths/push.yaml#/paths/push~1subscribe'
+  /push/send:
+    $ref: './paths/push.yaml#/paths/push~1send'
   /push/unsubscribe/{id}:
     $ref: './paths/push.yaml#/paths/push~1unsubscribe~1{id}'
 

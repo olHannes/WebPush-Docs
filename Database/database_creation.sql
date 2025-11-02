@@ -7,23 +7,6 @@ DROP SCHEMA IF EXISTS gamification CASCADE;
 CREATE SCHEMA gamification;
 SET search_path TO gamification;
 
-
--- Reihenfolge ist wichtig wegen Foreign Keys.
--- Erst die abhängigen Tabellen löschen, dann die Basistabellen.
-
-DROP TABLE IF EXISTS 
-    Notification_statistics,
-    History,
-    Notification_actions,
-    Notifications,
-    Triggers,
-    Group_Achievement,
-    Achievement,
-    Group_Member,
-    Groups,
-    Member
-CASCADE;
-
 -- =========================================================
 --  Base Entities
 -- =========================================================
@@ -31,15 +14,18 @@ CASCADE;
 CREATE TABLE Member (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    subscription JSONB NOT NULL  -- { endpoint, key, auth }
+    endpoint TEXT NOT NULL,
+    member_key TEXT NOT NULL,
+    auth TEXT NOT NULL
 );
 
 CREATE TABLE Groups (
     id SERIAL PRIMARY KEY,
     data_table TEXT,
-    streak INT NOT NULL DEFAULT 0,
-    level INT NOT NULL DEFAULT 0,
-    xp INT NOT NULL DEFAULT 0
+    name TEXT UNIQUE NOT NULL,
+    streak INT NOT NULL DEFAULT 0 CHECK (streak >= 0),
+    level INT NOT NULL DEFAULT 0 CHECK (level >= 0),
+    xp INT NOT NULL DEFAULT 0 CHECK (xp >= 0)
 );
 
 CREATE TABLE Group_Member (
@@ -55,9 +41,16 @@ CREATE TABLE Group_Member (
 CREATE TABLE Triggers (
     id SERIAL PRIMARY KEY,
     type TEXT NOT NULL,
-    config JSONB NOT NULL,  -- condition (time / data)
+    config JSONB NOT NULL,
     last_triggered_at TIMESTAMP,
     active BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE Actions (
+    id SERIAL PRIMARY KEY,
+    action_type TEXT NOT NULL,
+    title TEXT NOT NULL,
+    icon TEXT
 );
 
 CREATE TABLE Notifications (
@@ -69,30 +62,36 @@ CREATE TABLE Notifications (
     renotify BOOLEAN DEFAULT FALSE,
     silent BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT NOW(),
-    trigger_id INT REFERENCES Triggers(id) ON DELETE SET NULL,
-    is_active BOOLEAN DEFAULT TRUE
+    trigger_id INT REFERENCES Triggers(id) ON DELETE SET NULL
 );
 
-CREATE TABLE Notification_actions (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE Notification_Actions (
+    action_id INT NOT NULL REFERENCES Actions(id) ON DELETE CASCADE,
     notification_id INT NOT NULL REFERENCES Notifications(id) ON DELETE CASCADE,
-    action TEXT NOT NULL,
-    title TEXT,
-    icon TEXT
+    PRIMARY KEY (action_id, notification_id)
 );
 
 CREATE TABLE History (
     id SERIAL PRIMARY KEY,
     notification_id INT NOT NULL REFERENCES Notifications(id) ON DELETE CASCADE,
-    group_id INT REFERENCES Groups(id) ON DELETE CASCADE,
     timestamp TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE Notification_statistics (
+-- =========================================================
+-- Lookup Tables
+-- =========================================================
+CREATE TABLE Event_Types (
+    id SERIAL PRIMARY KEY,
+    name TEXT UNIQUE NOT NULL
+);
+INSERT INTO Event_Types (name) VALUES ('click'), ('swipe');
+
+
+CREATE TABLE Statistics (
     id SERIAL PRIMARY KEY,
     history_id INT NOT NULL REFERENCES History(id) ON DELETE CASCADE,
-    group_id INT REFERENCES Groups(id) ON DELETE CASCADE,
-    event_type TEXT NOT NULL,
+    event_type_id INT NOT NULL REFERENCES Event_Types(id) ON DELETE RESTRICT,
+    action_id INT REFERENCES Actions(id),
     created_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -100,40 +99,85 @@ CREATE TABLE Notification_statistics (
 --  Achievements / gamification
 -- =========================================================
 
-CREATE TABLE Achievement (
+CREATE TABLE Achievements (
     id SERIAL PRIMARY KEY,
-    type TEXT NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
     message TEXT NOT NULL,
+    reward_xp INT DEFAULT 0 CHECK (reward_xp >= 0),
     image_url TEXT,
-    config JSONB NOT NULL   -- condition (time / data)
+    trigger_id INT REFERENCES Triggers(id) ON DELETE SET NULL
 );
 
 CREATE TABLE Group_Achievement (
     group_id INT NOT NULL REFERENCES Groups(id) ON DELETE CASCADE,
-    achievement_id INT NOT NULL REFERENCES Achievement(id) ON DELETE CASCADE,
+    achievement_id INT NOT NULL REFERENCES Achievements(id) ON DELETE CASCADE,
     PRIMARY KEY (group_id, achievement_id)
 );
-
--- =========================================================
---  Optional: Constraints and Checks
--- =========================================================
-
-ALTER TABLE Notification_statistics
-  ADD CONSTRAINT chk_event_type CHECK (event_type IN ('click', 'swipe', 'view', 'sent'));
 
 -- =========================================================
 --  Useful Indexes
 -- =========================================================
 
-CREATE INDEX idx_trigger_active ON Triggers(active);
-CREATE INDEX idx_notifications_active ON Notifications(is_active);
-CREATE INDEX idx_notification_stats_group ON Notification_statistics(group_id);
-CREATE INDEX idx_history_group ON History(group_id);
-CREATE INDEX idx_groups_xp_level ON Groups(xp DESC, level DESC);
+CREATE INDEX idx_member_name ON Member(name);
+CREATE UNIQUE INDEX idx_member_endpoint ON Member(endpoint);
+
+CREATE INDEX idx_group_name ON GROUPS(name);
+CREATE INDEX idx_group_level_xp ON GROUPS(level DESC, xp DESC);
+CREATE INDEX idx_group_streak ON GROUPS(streak DESC);
+
+CREATE INDEX idx_triggers_active ON Triggers(active);
+CREATE INDEX idx_triggers_type ON Triggers(type);
+CREATE INDEX idx_triggers_last_triggered ON Triggers(last_triggered_at);
+CREATE INDEX idx_trigger_config_json ON Triggers USING GIN (config jsonb_path_ops);
+
+CREATE INDEX idx_notifications_trigger ON Notifications(trigger_id);
+CREATE INDEX idx_notifications_created_at ON Notifications(created_at DESC);
+
+CREATE INDEX idx_notif_actions_action ON Notification_Actions(action_id);
+CREATE INDEX idx_notif_actions_notif ON Notification_Actions(notification_id);
+
+CREATE INDEX idx_history_notification ON History(notification_id);
+CREATE INDEX idx_stats_event_type ON Statistics(event_type_id);
+CREATE INDEX idx_stats_action ON Statistics(action_id);
+CREATE INDEX idx_stats_history ON Statistics(history_id);
+
+CREATE INDEX idx_achievement_trigger ON Achievements(trigger_id);
+CREATE INDEX idx_group_achievement_group ON Group_Achievement(group_id);
+CREATE INDEX idx_group_achievement_achievement ON Group_Achievement(achievement_id);
+
 
 -- =========================================================
 -- Useful Views
 -- =========================================================
+CREATE OR REPLACE VIEW view_member_groups AS
+SELECT
+    m.id AS member_id,
+    m.name AS member_name,
+    g.id AS group_id,
+    g.name AS group_name,
+    g.level,
+    g.xp,
+    g.streak
+FROM Group_Member gm
+JOIN Member m ON gm.member_id = m.id
+JOIN Groups g ON gm.group_id = g.id;
+
+
+CREATE OR REPLACE VIEW view_notification_statistics AS
+SELECT
+    n.id AS notification_id,
+    n.title AS notification_title,
+    et.name AS event_type,
+    a.action_type AS action_name,
+    s.created_at AS event_time
+FROM Statistics s
+JOIN Event_Types et ON s.event_type_id = et.id
+JOIN History h ON s.history_id = h.id
+JOIN Notifications n ON h.notification_id = n.id
+LEFT JOIN Actions a ON s.action_id = a.id;
+
+
 CREATE OR REPLACE VIEW view_group_ranking AS
 SELECT
     g.id AS group_id,
@@ -150,13 +194,15 @@ SELECT
     g.id AS group_id,
     g.data_table,
     a.id AS achievement_id,
-    a.type AS achievement_type,
-    a.message,
+    a.title AS achievement_title,
+    a.description,
     a.image_url,
-    a.config
+    a.reward_xp,
+    a.trigger_id
 FROM Group_Achievement ga
 JOIN Groups g ON ga.group_id = g.id
-JOIN Achievement a ON ga.achievement_id = a.id;
+JOIN Achievements a ON ga.achievement_id = a.id;
+
 
 
 CREATE OR REPLACE VIEW view_triggers_with_schedule AS

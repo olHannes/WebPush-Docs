@@ -1,28 +1,33 @@
 -- =========================================================
---  Beispiel-Datensätze für das Gamification-System
+--  Beispiel-Datensätze für das neue Gamification-System
 -- =========================================================
 
--- Mitglieder (Member)
-INSERT INTO Member (name, subscription) VALUES
-('Member_01', '{"endpoint": "https://member_01_endpoint", "key": "abc123", "auth": "token123"}'),
-('Member_02', '{"endpoint": "https://member_02_endpoint", "key": "def456", "auth": "token456"}'),
-('Member_03', '{"endpoint": "https://member_03_endpoint", "key": "ghi789", "auth": "token789"}');
+-- =========================================================
+--  Member
+-- =========================================================
+INSERT INTO Member (name, endpoint, member_key, auth) VALUES
+('Member_01', 'https://member_01_endpoint', 'abc123', 'token123'),
+('Member_02', 'https://member_02_endpoint', 'def456', 'token456'),
+('Member_03', 'https://member_03_endpoint', 'ghi789', 'token789');
 
--- Gruppen (Groups)
-INSERT INTO Groups (data_table, streak, level, xp) VALUES
-('sensor_0001324j3214js', 5, 3, 150),
-('sensor_0x82698_e07', 2, 1, 40);
+-- =========================================================
+--  Groups
+-- =========================================================
+INSERT INTO Groups (data_table, name, streak, level, xp) VALUES
+('sensor_0001324j3214js', 'RaspberryGroup01', 5, 3, 150),
+('sensor_0x82698_e07', 'WeatherStation02', 2, 1, 40);
 
--- Zuordnung Member <-> Group
+-- =========================================================
+--  Group-Member Zuordnung
+-- =========================================================
 INSERT INTO Group_Member (member_id, group_id) VALUES
 (1, 1),
 (2, 1),
 (3, 2);
 
 -- =========================================================
---  Trigger-Beispiel (mit komplexer Konfiguration)
+--  Trigger Beispiel (komplexe Konfiguration)
 -- =========================================================
-
 INSERT INTO Triggers (type, config, last_triggered_at, active) VALUES
 (
   'complex_combined',
@@ -43,7 +48,7 @@ INSERT INTO Triggers (type, config, last_triggered_at, active) VALUES
         },
         {
           "type": "streak_check",
-          "group_id": "Pi01",
+          "group_id": "RaspberryGroup01",
           "streak_target": 7,
           "last_activity_before": "24h"
         }
@@ -59,73 +64,70 @@ INSERT INTO Triggers (type, config, last_triggered_at, active) VALUES
 );
 
 -- =========================================================
+--  Actions (verfügbare Interaktionen)
+-- =========================================================
+INSERT INTO Actions (action_type, title, icon) VALUES
+('open', 'Details anzeigen', 'https://example.com/open.png'),
+('dismiss', 'Schließen', 'https://example.com/close.png'),
+('measure', 'Messung starten', 'https://example.com/start.png');
+
+-- =========================================================
 --  Notifications
 -- =========================================================
-
-INSERT INTO Notifications (title, body, icon_url, image_url, renotify, silent, trigger_id, is_active) VALUES
-('Level erreicht!', 'Gratuliere! Deine Gruppe hat Level 4 erreicht.', 'https://example.com/icon.png', 'https://example.com/banner.png', FALSE, FALSE, 1, TRUE),
-('Messungserinnerung', 'Denk an deine tägliche Messung!', 'https://example.com/reminder.png', NULL, TRUE, FALSE, NULL, TRUE);
-
--- Actions für Notifications
-INSERT INTO Notification_actions (notification_id, action, title, icon) VALUES
-(1, 'open', 'Details anzeigen', 'https://example.com/open.png'),
-(1, 'dismiss', 'Schließen', 'https://example.com/close.png'),
-(2, 'measure', 'Messung starten', 'https://example.com/start.png');
+INSERT INTO Notifications (title, body, icon_url, image_url, renotify, silent, trigger_id) VALUES
+('Level erreicht!', 'Gratuliere! Deine Gruppe hat Level 4 erreicht.', 'https://example.com/icon.png', 'https://example.com/banner.png', FALSE, FALSE, 1),
+('Messungserinnerung', 'Denk an deine tägliche Messung!', 'https://example.com/reminder.png', NULL, TRUE, FALSE, NULL);
 
 -- =========================================================
---  Notification-Historie und Statistik
+--  Notification-Actions Zuordnung
 -- =========================================================
+-- (1. Notification hat zwei Aktionen, 2. Notification eine)
+INSERT INTO Notification_Actions (action_id, notification_id) VALUES
+(1, 1),
+(2, 1),
+(3, 2);
 
--- Nachricht an Gruppe 1 gesendet
-INSERT INTO History (notification_id, group_id, timestamp) VALUES
-(1, 1, NOW() - INTERVAL '5 minutes'),
-(2, 2, NOW() - INTERVAL '1 hour');
+-- =========================================================
+--  Notification-History (gesendete Nachrichten)
+-- =========================================================
+INSERT INTO History (notification_id, timestamp) VALUES
+(1, NOW() - INTERVAL '5 minutes'),
+(2, NOW() - INTERVAL '1 hour');
 
--- Klicks / Swipes erfassen
-INSERT INTO Notification_statistics (history_id, group_id, event_type) VALUES
-(1, 1, 'click'),
-(1, 1, 'swipe'),
-(2, 2, 'click');
+-- =========================================================
+--  Statistics (Interaktionen)
+-- =========================================================
+-- Hinweis: Event_Types wurde beim Schema bereits mit ('click', 'swipe') befüllt.
+-- IDs: 1 = click, 2 = swipe
+INSERT INTO Statistics (history_id, event_type_id, action_id, created_at) VALUES
+(1, 1, 1, NOW() - INTERVAL '4 minutes'),  -- click
+(1, 2, 2, NOW() - INTERVAL '3 minutes'),  -- swipe
+(2, 1, 3, NOW() - INTERVAL '50 minutes'); -- click
 
 -- =========================================================
 --  Achievements
 -- =========================================================
-
-INSERT INTO Achievement (type, message, image_url, config) VALUES
+INSERT INTO Achievements (title, description, message, reward_xp, image_url, trigger_id) VALUES
 (
-  'streak_master',
+  'Streak Master',
+  '7 Tage in Folge Daten gesammelt.',
   'Du hast 7 Tage in Folge Daten gesammelt!',
+  50,
   'https://example.com/ach_streak.png',
-  '{
-    "conditions": [
-      {
-        "type": "streak_check",
-        "group_id": "Pi01",
-        "streak_target": 7
-      }
-    ],
-    "reward": { "xp": 50 }
-  }'
+  1
 ),
 (
-  'data_champion',
-  'Über 100 Messwerte an einem Tag!',
+  'Data Champion',
+  'Über 100 Messwerte an einem Tag erreicht.',
+  'Über 100 Messwerte an einem Tag! Weiter so!',
+  100,
   'https://example.com/ach_data.png',
-  '{
-    "conditions": [
-      {
-        "type": "data_count",
-        "group_id": "Pi01",
-        "time_range": "today",
-        "operator": ">=",
-        "threshold": 100
-      }
-    ],
-    "reward": { "xp": 100 }
-  }'
+  NULL
 );
 
--- Zugewiesene Achievements
+-- =========================================================
+--  Zugewiesene Achievements zu Gruppen
+-- =========================================================
 INSERT INTO Group_Achievement (group_id, achievement_id) VALUES
 (1, 1),
 (1, 2);

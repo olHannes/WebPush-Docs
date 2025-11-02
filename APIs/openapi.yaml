@@ -1,0 +1,54 @@
+openapi: 3.0.3
+info:
+  title: Webengineering WebPush (Gamification Project)
+  version: "1.0.0"
+  description: >
+    Konzeptuelle Beschreibung der REST-Endpunkte für Admin-, Push- und Gamification-Funktionalität.
+    Entspricht der aktuellen Datenbankstruktur (01.11.25).
+
+servers:
+  - url: https://scl.fh-bielefeld.de/SmartDataAirquality/api
+    description: Fh-Server
+
+tags:
+  - name: Admin
+    description: Verwaltung von Nachrichten, Gruppen, Triggern und Achievements.
+  - name: Gamification
+    description: Daten für Ranking, XP, Achievements und Statistiken.
+  - name: Push
+    description: Registrierung und Kommunikation mit PWA-Endpunkten.
+
+paths:
+  /notifications:
+    $ref: './paths/admin.yaml#/paths/notifications'
+  /notifications/{id}:
+    $ref: './paths/admin.yaml#/paths/notifications~1{id}'
+  /notifications/{id}/stats:
+    $ref: './paths/admin.yaml#/paths/notifications~1{id}~1stats'
+  /triggers:
+    $ref: './paths/admin.yaml#/paths/triggers'
+  /groups:
+    $ref: './paths/admin.yaml#/paths/groups'
+  /achievements:
+    $ref: './paths/admin.yaml#/paths/achievements'
+  
+  
+  /gamification/ranking:
+    $ref: './paths/gamification.yaml#/paths/gamification~1ranking'
+  /gamification/groupStats/{groupId}:
+    $ref: './paths/gamification.yaml#/paths/gamification~1groupStats~1{groupId}'
+  /gamification/achievements/{groupId}:
+    $ref: './paths/gamification.yaml#/paths/gamification~1achievements~1{groupId}'
+  /gamification/actions/report:
+    $ref: './paths/gamification.yaml#/paths/gamification~1actions~1report'
+
+
+  /push/subscribe:
+    $ref: './paths/push.yaml#/paths/push~1subscribe'
+  /push/unsubscribe/{id}:
+    $ref: './paths/push.yaml#/paths/push~1unsubscribe~1{id}'
+
+
+components:
+  schemas:
+    $ref: './schemas.yaml#/components/schemas'

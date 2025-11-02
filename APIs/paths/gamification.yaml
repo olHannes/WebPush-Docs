@@ -1,0 +1,73 @@
+  #########################################################
+  # GAMIFICATION APIs
+  #########################################################
+paths:
+  gamification/ranking:
+    get:
+      tags: [Gamification]
+      summary: Ranking aller teilnehmenden Gruppen
+      responses:
+        '200':
+          description: Ranking erfolgreich abgefragt
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '../schemas.yaml#/components/schemas/GroupRanking'
+
+  gamification/groupStats/{groupId}:
+    get:
+      tags: [Gamification]
+      summary: Aktuelle Werte einer Gruppe (XP, Level, Streak, Badges)
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Erfolgreich abgefragt
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/GroupStats'
+        '404':
+          description: Gruppe nicht gefunden
+
+  gamification/achievements/{groupId}:
+    get:
+      tags: [Gamification]
+      summary: Zeigt alle erreichten Achievements einer Gruppe
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Erfolgreich abgefragt
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '../schemas.yaml#/components/schemas/Achievement'
+
+  gamification/actions/report:
+    post:
+      tags: [Gamification]
+      summary: Meldet eine Benutzerinteraktion (click/swipe)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notification_id: { type: integer }
+                action_id: { type: integer }
+                event_type: { type: string, enum: [click, swipe] }
+      responses:
+        '201':
+          description: Event gespeichert

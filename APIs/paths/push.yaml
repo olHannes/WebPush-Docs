@@ -1,0 +1,36 @@
+  #########################################################
+  # PUSH APIs
+  #########################################################
+paths:
+  push/subscribe:
+    post:
+      tags: [Push]
+      summary: Registrierung eines Endpoints für WebPush
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string, example: "Member_01" }
+                endpoint: { type: string, example: "https://fcm.googleapis.com/fcm/send/..." }
+                member_key: { type: string, example: "abc123" }
+                auth: { type: string, example: "tokenXYZ" }
+      responses:
+        '201':
+          description: Registrierung erfolgreich
+
+  push/unsubscribe/{id}:
+    delete:
+      tags: [Push]
+      summary: Löscht einen Member-Eintrag / Endpoint
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: Endpoint erfolgreich gelöscht
+

@@ -1,0 +1,142 @@
+
+#########################################################
+# COMPONENTS
+#########################################################
+
+components:
+  schemas:
+
+    #########################################################
+    # Notifications
+    #########################################################
+
+    NotificationOverview:
+      type: object
+      properties:
+        id: { type: integer, example: 1 }
+        title: { type: string, example: "Level erreicht!" }
+        body: { type: string, example: "Deine Gruppe hat Level 4 erreicht." }
+        icon_url: { type: string, example: "https://example.com/icon.png" }
+        image_url: { type: string, example: "https://example.com/banner.png" }
+        renotify: { type: boolean, example: false }
+        silent: { type: boolean, example: false }
+        created_at: { type: string, format: date-time }
+
+    NotificationCreation:
+      allOf:
+        - $ref: '#/components/schemas/NotificationOverview'
+      description: Eingabeobjekt für eine neue Notification.
+      properties:
+        trigger_id: { type: integer, nullable: true }
+
+    NotificationDetails:
+      allOf:
+        - $ref: '#/components/schemas/NotificationOverview'
+      properties:
+        trigger:
+          $ref: '#/components/schemas/TriggerExpanded'
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+        stats:
+          $ref: '#/components/schemas/NotificationStats'
+
+    NotificationStats:
+      type: object
+      properties:
+        notification_id: { type: integer, example: 1 }
+        clicks: { type: integer, example: 12 }
+        swipes: { type: integer, example: 4 }
+        created_at: { type: string, format: date-time }
+
+    #########################################################
+    # Actions
+    #########################################################
+
+    Action:
+      type: object
+      properties:
+        id: { type: integer }
+        action_type: { type: string, example: "open" }
+        title: { type: string, example: "Details anzeigen" }
+        icon: { type: string, example: "https://example.com/open.png" }
+
+    #########################################################
+    # Triggers
+    #########################################################
+
+    TriggerExpanded:
+      type: object
+      properties:
+        id: { type: integer }
+        type: { type: string, example: "data_threshold" }
+        active: { type: boolean }
+        last_triggered_at: { type: string, format: date-time, nullable: true }
+        config: { type: object }
+
+    TriggerCreation:
+      type: object
+      properties:
+        type: { type: string, example: "time_once" }
+        config: { type: object, description: "Trigger-spezifische JSONB-Konfiguration" }
+        active: { type: boolean, example: true }
+
+    #########################################################
+    # Groups & Gamification
+    #########################################################
+
+    GroupRanking:
+      type: object
+      properties:
+        group_id: { type: integer, example: 1 }
+        name: { type: string, example: "Pi01" }
+        rank: { type: integer, example: 1 }
+        xp: { type: integer, example: 120 }
+        level: { type: integer, example: 5 }
+        streak: { type: integer, example: 7 }
+
+    GroupStats:
+      type: object
+      properties:
+        group_id: { type: integer }
+        name: { type: string }
+        level: { type: integer }
+        xp: { type: integer }
+        streak: { type: integer }
+        achievements:
+          type: array
+          items:
+            type: integer
+          example: [3, 2]
+
+    #########################################################
+    # Achievements
+    #########################################################
+
+    Achievement:
+      type: object
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        description: { type: string }
+        message: { type: string }
+        reward_xp: { type: integer }
+        image_url: { type: string }
+        trigger_id: { type: integer, nullable: true }
+
+    AchievementCreation:
+      allOf:
+        - $ref: '#/components/schemas/Achievement'
+      required: [title, description, reward_xp]
+
+    #########################################################
+    # Errors
+    #########################################################
+
+    Error:
+      type: object
+      properties:
+        code: { type: integer, example: 404 }
+        message: { type: string, example: "Not Found" }
+        details: { type: string, nullable: true }

@@ -9,38 +9,43 @@ components:
     #########################################################
     # Notifications
     #########################################################
-
-    NotificationOverview:
+    BasicNotification:
       type: object
       properties:
-        id: { type: integer, example: 1 }
         title: { type: string, example: "Level erreicht!" }
         body: { type: string, example: "Deine Gruppe hat Level 4 erreicht." }
         icon_url: { type: string, example: "https://example.com/icon.png" }
         image_url: { type: string, example: "https://example.com/banner.png" }
         renotify: { type: boolean, example: false }
         silent: { type: boolean, example: false }
-        created_at: { type: string, format: date-time }
+          
+    NotificationOverview:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+        - $ref: '#/components/schemas/BasicNotification'
+        - type: object
+          properties:
+            id: { type: integer, example: 1 }
+            created_at: { type: string, format: date-time }
+            actions:
+              type: array
+              items:
+                $ref: '#/components/schemas/Action'
+            trigger: 
+              type: object
+              $ref: '#/components/schemas/TriggerExpanded'
 
     NotificationCreation:
       allOf:
-        - $ref: '#/components/schemas/NotificationOverview'
+        - $ref: '#/components/schemas/BasicNotification'
       description: Eingabeobjekt für eine neue Notification.
       properties:
         trigger_id: { type: integer, nullable: true }
 
-    NotificationDetails:
-      allOf:
-        - $ref: '#/components/schemas/NotificationOverview'
-      properties:
-        trigger:
-          $ref: '#/components/schemas/TriggerExpanded'
-        actions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Action'
-        stats:
-          $ref: '#/components/schemas/NotificationStats'
 
     NotificationStats:
       type: object
@@ -53,34 +58,39 @@ components:
     #########################################################
     # Actions
     #########################################################
-
-    Action:
+    BasicAction:
       type: object
       properties:
-        id: { type: integer }
         action_type: { type: string, example: "open" }
         title: { type: string, example: "Details anzeigen" }
         icon: { type: string, example: "https://example.com/open.png" }
+    
+    Action:
+      allOf:
+        - type: object
+          properties:
+            id: { type: integer, example: 1 }
+          -$ref: '#/components/schemas/BasicAction'
+
 
     #########################################################
     # Triggers
     #########################################################
+    BasicTrigger:
+      type: object
+      properties:
+        type: { type: string, example: "data_threshold" }
+        active: { type: boolean, example: true }
+        config: { type: object, description: "Trigger-spezifische JSONB-Konfiguration" }
 
     TriggerExpanded:
-      type: object
-      properties:
-        id: { type: integer }
-        type: { type: string, example: "data_threshold" }
-        active: { type: boolean }
-        last_triggered_at: { type: string, format: date-time, nullable: true }
-        config: { type: object }
+      allOf:
+        - type: object
+          properties:
+            id: { type: integer, example: 1}
+            last_triggered_at: { type: string, format: date-time, nullable: true }
+        - $ref: '#/components/schemas/BasicTrigger'
 
-    TriggerCreation:
-      type: object
-      properties:
-        type: { type: string, example: "time_once" }
-        config: { type: object, description: "Trigger-spezifische JSONB-Konfiguration" }
-        active: { type: boolean, example: true }
 
     #########################################################
     # Groups & Gamification

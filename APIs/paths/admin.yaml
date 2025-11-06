@@ -42,7 +42,7 @@ paths:
   notifications/{id}:
     get:
       tags: [Admin]
-      summary: Details einer Notification abrufen
+      summary: Eine spezifische Nachricht abrufen
       parameters:
         - name: id
           in: path
@@ -54,7 +54,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../schemas.yaml#/components/schemas/NotificationDetails'
+                $ref: '../schemas.yaml#/components/schemas/NotificationOverview'
         '404':
           description: Notification nicht gefunden
 
@@ -69,6 +69,8 @@ paths:
       responses:
         '204':
           description: Notification gelöscht
+        '404':
+          description: Notification nicht gefunden
 
   notifications/{id}/stats:
     get:
@@ -111,7 +113,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '../schemas.yaml#/components/schemas/TriggerCreation'
+              $ref: '../schemas.yaml#/components/schemas/BasicTrigger'
       responses:
         '201':
           description: Trigger erfolgreich angelegt

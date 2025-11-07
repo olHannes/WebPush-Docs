@@ -219,6 +219,53 @@ WHERE active = TRUE
   AND config ? 'when'
   AND config->'when' ? 'schedule';
 
+CREATE OR REPLACE VIEW view_time_triggers AS
+SELECT
+    t.id AS trigger_id,
+    t.type,
+    t.active,
+    t.config,
+    t.last_triggered_at,
+    
+    -- extract common schedule fields
+    t.config->'when'->'schedule'->>'type' AS schedule_type,
+    t.config->'when'->'schedule'->>'frequency' AS frequency,
+    t.config->'when'->'schedule'->>'time' AS run_time,
+    t.config->'when'->'schedule'->>'datetime' AS run_datetime,
+    
+    -- calculate next time
+    CASE
+        -- once
+        WHEN t.config->'when'->'schedule'->>'type' = 'once'
+        THEN (t.config->'when'->'schedule'->>'datetime')::timestamp
+        
+        -- daily recurring
+        WHEN t.config->'when'->'schedule'->>'frequency' = 'daily'
+        THEN
+            CASE
+                WHEN make_time(split_part(t.config->'when'->'schedule'->>'time', ':', 1)::int,
+                               split_part(t.config->'when'->'schedule'->>'time', ':', 2)::int, 0)
+                     > now()::time
+                THEN date_trunc('day', now()) 
+                     + make_time(split_part(t.config->'when'->'schedule'->>'time', ':', 1)::int,
+                                 split_part(t.config->'when'->'schedule'->>'time', ':', 2)::int, 0)
+                ELSE (date_trunc('day', now()) + interval '1 day')
+                     + make_time(split_part(t.config->'when'->'schedule'->>'time', ':', 1)::int,
+                                 split_part(t.config->'when'->'schedule'->>'time', ':', 2)::int, 0)
+            END
+        
+        -- weekly recurring (optional add: montly/ yearly)
+        --WHEN
+        --THEN 
+        ELSE NULL
+    END AS next_run_at
+
+FROM Triggers t
+WHERE t.active = TRUE
+  AND t.config->'when' ? 'schedule'
+ORDER BY next_run_at;
+
+
 
 CREATE OR REPLACE VIEW view_triggers_without_schedule AS
 SELECT

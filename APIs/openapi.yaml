@@ -27,8 +27,6 @@ paths:
     $ref: './paths/admin.yaml#/paths/notifications~1{id}~1stats'
   /triggers:
     $ref: './paths/admin.yaml#/paths/triggers'
-  /groups:
-    $ref: './paths/admin.yaml#/paths/groups'
   /achievements:
     $ref: './paths/admin.yaml#/paths/achievements'
   

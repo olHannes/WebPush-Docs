@@ -1,0 +1,159 @@
+openapi: 3.0.3
+info:
+  title: SmartData Dynamic Records API
+  version: 1.0.0
+  description: |
+    Diese Datei beschreibt ein paar APIs mit Beispieldaten und Scenarien (SmartDataAirquality). 
+    Die Application muss in der Payara Admin-Konsole allerdings manuell aktiviert (enable) werden.
+
+servers:
+  - url: http://localhost:8080/SmartDataAirquality/smartdata/records
+
+tags:
+  - name: "SmartData Collection-Handling"
+    description: "Collections sind in diesem Context die Tabellen innerhalb eines Namensraum (Storage) der Datenbank. Die Record-API Resource kann dabei Daten lesen, schreiben, aktualisieren und löschen"
+
+paths:
+  /{collection}:
+    get:
+      tags: [SmartData Collection-Handling]
+      summary: List records from a collection
+      parameters:
+        - name: collection
+          in: path
+          required: true
+          schema: { type: string }
+          example: member
+        - name: storage
+          in: query
+          schema: { type: string }
+          description: Storage schema (e.g., public, gamification)
+          example: gamification
+        - name: includes
+          in: query
+          schema: { type: string }
+          description: Comma-separated list of fields to return
+          example: id,name,endpoint,member_key,auth
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              example:
+                records:
+                  - id: 1
+                    name: "Test"
+                    endpoint: "fjdkal"
+                    member_key: "fdkjaslfdas"
+                    auth: "uroipetueporw"
+
+    post:
+      tags: [SmartData Collection-Handling]
+      summary: Insert record
+      parameters:
+        - name: collection
+          in: path
+          required: true
+          schema: { type: string }
+          example: member
+        - name: storage
+          in: query
+          schema: { type: string }
+          example: gamification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              name: "Member_05"
+              endpoint: "https://test.de"
+              member_key: "test_key"
+              auth: "auth_key"
+      responses:
+        '201':
+          description: Created
+
+  /{collection}/{id}:
+    get:
+      tags: [SmartData Collection-Handling]
+      summary: Get one record by ID
+      parameters:
+        - name: collection
+          in: path
+          schema: { type: string }
+          required: true
+          example: member
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+          example: 1
+        - name: storage
+          in: query
+          schema: { type: string }
+          example: gamification
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              example:
+                records:
+                  id: 1
+                  name: "Member_01"
+                  auth: "auth_test"
+                  endpoint: "endpoint_test"
+                  member_key: "key_test"
+
+    put:
+      tags: [SmartData Collection-Handling]
+      summary: Update record
+      parameters:
+        - name: collection
+          in: path
+          schema: { type: string }
+          required: true
+          example: member
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+          example: 1
+        - name: storage
+          in: query
+          schema: { type: string }
+          example: gamification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              name: "Member_05"
+              endpoint: "https://test.de"
+              member_key: "test"
+              auth: "test"
+      responses:
+        '200':
+          description: Updated
+
+    delete:
+      tags: [SmartData Collection-Handling]
+      summary: Delete record by ID
+      parameters:
+        - name: collection
+          in: path
+          required: true
+          schema: { type: string }
+          example: member
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+          example: 2
+        - name: storage
+          in: query
+          schema: { type: string }
+          example: gamification
+      responses:
+        '200':
+          description: Deleted

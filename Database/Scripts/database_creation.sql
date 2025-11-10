@@ -205,6 +205,22 @@ JOIN Achievements a ON ga.achievement_id = a.id;
 
 
 
+
+-- Trigger-Views:
+CREATE OR REPLACE VIEW view_triggers_with_schedule AS
+SELECT
+    id AS trigger_id,
+    description,
+    active,
+    last_triggered_at,
+    config,
+    config->'when'->'schedule' AS schedule_config,
+    config->'when'->'conditions' AS conditions_config
+FROM gamification.Triggers
+WHERE active = TRUE
+  AND config->'when'->'schedule' IS NOT NULL;
+
+
 CREATE OR REPLACE VIEW view_triggers_without_schedule AS
 SELECT
     id AS trigger_id,
@@ -215,7 +231,7 @@ SELECT
     config->'when'->'conditions' AS conditions_config
 FROM gamification.Triggers
 WHERE active = TRUE
-    AND (
-        NOT (config ? 'when')
-        OR NOT (config->'when' ? 'schedule')
-    );
+  AND (
+      config->'when' IS NULL
+      OR config->'when'->'schedule' IS NULL
+  );

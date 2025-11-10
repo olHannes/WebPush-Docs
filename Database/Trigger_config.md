@@ -13,7 +13,8 @@ Dabei ist der Aufbau immer gleich:
   "when": {
     "schedule": {
       "type": "recurring",
-      "cron": "* * * * *"
+      "cron": "* * * * *",
+      "timestamp": "..."
     },
     "conditions": [
       {

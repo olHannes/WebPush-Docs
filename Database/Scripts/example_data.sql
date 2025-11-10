@@ -32,62 +32,54 @@ INSERT INTO Group_Member (member_id, group_id) VALUES
 --  Trigger Beispiel (komplexe Konfiguration)
 -- =========================================================
 -- 1️⃣  Täglicher Streak-Check
-INSERT INTO Triggers (type, config, last_triggered_at, active) VALUES
+INSERT INTO Triggers (description, config, last_triggered_at, active) VALUES
 (
-  'daily_streak_reminder',
+  'Tägliche Streak-Erinnerung',
   '{
     "when": {
-      "schedule": { "type": "daily", "time": "18:00" },
+      "schedule": { "type": "recurring", "cron": "0 18 * * *", "timestamp": "" },
       "conditions": [
         { "type": "streak_check", "group_id": "RaspberryGroup01", "missing_activity_for": "24h" }
       ]
-    },
-    "action": { "notification_id": 1 }
+    }
   }',
   NOW() - INTERVAL '2 hours',
   TRUE
 );
 
 -- 2️⃣  Wöchentlicher Daten-Reminder (abhängig von Sensorwert)
-INSERT INTO Triggers (type, config, last_triggered_at, active) VALUES
+INSERT INTO Triggers (description, config, last_triggered_at, active) VALUES
 (
-  'weekly_sensor_threshold',
+  'wöchentlicher Reminder',
   '{
     "when": {
-      "schedule": {
-        "type": "recurring",
-        "frequency": "weekly",
-        "days_of_week": ["monday"],
-        "time": "09:00"
-      },
+      "schedule": { "type": "recurring", "cron": "0 9 * * 1", "timestamp": "" },
       "conditions": [
         { "type": "data_threshold", "sensor_id": "2.5pm", "operator": ">", "threshold": 35 }
       ]
-    },
-    "action": { "notification_id": 2 }
+    }
   }',
   NOW() - INTERVAL '3 days',
   TRUE
 );
 
 -- 3️⃣  Einmaliger Reminder
-INSERT INTO Triggers (type, config, last_triggered_at, active) VALUES
+INSERT INTO Triggers (description, config, last_triggered_at, active) VALUES
 (
-  'single_measurement_reminder',
+  'Einmalige Erinnerung',
   '{
     "when": {
-      "schedule": { "type": "once", "datetime": "2025-11-03T09:00:00Z" }
-    },
-    "action": { "notification_id": 3 }
+      "schedule": { "type": "once", "cron": "", "timestamp": "2025-11-03T09:00:00Z" }
+    }
   }',
   NULL,
   TRUE
 );
 
 -- 4️⃣  Datenbasierter Trigger (z. B. 100 Messwerte)
-INSERT INTO Triggers (type, config, last_triggered_at, active) VALUES
+INSERT INTO Triggers (description, config, last_triggered_at, active) VALUES
 (
-  'data_volume_check',
+  'Erreichte 100 Messwerte',
   '{
     "when": {
       "conditions": [
@@ -99,30 +91,24 @@ INSERT INTO Triggers (type, config, last_triggered_at, active) VALUES
           "threshold": 100
         }
       ]
-    },
-    "action": { "notification_id": 4 }
+    }
   }',
   NOW() - INTERVAL '5 hours',
   TRUE
 );
 
 -- 5️⃣  Komplexer Kombi-Trigger (zeit- + datenabhängig)
-INSERT INTO Triggers (type, config, last_triggered_at, active) VALUES
+INSERT INTO Triggers (description, config, last_triggered_at, active) VALUES
 (
-  'complex_combined',
+  'zeitlich und datenbasierter trigger',
   '{
     "when": {
-      "schedule": {
-        "type": "recurring",
-        "frequency": "daily",
-        "time": "09:00"
-      },
+      "schedule": { "type": "recurring", "cron": "0 9 * * *", "timestamp": ""},
       "conditions": [
         { "type": "data_threshold", "sensor_id": "raspi_23_temp", "operator": ">", "threshold": 35.0, "duration": "5m" },
         { "type": "streak_check", "group_id": "WeatherStation02", "streak_target": 7, "last_activity_before": "24h" }
       ]
-    },
-    "action": { "notification_id": 5 }
+    }
   }',
   NOW() - INTERVAL '1 day',
   TRUE

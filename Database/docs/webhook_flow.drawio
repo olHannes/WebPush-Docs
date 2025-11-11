@@ -1,0 +1,58 @@
+<mxfile host="65bd71144e">
+    <diagram id="vWAZWBlsYLHH33BekW0X" name="Page-1">
+        <mxGraphModel dx="1462" dy="764" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="tbl_observedobjects - Webhook" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="230" y="70" width="445" height="470" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="2" source="3" target="4" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="SmarDataAirquality&lt;div&gt;POST&lt;/div&gt;" style="html=1;dashed=0;whiteSpace=wrap;shape=mxgraph.dfd.start" parent="2" vertex="1">
+                    <mxGeometry x="145" y="40" width="147" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="2" source="4" target="8" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="222.5" y="200" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4" value="added Sensor device" style="html=1;dashed=0;whiteSpace=wrap;" parent="2" vertex="1">
+                    <mxGeometry x="168.5" y="110" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="2" source="8" target="12" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="13" vertex="1" connectable="0">
+                    <mxGeometry x="-0.1771" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="8" value="mobile Device?" style="shape=rhombus;html=1;dashed=0;whiteSpace=wrap;perimeter=rhombusPerimeter;" parent="2" vertex="1">
+                    <mxGeometry x="161" y="195" width="115" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="end" style="html=1;dashed=0;whiteSpace=wrap;shape=mxgraph.dfd.start" parent="2" vertex="1">
+                    <mxGeometry x="10" y="220" width="80" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" style="edgeStyle=none;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="2" source="8" target="9" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="no" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="10" vertex="1" connectable="0">
+                    <mxGeometry x="0.0197" y="1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="16" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="2" source="12" target="15" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="create new Group&lt;div&gt;SmartDataAirquality&lt;/div&gt;" style="html=1;dashed=0;whiteSpace=wrap;" parent="2" vertex="1">
+                    <mxGeometry x="157.75" y="310" width="121.5" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="edit config&lt;div&gt;add Webhook for&lt;/div&gt;&lt;div&gt;Data-Table&lt;/div&gt;" style="html=1;dashed=0;whiteSpace=wrap;" parent="2" vertex="1">
+                    <mxGeometry x="157.75" y="390" width="121.5" height="50" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

@@ -178,33 +178,6 @@ JOIN Notifications n ON h.notification_id = n.id
 LEFT JOIN Actions a ON s.action_id = a.id;
 
 
-CREATE OR REPLACE VIEW view_group_ranking AS
-SELECT
-    g.id AS group_id,
-    g.data_table,
-    g.level,
-    g.xp,
-    g.streak,
-    RANK() OVER (ORDER BY g.xp DESC, g.level DESC) AS rank
-FROM Groups g;
-
-
-CREATE OR REPLACE VIEW view_group_achievements AS
-SELECT
-    g.id AS group_id,
-    g.data_table,
-    a.id AS achievement_id,
-    a.title AS achievement_title,
-    a.description,
-    a.image_url,
-    a.reward_xp,
-    a.trigger_id
-FROM Group_Achievement ga
-JOIN Groups g ON ga.group_id = g.id
-JOIN Achievements a ON ga.achievement_id = a.id;
-
-
-
 
 -- Trigger-Views:
 CREATE OR REPLACE VIEW view_triggers_with_schedule AS
@@ -236,6 +209,36 @@ WHERE active = TRUE
       OR config->'when'->'schedule' IS NULL
   );
 
+
+--- Leaderboard-View:
+CREATE OR REPLACE VIEW view_leaderboard AS
+SELECT
+    g.id AS group_id,
+    g.name AS group_name,
+    g.data_table,
+    g.level,
+    g.xp,
+    g.streak,
+    RANK() OVER (ORDER BY g.xp DESC, g.level DESC) AS rank
+FROM gamification.Groups g
+ORDER BY g.xp DESC;
+
+
+--- Group Achievements:
+CREATE OR REPLACE VIEW view_group_achievements AS
+SELECT
+    g.id AS group_id,
+    g.name AS group_name,
+    g.data_table,
+    a.id AS achievement_id,
+    a.title AS achievement_title,
+    a.description AS achievement_description,
+    a.image_url AS achievement_image_url,
+    a.reward_xp AS achievement_reward_xp,
+    a.trigger_id
+FROM Group_Achievement ga
+JOIN Groups g ON ga.group_id = g.id
+JOIN Achievements a ON ga.achievement_id = a.id;
 
 
 -- =========================================================

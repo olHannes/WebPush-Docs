@@ -235,3 +235,20 @@ WHERE active = TRUE
       config->'when' IS NULL
       OR config->'when'->'schedule' IS NULL
   );
+
+
+
+-- =========================================================
+-- insert used data
+-- =========================================================
+INSERT INTO gamification.groups (name, data_table)
+SELECT o.name, o.data_collection
+FROM smartmonitoring.tbl_observedobject o
+WHERE o.name LIKE 'SENSOR%'
+	AND o.name ~* 'SENSORpi m[0-9]+'
+	AND o.data_collection IS NOT NULL
+	AND NOT EXISTS(
+		SELECT 1
+		FROM gamification."groups" g 
+		WHERE g.name = o.name
+	);

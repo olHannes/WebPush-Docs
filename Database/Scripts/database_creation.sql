@@ -148,21 +148,8 @@ CREATE INDEX idx_group_achievement_achievement ON Group_Achievement(achievement_
 
 
 -- =========================================================
--- Useful Views
+-- Views
 -- =========================================================
-CREATE OR REPLACE VIEW view_member_groups AS
-SELECT
-    m.id AS member_id,
-    m.name AS member_name,
-    g.id AS group_id,
-    g.name AS group_name,
-    g.level,
-    g.xp,
-    g.streak
-FROM Group_Member gm
-JOIN Member m ON gm.member_id = m.id
-JOIN Groups g ON gm.group_id = g.id;
-
 
 CREATE OR REPLACE VIEW view_notification_statistics AS
 SELECT
@@ -239,6 +226,26 @@ SELECT
 FROM Group_Achievement ga
 JOIN Groups g ON ga.group_id = g.id
 JOIN Achievements a ON ga.achievement_id = a.id;
+
+
+-- Group-Members
+CREATE OR REPLACE VIEW view_group_members AS
+SELECT
+    g.id AS group_id,
+    g.name AS group_name,
+    g.data_table,
+    g.level,
+    g.xp,
+    g.streak,
+    m.id AS member_id,
+    m.name AS member_name,
+    m.endpoint AS member_endpoint
+FROM gamification.Group_Member gm
+JOIN gamification.Groups g ON gm.group_id = g.id
+JOIN gamification.Member m ON gm.member_id = m.id
+ORDER BY g.id;
+
+
 
 
 -- =========================================================

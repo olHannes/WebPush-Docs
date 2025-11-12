@@ -84,3 +84,25 @@ JOIN Achievements a ON ga.achievement_id = a.id;
 
 URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_group_achievements?storage=gamification*
 
+## Group-Member
+```sql
+CREATE OR REPLACE VIEW view_group_members AS
+SELECT
+    g.id AS group_id,
+    g.name AS group_name,
+    g.data_table,
+    g.level,
+    g.xp,
+    g.streak,
+    m.id AS member_id,
+    m.name AS member_name,
+    m.endpoint AS member_endpoint
+FROM gamification.Group_Member gm
+JOIN gamification.Groups g ON gm.group_id = g.id
+JOIN gamification.Member m ON gm.member_id = m.id
+ORDER BY g.id;
+```
+> Der View `view_group_members` lädt alle Mitglieder und die zugehörigen Gruppen. Die Auflistung ist nach Gruppen-Id sortiert.
+
+URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_group_members?storage=gamification*
+

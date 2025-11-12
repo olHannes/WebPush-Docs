@@ -37,7 +37,7 @@ INSERT INTO Triggers (description, config, last_triggered_at, active) VALUES
   'Tägliche Streak-Erinnerung',
   '{
     "when": {
-      "schedule": { "type": "recurring", "cron": "0 18 * * *", "timestamp": "" },
+      "schedule": { "type": "recurring", "cron": "0 0 18 * * ?", "timestamp": "" },
       "conditions": [
         { "type": "streak_check", "group_id": "RaspberryGroup01", "missing_activity_for": "24h" }
       ]
@@ -53,7 +53,7 @@ INSERT INTO Triggers (description, config, last_triggered_at, active) VALUES
   'wöchentlicher Reminder',
   '{
     "when": {
-      "schedule": { "type": "recurring", "cron": "0 9 * * 1", "timestamp": "" },
+      "schedule": { "type": "recurring", "cron": "0 0 9 ? * MON", "timestamp": "" },
       "conditions": [
         { "type": "data_threshold", "sensor_id": "2.5pm", "operator": ">", "threshold": 35 }
       ]
@@ -69,7 +69,7 @@ INSERT INTO Triggers (description, config, last_triggered_at, active) VALUES
   'Einmalige Erinnerung',
   '{
     "when": {
-      "schedule": { "type": "once", "cron": "", "timestamp": "2025-11-03T09:00:00Z" }
+      "schedule": { "type": "once", "cron": "", "timestamp": "2025-11-03 09:00:00" }
     }
   }',
   NULL,
@@ -103,7 +103,7 @@ INSERT INTO Triggers (description, config, last_triggered_at, active) VALUES
   'zeitlich und datenbasierter trigger',
   '{
     "when": {
-      "schedule": { "type": "recurring", "cron": "0 9 * * *", "timestamp": ""},
+      "schedule": { "type": "recurring", "cron": "0 0 9 * * ?", "timestamp": ""},
       "conditions": [
         { "type": "data_threshold", "sensor_id": "raspi_23_temp", "operator": ">", "threshold": 35.0, "duration": "5m" },
         { "type": "streak_check", "group_id": "WeatherStation02", "streak_target": 7, "last_activity_before": "24h" }

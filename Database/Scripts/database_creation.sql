@@ -245,6 +245,26 @@ JOIN gamification.Groups g ON gm.group_id = g.id
 JOIN gamification.Member m ON gm.member_id = m.id
 ORDER BY g.id;
 
+-- Send-Notifications
+CREATE OR REPLACE VIEW view_sent_notifications AS
+SELECT
+    h.id AS history_id,
+    n.id AS notification_id,
+    n.title AS notification_title,
+    n.body AS notification_body,
+    n.icon_url,
+    n.image_url,
+    n.renotify,
+    n.silent,
+    n.created_at AS notification_created_at,
+    h.timestamp AS sent_at,
+    t.id AS trigger_id,
+    t.description AS trigger_description
+FROM gamification.History h
+JOIN gamification.Notifications n ON h.notification_id = n.id
+LEFT JOIN gamification.Triggers t ON n.trigger_id = t.id
+ORDER BY h.timestamp DESC;
+
 
 
 

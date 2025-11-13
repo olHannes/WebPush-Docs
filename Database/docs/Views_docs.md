@@ -2,6 +2,21 @@
 *Diese Datei beschreibt alle erstellten Views der Datenbank Smartmonitoring_airquality.gamification. Es soll außerdem als Hilfe bei der Entwicklung des Frontend's dienen*
 > Jeder Eintrag hier sollte aus dem SQL-Script und einer dazugehörigen Beschreibung / Erklärung bestehen. Die URL beschreibt außerdem den SmartData Zugriff.
 
+---
+## Filter
+**Eine SmartData URL lässt sich direkt mit Filtern ergänzen:**
+
+**Aufbau**: 
+
+`https://localhost:8181/SmartDataAirquality/smartdata/records/`+`<tablename/view>`+`?storage=gamification`+`&filter=`+`<datafield>`+`,eq,`+`<value>`
+
+**Beispiel**; *Alle Memeber einer spezifischen Gruppe*:
+
+*https://localhost:8181/SmartDataAirquality/smartdata/records/view_group_members?storage=gamification&filter=group_id,eq,1*
+
+---
+
+
 
 ## Trigger
 ### Zeitbasierte Trigger

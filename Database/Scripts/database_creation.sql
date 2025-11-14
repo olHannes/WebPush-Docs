@@ -15,7 +15,7 @@ CREATE TABLE Member (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     endpoint TEXT NOT NULL,
-    member_key TEXT NOT NULL,
+    "key" TEXT NOT NULL,
     auth TEXT NOT NULL
 );
 

@@ -5,7 +5,7 @@
 -- =========================================================
 --  Member
 -- =========================================================
-INSERT INTO Member (name, endpoint, member_key, auth) VALUES
+INSERT INTO Member (name, endpoint, key, auth) VALUES
 ('Member_01', 'https://member_01_endpoint', 'abc123', 'token123'),
 ('Member_02', 'https://member_02_endpoint', 'def456', 'token456'),
 ('Member_03', 'https://member_03_endpoint', 'ghi789', 'token789'),

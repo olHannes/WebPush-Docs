@@ -1,3 +1,11 @@
+
+-- delete all tables
+DROP TABLE IF EXISTS smartmonitoring.datajobs_chain CASCADE;
+DROP TABLE IF EXISTS smartmonitoring.datajobs_log CASCADE;
+DROP TABLE IF EXISTS smartmonitoring.datajobs_params CASCADE;
+DROP TABLE IF EXISTS smartmonitoring.datajobs CASCADE;
+
+-- build tables
 CREATE TABLE smartmonitoring.datajobs (
 	id bigserial NOT NULL,
 	"name" varchar NULL,

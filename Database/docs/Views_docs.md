@@ -23,17 +23,28 @@
 ```sql
 CREATE OR REPLACE VIEW view_triggers_with_schedule AS
 SELECT
-    id AS trigger_id,
-    description,
-    active,
-    last_triggered_at,
-    cron,
-    time_once
-FROM gamification.Triggers t
+    t.id AS trigger_id,
+    t.description,
+    t.active,
+    t.last_triggered_at,
+    t.cron,
+    t.time_once,
+    json_agg(
+        json_build_object(
+            'condition_id', c.id,
+            'data_field', c.data_field,
+            'operator', c.operator,
+            'threshold', c.threshold
+        )
+        ORDER BY c.id
+    ) AS conditions
+FROM Triggers t
 JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
-JOIN Condition c ON tc.condition_id = c.id
-WHERE active = TRUE
-  AND (cron IS NOT NULL OR time_once IS NOT NULL);
+JOIN Condition c ON c.id = tc.condition_id
+WHERE t.active = TRUE
+  AND (t.cron IS NOT NULL OR t.time_once IS NOT NULL)
+GROUP BY
+    t.id, t.description, t.active, t.last_triggered_at, t.cron, t.time_once;
 ```
 > Der View `view_triggers_with_schedule` liefert alle Trigger, welche zeitbasiert arbeiten. *Die Datenbasierten conditions müssen vor dem Senden trotzdem geprüft werden.*
 
@@ -44,20 +55,28 @@ URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_triggers
 ```sql
 CREATE OR REPLACE VIEW view_triggers_without_schedule AS
 SELECT
-    id AS trigger_id,
-    description,
-    active,
-    last_triggered_at,
-    cron,
-    time_once
-FROM gamification.Triggers t
+    t.id AS trigger_id,
+    t.description,
+    t.active,
+    t.last_triggered_at,
+    t.cron,
+    t.time_once,
+    json_agg(
+        json_build_object(
+            'condition_id', c.id,
+            'data_field', c.data_field,
+            'operator', c.operator,
+            'threshold', c.threshold
+        )
+        ORDER BY c.id
+    ) AS conditions
+FROM Triggers t
 JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
-JOIN Condition c ON tc.condition_id = c.id
-WHERE active = TRUE
-  AND (
-      cron IS NULL
-      AND time_once IS NULL
-  );
+JOIN Condition c ON c.id = tc.condition_id
+WHERE t.active = TRUE
+  AND (t.cron IS NULL AND t.time_once IS NULL)
+GROUP BY
+    t.id, t.description, t.active, t.last_triggered_at, t.cron, t.time_once;
 ```
 > Der View `view_triggers_without_schedule` liefert alle Trigger, welche rein datenbasiert arbeiten. *Die Liste an conditions müssen alle erfüllt sein.*
 
@@ -148,4 +167,51 @@ ORDER BY h.timestamp DESC;
 > Der View `view_sent_notifications` zeigt alle gesendeten Nachrichten, sortiert nach `sent_at` Timestamp. 
 
 URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_sent_notifications?storage=gamification*
+
+## Notification-Statistics
+```sql
+CREATE OR REPLACE VIEW view_notification_full_statistics AS
+SELECT
+    -- Notification-Ebene
+    n.id AS notification_id,
+    n.title AS notification_title,
+    n.body AS notification_body,
+    n.icon_url,
+    n.image_url,
+    n.renotify,
+    n.silent,
+    n.created_at AS notification_created_at,
+    n.trigger_id,
+    
+    -- History-Ebene
+    h.id AS history_id,
+    h.timestamp AS sent_at,
+
+    -- Statistics-Ebene
+    s.id AS statistic_id,
+    s.created_at AS event_created_at,
+
+    -- Event-Typ & Action
+    et.id AS event_type_id,
+    et.name AS event_type_name,
+    a.id AS action_id,
+    a.action_type,
+    a.title AS action_title,
+    a.icon AS action_icon
+
+FROM gamification.Notifications n
+JOIN gamification.History h
+  ON h.notification_id = n.id
+LEFT JOIN gamification.Statistics s
+  ON s.history_id = h.id
+LEFT JOIN gamification.Event_Types et
+  ON s.event_type_id = et.id
+LEFT JOIN gamification.Actions a
+  ON s.action_id = a.id
+ORDER BY h.timestamp DESC, s.created_at DESC;
+```
+
+> Dieser View hat das Ziel die Tabellen `History`, `Actions`, `Notifications` und `Statistics` aufzulösen. Hier empfiehlt es sich, die URL-Filterung nach einer **history_id** durchzuführen -> Statistiken zu einer gesendeten Nachricht.
+
+URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_notification_full_statistics?storage=gamification&filter=history_id,eq,2*
 

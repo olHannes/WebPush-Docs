@@ -312,7 +312,46 @@ JOIN gamification.Notifications n ON h.notification_id = n.id
 LEFT JOIN gamification.Triggers t ON n.trigger_id = t.id
 ORDER BY h.timestamp DESC;
 
+-- statistics for sent notification
+CREATE OR REPLACE VIEW view_notification_full_statistics AS
+SELECT
+    -- Notification-Ebene
+    n.id AS notification_id,
+    n.title AS notification_title,
+    n.body AS notification_body,
+    n.icon_url,
+    n.image_url,
+    n.renotify,
+    n.silent,
+    n.created_at AS notification_created_at,
+    n.trigger_id,
+    
+    -- History-Ebene
+    h.id AS history_id,
+    h.timestamp AS sent_at,
 
+    -- Statistics-Ebene
+    s.id AS statistic_id,
+    s.created_at AS event_created_at,
+
+    -- Event-Typ & Action
+    et.id AS event_type_id,
+    et.name AS event_type_name,
+    a.id AS action_id,
+    a.action_type,
+    a.title AS action_title,
+    a.icon AS action_icon
+
+FROM gamification.Notifications n
+JOIN gamification.History h
+  ON h.notification_id = n.id
+LEFT JOIN gamification.Statistics s
+  ON s.history_id = h.id
+LEFT JOIN gamification.Event_Types et
+  ON s.event_type_id = et.id
+LEFT JOIN gamification.Actions a
+  ON s.action_id = a.id
+ORDER BY h.timestamp DESC, s.created_at DESC;
 
 
 -- =========================================================

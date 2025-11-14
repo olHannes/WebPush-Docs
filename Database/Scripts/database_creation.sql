@@ -42,8 +42,22 @@ CREATE TABLE Triggers (
     id SERIAL PRIMARY KEY,
     description TEXT NOT NULL,
     config JSONB NOT NULL,
+    cron TEXT,
+    time_once TIMESTAMP,
     last_triggered_at TIMESTAMP,
     active BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE Condition (
+    id SERIAL PRIMARY KEY,
+    data_field TEXT NOT NULL,
+    operator TEXT NOT NULL CHECK (operator IN ('>', '<', '=', '>=', '<=', '!=')),
+    threshold NUMERIC NOT NULL
+);
+
+CREATE TABLE Trigger_Conditions (
+    trigger_id INT REFERENCES Triggers(id) ON DELETE CASCADE,
+    condition_id INT REFERENCES Condition(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Actions (
@@ -145,6 +159,19 @@ CREATE INDEX idx_stats_history ON Statistics(history_id);
 CREATE INDEX idx_achievement_trigger ON Achievements(trigger_id);
 CREATE INDEX idx_group_achievement_group ON Group_Achievement(group_id);
 CREATE INDEX idx_group_achievement_achievement ON Group_Achievement(achievement_id);
+
+
+-- =========================================================
+-- Constraints
+-- =========================================================
+ALTER TABLE Triggers
+ADD CONSTRAINT chk_trigger_schedule_xor
+CHECK (
+    (cron IS NOT NULL AND time_once IS NULL)
+ OR (cron IS NULL AND time_once IS NOT NULL)
+);
+
+
 
 
 -- =========================================================

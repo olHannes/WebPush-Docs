@@ -165,9 +165,9 @@ CREATE INDEX idx_group_achievement_achievement ON Group_Achievement(achievement_
 ALTER TABLE Triggers
 ADD CONSTRAINT chk_trigger_schedule_xor
 CHECK (
-    (cron IS NOT NULL AND time_once IS NULL)
- OR (cron IS NULL AND time_once IS NOT NULL)
+    (cron IS NOT NULL)::int + (time_once IS NOT NULL)::int <= 1
 );
+
 
 
 
@@ -194,12 +194,12 @@ LEFT JOIN Actions a ON s.action_id = a.id;
 -- Trigger-Views:
 CREATE OR REPLACE VIEW view_triggers_with_schedule AS
 SELECT
-    id AS trigger_id,
-    description,
-    active,
-    last_triggered_at,
-    cron,
-    time_once
+    t.id AS trigger_id,
+    t.description,
+    t.active,
+    t.last_triggered_at,
+    t.cron,
+    t.time_once
 FROM gamification.Triggers t
 JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
 JOIN Condition c ON tc.condition_id = c.id
@@ -209,12 +209,12 @@ WHERE active = TRUE
 
 CREATE OR REPLACE VIEW view_triggers_without_schedule AS
 SELECT
-    id AS trigger_id,
-    description,
-    active,
-    last_triggered_at,
-    cron,
-    time_once
+    t.id AS trigger_id,
+    t.description,
+    t.active,
+    t.last_triggered_at,
+    t.cron,
+    t.time_once
 FROM gamification.Triggers t
 JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
 JOIN Condition c ON tc.condition_id = c.id

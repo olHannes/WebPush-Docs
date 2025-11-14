@@ -27,12 +27,13 @@ SELECT
     description,
     active,
     last_triggered_at,
-    config,
-    config->'when'->'schedule' AS schedule_config,
-    config->'when'->'conditions' AS conditions_config
-FROM gamification.Triggers
+    cron,
+    time_once
+FROM gamification.Triggers t
+JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
+JOIN Condition c ON tc.condition_id = c.id
 WHERE active = TRUE
-  AND config->'when'->'schedule' IS NOT NULL;
+  AND (cron IS NOT NULL OR time_once IS NOT NULL);
 ```
 > Der View `view_triggers_with_schedule` liefert alle Trigger, welche zeitbasiert arbeiten. *Die Datenbasierten conditions müssen vor dem Senden trotzdem geprüft werden.*
 
@@ -47,13 +48,15 @@ SELECT
     description,
     active,
     last_triggered_at,
-    config,
-    config->'when'->'conditions' AS conditions_config
-FROM gamification.Triggers
+    cron,
+    time_once
+FROM gamification.Triggers t
+JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
+JOIN Condition c ON tc.condition_id = c.id
 WHERE active = TRUE
   AND (
-      config->'when' IS NULL
-      OR config->'when'->'schedule' IS NULL
+      cron IS NULL
+      AND time_once IS NULL
   );
 ```
 > Der View `view_triggers_without_schedule` liefert alle Trigger, welche rein datenbasiert arbeiten. *Die Liste an conditions müssen alle erfüllt sein.*

@@ -142,7 +142,6 @@ CREATE INDEX idx_group_streak ON GROUPS(streak DESC);
 CREATE INDEX idx_triggers_active ON Triggers(active);
 CREATE INDEX idx_triggers_type ON Triggers(description);
 CREATE INDEX idx_triggers_last_triggered ON Triggers(last_triggered_at);
-CREATE INDEX idx_trigger_config_json ON Triggers USING GIN (config jsonb_path_ops);
 
 CREATE INDEX idx_notifications_trigger ON Notifications(trigger_id);
 CREATE INDEX idx_notifications_created_at ON Notifications(created_at DESC);
@@ -199,12 +198,13 @@ SELECT
     description,
     active,
     last_triggered_at,
-    config,
-    config->'when'->'schedule' AS schedule_config,
-    config->'when'->'conditions' AS conditions_config
-FROM gamification.Triggers
+    cron,
+    time_once
+FROM gamification.Triggers t
+JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
+JOIN Condition c ON tc.condition_id = c.id
 WHERE active = TRUE
-  AND config->'when'->'schedule' IS NOT NULL;
+  AND (cron IS NOT NULL OR time_once IS NOT NULL);
 
 
 CREATE OR REPLACE VIEW view_triggers_without_schedule AS
@@ -213,13 +213,15 @@ SELECT
     description,
     active,
     last_triggered_at,
-    config,
-    config->'when'->'conditions' AS conditions_config
-FROM gamification.Triggers
+    cron,
+    time_once
+FROM gamification.Triggers t
+JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
+JOIN Condition c ON tc.condition_id = c.id
 WHERE active = TRUE
   AND (
-      config->'when' IS NULL
-      OR config->'when'->'schedule' IS NULL
+      cron IS NULL
+      AND time_once IS NULL
   );
 
 

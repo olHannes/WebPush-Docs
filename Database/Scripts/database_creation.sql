@@ -41,7 +41,6 @@ CREATE TABLE Group_Member (
 CREATE TABLE Triggers (
     id SERIAL PRIMARY KEY,
     description TEXT NOT NULL,
-    config JSONB NOT NULL,
     cron TEXT,
     time_once TIMESTAMP,
     last_triggered_at TIMESTAMP,

@@ -199,12 +199,23 @@ SELECT
     t.active,
     t.last_triggered_at,
     t.cron,
-    t.time_once
-FROM gamification.Triggers t
+    t.time_once,
+    json_agg(
+        json_build_object(
+            'condition_id', c.id,
+            'data_field', c.data_field,
+            'operator', c.operator,
+            'threshold', c.threshold
+        )
+        ORDER BY c.id
+    ) AS conditions
+FROM Triggers t
 JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
-JOIN Condition c ON tc.condition_id = c.id
-WHERE active = TRUE
-  AND (cron IS NOT NULL OR time_once IS NOT NULL);
+JOIN Condition c ON c.id = tc.condition_id
+WHERE t.active = TRUE
+  AND (t.cron IS NOT NULL OR t.time_once IS NOT NULL)
+GROUP BY
+    t.id, t.description, t.active, t.last_triggered_at, t.cron, t.time_once;
 
 
 CREATE OR REPLACE VIEW view_triggers_without_schedule AS
@@ -214,15 +225,23 @@ SELECT
     t.active,
     t.last_triggered_at,
     t.cron,
-    t.time_once
-FROM gamification.Triggers t
+    t.time_once,
+    json_agg(
+        json_build_object(
+            'condition_id', c.id,
+            'data_field', c.data_field,
+            'operator', c.operator,
+            'threshold', c.threshold
+        )
+        ORDER BY c.id
+    ) AS conditions
+FROM Triggers t
 JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
-JOIN Condition c ON tc.condition_id = c.id
-WHERE active = TRUE
-  AND (
-      cron IS NULL
-      AND time_once IS NULL
-  );
+JOIN Condition c ON c.id = tc.condition_id
+WHERE t.active = TRUE
+  AND (t.cron IS NULL AND t.time_once IS NULL)
+GROUP BY
+    t.id, t.description, t.active, t.last_triggered_at, t.cron, t.time_once;
 
 
 --- Leaderboard-View:

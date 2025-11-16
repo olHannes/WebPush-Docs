@@ -360,8 +360,7 @@ ORDER BY h.timestamp DESC, s.created_at DESC;
 INSERT INTO gamification.groups (name, data_table)
 SELECT o.name, o.data_collection
 FROM smartmonitoring.tbl_observedobject o
-WHERE o.name LIKE 'SENSOR%'
-	AND o.name ~* 'SENSORpi m[0-9]+'
+WHERE o.ootype_id = 3
 	AND o.data_collection IS NOT NULL
 	AND NOT EXISTS(
 		SELECT 1

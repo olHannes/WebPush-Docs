@@ -215,3 +215,57 @@ ORDER BY h.timestamp DESC, s.created_at DESC;
 
 URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_notification_full_statistics?storage=gamification&filter=history_id,eq,2*
 
+
+## Notification Overview
+```sql
+CREATE OR REPLACE VIEW view_notification_summary AS
+WITH event_data AS (
+    SELECT
+        n.id AS notification_id,
+        h.id AS history_id,
+        h.timestamp AS sent_at,
+        s.created_at AS event_at,
+        et.name AS event_type,
+        a.id AS action_id,
+        a.action_type
+    FROM gamification.Notifications n
+    JOIN gamification.History h ON h.notification_id = n.id
+    LEFT JOIN gamification.Statistics s ON s.history_id = h.id
+    LEFT JOIN gamification.Event_Types et ON et.id = s.event_type_id
+    LEFT JOIN gamification.Actions a ON a.id = s.action_id
+)
+SELECT
+    notification_id,
+
+    -- Grunddaten
+    COUNT(DISTINCT history_id) AS sent_count,
+    COUNT(event_type) AS total_events,
+
+    -- Event-Counts
+    COUNT(*) FILTER (WHERE event_type = 'click') AS click_count,
+    COUNT(*) FILTER (WHERE event_type = 'swipe') AS swipe_count,
+
+    -- Actions
+    jsonb_agg(
+        DISTINCT jsonb_build_object(
+            'action_id', action_id,
+            'action_type', action_type,
+            'count', (
+                SELECT COUNT(*)
+                FROM event_data e2
+                WHERE e2.notification_id = ed.notification_id
+                  AND e2.action_id = action_id
+            )
+        )
+    ) FILTER (WHERE action_id IS NOT NULL) AS actions_summary,
+
+    -- Reaktionszeiten
+    MIN(event_at - sent_at) AS first_reaction_time,
+    AVG(event_at - sent_at) AS avg_reaction_time
+
+FROM event_data ed
+GROUP BY notification_id;
+```
+> Dieser View liefert eine grobe Übersicht zu den einzelnen Notifications. Daten wären: Sendungsanzahl, Reaktionszeiten, Eventanzahlen, ...
+
+URL: *http://localhost:8080/SmartDataAirquality/smartdata/records/view_notification_summary?storage=gamification&filter=notification_id,eq,1*

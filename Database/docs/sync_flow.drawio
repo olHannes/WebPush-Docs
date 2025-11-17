@@ -11,7 +11,7 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="3" value="SmarDataAirquality&lt;div&gt;POST&lt;/div&gt;" style="html=1;dashed=0;whiteSpace=wrap;shape=mxgraph.dfd.start" parent="2" vertex="1">
-                    <mxGeometry x="145" y="40" width="147" height="40" as="geometry"/>
+                    <mxGeometry x="21.5" y="40" width="147" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="7" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="2" source="4" target="8" edge="1">
                     <mxGeometry relative="1" as="geometry">
@@ -51,6 +51,12 @@
                 </mxCell>
                 <mxCell id="15" value="edit config&lt;div&gt;add Webhook for&lt;/div&gt;&lt;div&gt;Data-Table&lt;/div&gt;" style="html=1;dashed=0;whiteSpace=wrap;" parent="2" vertex="1">
                     <mxGeometry x="157.75" y="390" width="121.5" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="2" source="17" target="4">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="WebPush&lt;br&gt;&lt;div&gt;On-deploy / Server start&lt;/div&gt;" style="html=1;dashed=0;whiteSpace=wrap;shape=mxgraph.dfd.start" vertex="1" parent="2">
+                    <mxGeometry x="268.5" y="40" width="147" height="40" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

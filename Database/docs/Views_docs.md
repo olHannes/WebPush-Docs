@@ -19,6 +19,23 @@
 
 
 ## Trigger
+### alle Trigger -renamed id-
+```sql
+CREATE OR REPLACE VIEW view_triggers AS 
+SELECT
+    t.id AS t_id,
+    t.description,
+    t.cron,
+    t.time_once,
+    t.last_triggered_at,
+    t.active
+FROM gamification.Triggers t;
+```
+> Der View `view_triggers` liefert alle Trigger zurück und benennt `id` zu `t_id` um.
+
+URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_triggers?storage=gamification*
+
+
 ### Zeitbasierte Trigger
 ```sql
 CREATE OR REPLACE VIEW view_triggers_with_schedule AS
@@ -143,6 +160,36 @@ ORDER BY g.id;
 
 URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_group_members?storage=gamification*
 
+
+## Notifications
+```sql
+CREATE OR REPLACE VIEW view_notifications_with_type AS
+SELECT
+    n.id AS notification_id,
+    n.title,
+    n.body,
+    n.icon_url,
+    n.image_url,
+    n.renotify,
+    n.silent,
+    n.created_at,
+    t.id AS trigger_id,
+    t.description AS trigger_description,
+    CASE
+        WHEN t.cron IS NULL AND t.time_once IS NULL THEN 'event'
+        WHEN t.cron IS NULL AND t.time_once IS NOT NULL THEN 'once'
+        WHEN t.cron IS NOT NULL AND t.time_once IS NULL THEN 'time'
+        ELSE 'invalid'
+    END AS type
+FROM gamification.Notifications n
+LEFT JOIN gamification.Triggers t
+    ON n.trigger_id = t.id;
+```
+> Der View `view_notifications` zeigt alle Notifications an mit dem Zusatz `type` -> (`event`/`time`/`once`)
+
+URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_notifications_with_type?storage=gamification*
+
+
 ## Sent-Notifications
 ```sql
 CREATE OR REPLACE VIEW view_sent_notifications AS
@@ -155,8 +202,12 @@ SELECT
     n.image_url,
     n.renotify,
     n.silent,
-    n.created_at AS notification_created_at,
-    h.timestamp AS sent_at,
+
+    DATE(n.created_at) AS notification_date,
+    TO_CHAR(n.created_at, 'HH24:MI:SS') AS notification_time,
+    DATE(h.timestamp) AS sent_date,
+    TO_CHAR(h.timestamp, 'HH24:MI:SS') AS sent_time,
+
     t.id AS trigger_id,
     t.description AS trigger_description
 FROM gamification.History h
@@ -164,108 +215,45 @@ JOIN gamification.Notifications n ON h.notification_id = n.id
 LEFT JOIN gamification.Triggers t ON n.trigger_id = t.id
 ORDER BY h.timestamp DESC;
 ```
-> Der View `view_sent_notifications` zeigt alle gesendeten Nachrichten, sortiert nach `sent_at` Timestamp. 
+> Der View `view_sent_notifications` zeigt alle gesendeten Nachrichten, sortiert nach `sent_at` Timestamp. das `created_at` und `sent_date` sind außerdem in Datum und Zeit. 
 
 URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_sent_notifications?storage=gamification*
 
 ## Notification-Statistics
 ```sql
-CREATE OR REPLACE VIEW view_notification_full_statistics AS
+CREATE OR REPLACE VIEW view_statistics_by_history AS
 SELECT
-    -- Notification-Ebene
-    n.id AS notification_id,
-    n.title AS notification_title,
-    n.body AS notification_body,
-    n.icon_url,
-    n.image_url,
-    n.renotify,
-    n.silent,
-    n.created_at AS notification_created_at,
-    n.trigger_id,
-    
-    -- History-Ebene
     h.id AS history_id,
-    h.timestamp AS sent_at,
 
-    -- Statistics-Ebene
-    s.id AS statistic_id,
-    s.created_at AS event_created_at,
-
-    -- Event-Typ & Action
-    et.id AS event_type_id,
-    et.name AS event_type_name,
-    a.id AS action_id,
-    a.action_type,
-    a.title AS action_title,
-    a.icon AS action_icon
-
-FROM gamification.Notifications n
-JOIN gamification.History h
-  ON h.notification_id = n.id
-LEFT JOIN gamification.Statistics s
-  ON s.history_id = h.id
-LEFT JOIN gamification.Event_Types et
-  ON s.event_type_id = et.id
-LEFT JOIN gamification.Actions a
-  ON s.action_id = a.id
-ORDER BY h.timestamp DESC, s.created_at DESC;
-```
-
-> Dieser View hat das Ziel die Tabellen `History`, `Actions`, `Notifications` und `Statistics` aufzulösen. Hier empfiehlt es sich, die URL-Filterung nach einer **history_id** durchzuführen -> Statistiken zu einer gesendeten Nachricht.
-
-URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_notification_full_statistics?storage=gamification&filter=history_id,eq,2*
-
-
-## Notification Overview
-```sql
-CREATE OR REPLACE VIEW view_notification_summary AS
-WITH event_data AS (
-    SELECT
-        n.id AS notification_id,
-        h.id AS history_id,
-        h.timestamp AS sent_at,
-        s.created_at AS event_at,
-        et.name AS event_type,
-        a.id AS action_id,
-        a.action_type
-    FROM gamification.Notifications n
-    JOIN gamification.History h ON h.notification_id = n.id
-    LEFT JOIN gamification.Statistics s ON s.history_id = h.id
-    LEFT JOIN gamification.Event_Types et ON et.id = s.event_type_id
-    LEFT JOIN gamification.Actions a ON a.id = s.action_id
-)
-SELECT
-    notification_id,
-
-    -- Grunddaten
-    COUNT(DISTINCT history_id) AS sent_count,
-    COUNT(event_type) AS total_events,
-
-    -- Event-Counts
-    COUNT(*) FILTER (WHERE event_type = 'click') AS click_count,
-    COUNT(*) FILTER (WHERE event_type = 'swipe') AS swipe_count,
-
-    -- Actions
-    jsonb_agg(
-        DISTINCT jsonb_build_object(
-            'action_id', action_id,
-            'action_type', action_type,
-            'count', (
-                SELECT COUNT(*)
-                FROM event_data e2
-                WHERE e2.notification_id = ed.notification_id
-                  AND e2.action_id = action_id
-            )
+    json_agg(
+        json_build_object(
+            'action', action_name,
+            'amount', event_count
         )
-    ) FILTER (WHERE action_id IS NOT NULL) AS actions_summary,
+        ORDER BY action_name
+    ) AS statistics
+FROM (
+    SELECT
+        h.id AS history_id,
 
-    -- Reaktionszeiten
-    MIN(event_at - sent_at) AS first_reaction_time,
-    AVG(event_at - sent_at) AS avg_reaction_time
+        CASE
+            WHEN s.action_id IS NOT NULL THEN a.action_type
+            ELSE et.name
+        END AS action_name,
 
-FROM event_data ed
-GROUP BY notification_id;
+        COUNT(*) AS event_count
+    FROM gamification.History h
+    JOIN gamification.Statistics s
+        ON s.history_id = h.id
+    LEFT JOIN gamification.Actions a
+        ON a.id = s.action_id
+    LEFT JOIN gamification.Event_Types et
+        ON et.id = s.event_type_id
+    GROUP BY h.id, action_name
+) grouped
+JOIN gamification.History h ON grouped.history_id = h.id
+GROUP BY h.id;
 ```
-> Dieser View liefert eine grobe Übersicht zu den einzelnen Notifications. Daten wären: Sendungsanzahl, Reaktionszeiten, Eventanzahlen, ...
+> Der View `view_statistics_by_history` gibt passend zu den history_ids die Anzahl an verschiedenen Aktionen (`click`, `swipes`, `actions`). Nutze den `&filter` zur Filterung nach einer bestimmten History-id.
 
-URL: *http://localhost:8080/SmartDataAirquality/smartdata/records/view_notification_summary?storage=gamification&filter=notification_id,eq,1*
+URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_statistics_by_history?storage=gamification&filter=history_id,eq,1*

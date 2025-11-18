@@ -195,13 +195,14 @@ URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_notifica
 CREATE OR REPLACE VIEW view_sent_notifications AS
 SELECT
     h.id AS history_id,
-    n.id AS notification_id,
+    n.notification_id,
     n.title AS notification_title,
     n.body AS notification_body,
     n.icon_url,
     n.image_url,
     n.renotify,
     n.silent,
+    n.type,
 
     DATE(n.created_at) AS notification_date,
     TO_CHAR(n.created_at, 'HH24:MI:SS') AS notification_time,
@@ -211,11 +212,12 @@ SELECT
     t.id AS trigger_id,
     t.description AS trigger_description
 FROM gamification.History h
-JOIN gamification.Notifications n ON h.notification_id = n.id
+JOIN gamification.view_notifications_with_type n ON h.notification_id = n.notification_id
 LEFT JOIN gamification.Triggers t ON n.trigger_id = t.id
 ORDER BY h.timestamp DESC;
 ```
-> Der View `view_sent_notifications` zeigt alle gesendeten Nachrichten, sortiert nach `sent_at` Timestamp. das `created_at` und `sent_date` sind außerdem in Datum und Zeit. 
+> Der View `view_sent_notifications` zeigt alle gesendeten Nachrichten, sortiert nach `sent_at` Timestamp. das `created_at` und `sent_date` sind außerdem in Datum und Zeit.
+> Außerdem wird hier der view `view_notifications_with_type` verwendet, zum direkten auflösen des Typs.
 
 URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_sent_notifications?storage=gamification*
 

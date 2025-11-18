@@ -55,8 +55,8 @@ VALUES ('Datenbedingter Trigger', NULL, NULL, TRUE, NULL);
 -- streak >= 5
 -- xp     >= 100
 INSERT INTO Condition (data_field, operator, threshold) VALUES
-('groups:streak', '>=', 5),   -- id 1
-('groups:xp', '>=', 100);     -- id 2
+('gamification:groups:streak', '>=', 5),   -- id 1
+('gamification:groups:xp', '>=', 100);     -- id 2
 
 INSERT INTO Trigger_Conditions (trigger_id, condition_id) VALUES
 (1, 1),
@@ -67,10 +67,11 @@ INSERT INTO Trigger_Conditions (trigger_id, condition_id) VALUES
 -- Condition-Logik: -> Idee von Chat
 -- count_today >= 50
 INSERT INTO Condition (data_field, operator, threshold) VALUES
-('groups:count:today', '>=', 50);  -- id 3
+('gamification:group_today_stats():has_today', '==', 1);  -- id 3
 
 INSERT INTO Trigger_Conditions (trigger_id, condition_id) VALUES
-(2, 3);
+(2, 1);
+-- (2, 3);
 
 
 -- Beispiel-Trigger 3: Einmaliger Trigger

@@ -50,7 +50,7 @@ CREATE TABLE Triggers (
 CREATE TABLE Condition (
     id SERIAL PRIMARY KEY,
     data_field TEXT NOT NULL,
-    operator TEXT NOT NULL CHECK (operator IN ('>', '<', '=', '>=', '<=', '!=')),
+    operator TEXT NOT NULL CHECK (operator IN ('>', '<', '==', '>=', '<=', '!=')),
     threshold NUMERIC NOT NULL
 );
 
@@ -336,6 +336,68 @@ FROM gamification.History h
 JOIN gamification.view_notifications_with_type n ON h.notification_id = n.notification_id
 LEFT JOIN gamification.Triggers t ON n.trigger_id = t.id
 ORDER BY h.timestamp DESC;
+
+
+-- Check Group Activities
+-- DROP FUNCTION gamification.group_today_stats();
+
+CREATE OR REPLACE FUNCTION gamification.group_today_stats()
+RETURNS TABLE(
+    group_id integer,
+    group_name text,
+    has_today boolean,
+    pm2_5_min double precision,
+    pm2_5_max double precision,
+    pm10_0_min double precision,
+    pm10_0_max double precision,
+    temp1_min double precision,
+    temp1_max double precision,
+    temp2_min double precision,
+    temp2_max double precision,
+    temp3_min double precision,
+    temp3_max double precision
+)
+LANGUAGE plpgsql
+AS $function$
+DECLARE
+    tbl TEXT;
+    g_name TEXT;
+    g_id INTEGER;
+    sql TEXT;
+BEGIN
+    -- Tabellenname und Gruppeninformationen laden (hier z.B. erste Gruppe)
+    SELECT id, data_table, name INTO g_id, tbl, g_name
+    FROM gamification.groups
+    LIMIT 1;
+
+    IF tbl IS NULL THEN
+        RAISE EXCEPTION 'No data_table found for group';
+    END IF;
+
+    -- Dynamisches SQL für die Messwerte der Tabelle
+    sql := format(
+        $f$
+        SELECT
+            %s AS group_id,
+            '%s' AS group_name,
+            EXISTS (
+                SELECT 1 FROM smartmonitoring.%I
+                WHERE ts::date = CURRENT_DATE
+            ) AS has_today,
+            MIN(pm2_5), MAX(pm2_5),
+            MIN(pm10_0), MAX(pm10_0),
+            MIN(temp1), MAX(temp1),
+            MIN(temp2), MAX(temp2),
+            MIN(temp3), MAX(temp3)
+        FROM smartmonitoring.%I
+        $f$,
+        g_id, g_name, tbl, tbl
+    );
+
+    -- Ergebnis direkt als ResultSet zurückgeben
+    RETURN QUERY EXECUTE sql;
+END;
+$function$;
 
 
 

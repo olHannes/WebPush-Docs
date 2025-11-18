@@ -437,18 +437,3 @@ JOIN gamification.History h ON grouped.history_id = h.id
 GROUP BY h.id;
 
 
-
-
--- =========================================================
--- insert used data
--- =========================================================
-INSERT INTO gamification.groups (name, data_table)
-SELECT o.name, o.data_collection
-FROM smartmonitoring.tbl_observedobject o
-WHERE o.ootype_id = 3
-	AND o.data_collection IS NOT NULL
-	AND NOT EXISTS(
-		SELECT 1
-		FROM gamification."groups" g 
-		WHERE g.name = o.name
-	);

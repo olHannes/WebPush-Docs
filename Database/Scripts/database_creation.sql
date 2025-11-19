@@ -256,7 +256,7 @@ SELECT
     ) AS conditions
 FROM Triggers t
 JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
-JOIN Condition c ON c.id = tc.condition_id
+JOIN Conditions c ON c.id = tc.condition_id
 WHERE t.active = TRUE
 GROUP BY
     t.id, t.description, t.active, t.last_triggered_at, t.cron, t.time_once;

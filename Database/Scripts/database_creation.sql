@@ -56,7 +56,7 @@ CREATE TABLE Conditions (
 
 CREATE TABLE Trigger_Conditions (
     trigger_id INT REFERENCES Triggers(id) ON DELETE CASCADE,
-    condition_id INT REFERENCES Condition(id) ON DELETE CASCADE
+    condition_id INT REFERENCES Conditions(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Actions (

@@ -54,7 +54,7 @@ VALUES ('Datenbedingter Trigger', NULL, NULL, TRUE, NULL);
 -- Condition-Logik:
 -- streak >= 5
 -- xp     >= 100
-INSERT INTO Condition (data_field, operator, threshold) VALUES
+INSERT INTO Conditions (data_field, operator, threshold) VALUES
 ('gamification:groups:streak', '>=', 5),   -- id 1
 ('gamification:groups:xp', '>=', 100);     -- id 2
 
@@ -66,7 +66,7 @@ INSERT INTO Trigger_Conditions (trigger_id, condition_id) VALUES
 -- Beispiel-Trigger 2: Montags-Statistik-Trigger
 -- Condition-Logik: -> Idee von Chat
 -- count_today >= 50
-INSERT INTO Condition (data_field, operator, threshold) VALUES
+INSERT INTO Conditions (data_field, operator, threshold) VALUES
 ('gamification:group_today_stats():has_today', '==', 1);  -- id 3
 
 INSERT INTO Trigger_Conditions (trigger_id, condition_id) VALUES
@@ -82,7 +82,7 @@ INSERT INTO Trigger_Conditions (trigger_id, condition_id) VALUES
 -- Condition-Logik:
 -- sensor_temp > 30
 -- sensor_humidity < 20
-INSERT INTO Condition (data_field, operator, threshold) VALUES
+INSERT INTO Conditions (data_field, operator, threshold) VALUES
 ('sensor:temperature', '>', 30),  -- id 4
 ('sensor:humidity', '<', 20);     -- id 5
 

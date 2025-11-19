@@ -435,3 +435,128 @@ JOIN gamification.History h ON grouped.history_id = h.id
 GROUP BY h.id;
 
 
+-- global statistics for last week, month and year
+CREATE OR REPLACE VIEW view_global_statistics_base AS
+WITH
+hist AS (
+    SELECT *
+    FROM gamification.History
+), 
+stats AS (
+    SELECT
+        s.*,
+        h.timestamp AS sent_at
+    FROM gamification.Statistics s
+    JOIN gamification.History h ON h.id = s.history_id
+), 
+actions AS (
+    SELECT
+        s.history_id,
+        COALESCE(a.action_type, et.name) AS action_name,
+        COUNT(*) AS amount
+    FROM stats s
+    LEFT JOIN gamification.Actions a ON a.id = s.action_id
+    LEFT JOIN gamification.Event_Types et ON et.id = s.event_type_id
+    GROUP BY s.history_id, action_name
+)
+SELECT
+    h.id AS history_id,
+    h.timestamp AS sent_at,
+    a.action_name,
+    a.amount
+FROM hist h
+LEFT JOIN actions a ON a.history_id = h.id;
+
+
+CREATE OR REPLACE VIEW view_global_statistics_week AS
+WITH
+period_actions AS (
+    SELECT
+        action_name,
+        SUM(amount) AS total_amount
+    FROM view_global_statistics_base
+    WHERE 
+        sent_at >= NOW() - INTERVAL '7 days'
+        AND action_name IS NOT NULL
+    GROUP BY action_name
+)
+SELECT jsonb_build_object(
+    'period', 'week',
+    'since', NOW() - INTERVAL '7 days',
+    'sent_notifications',
+        (SELECT COUNT(*)
+         FROM gamification.History
+         WHERE timestamp >= NOW() - INTERVAL '7 days'),
+    'actions',
+        (SELECT jsonb_agg(
+            jsonb_build_object(
+                'action', action_name,
+                'amount', total_amount
+            )
+            ORDER BY total_amount DESC
+        )
+        FROM period_actions)
+) AS result;
+
+
+CREATE OR REPLACE VIEW view_global_statistics_month AS
+WITH
+period_actions AS (
+    SELECT
+        action_name,
+        SUM(amount) AS total_amount
+    FROM view_global_statistics_base
+    WHERE 
+        sent_at >= NOW() - INTERVAL '1 month'
+        AND action_name IS NOT NULL
+    GROUP BY action_name
+)
+SELECT jsonb_build_object(
+    'period', 'month',
+    'since', NOW() - INTERVAL '1 month',
+    'sent_notifications',
+        (SELECT COUNT(*)
+         FROM gamification.History
+         WHERE timestamp >= NOW() - INTERVAL '1 month'),
+    'actions',
+        (SELECT jsonb_agg(
+            jsonb_build_object(
+                'action', action_name,
+                'amount', total_amount
+            )
+            ORDER BY total_amount DESC
+        )
+        FROM period_actions)
+) AS result;
+
+
+CREATE OR REPLACE VIEW view_global_statistics_year AS
+WITH
+period_actions AS (
+    SELECT
+        action_name,
+        SUM(amount) AS total_amount
+    FROM view_global_statistics_base
+    WHERE 
+        sent_at >= NOW() - INTERVAL '1 year'
+        AND action_name IS NOT NULL
+    GROUP BY action_name
+)
+SELECT jsonb_build_object(
+    'period', 'year',
+    'since', NOW() - INTERVAL '1 year',
+    'sent_notifications',
+        (SELECT COUNT(*)
+         FROM gamification.History
+         WHERE timestamp >= NOW() - INTERVAL '1 year'),
+    'actions',
+        (SELECT jsonb_agg(
+            jsonb_build_object(
+                'action', action_name,
+                'amount', total_amount
+            )
+            ORDER BY total_amount DESC
+        )
+        FROM period_actions)
+) AS result;
+

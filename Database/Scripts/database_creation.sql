@@ -47,7 +47,7 @@ CREATE TABLE Triggers (
     active BOOLEAN DEFAULT TRUE
 );
 
-CREATE TABLE Condition (
+CREATE TABLE Conditions (
     id SERIAL PRIMARY KEY,
     data_field TEXT NOT NULL,
     operator TEXT NOT NULL CHECK (operator IN ('>', '<', '==', '>=', '<=', '!=')),
@@ -205,7 +205,7 @@ SELECT
     ) AS conditions
 FROM Triggers t
 JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
-JOIN Condition c ON c.id = tc.condition_id
+JOIN Conditions c ON c.id = tc.condition_id
 WHERE t.active = TRUE
   AND (t.cron IS NOT NULL OR t.time_once IS NOT NULL)
 GROUP BY
@@ -231,7 +231,7 @@ SELECT
     ) AS conditions
 FROM Triggers t
 JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
-JOIN Condition c ON c.id = tc.condition_id
+JOIN Conditions c ON c.id = tc.condition_id
 WHERE t.active = TRUE
   AND (t.cron IS NULL AND t.time_once IS NULL)
 GROUP BY

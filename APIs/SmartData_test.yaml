@@ -34,6 +34,11 @@ paths:
           schema: { type: string }
           description: Comma-separated list of fields to return
           example: id,name,endpoint,member_key,auth
+        - name: filter
+          in: query
+          schema: { type: string }
+          description: Comma-separated list of filter conditions (e.g., name,eq,Test)
+          example: 'name,eq,Test'
       responses:
         '200':
           description: Success

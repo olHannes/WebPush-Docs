@@ -163,10 +163,8 @@ CREATE INDEX idx_group_achievement_achievement ON Group_Achievement(achievement_
 -- Constraints
 -- =========================================================
 ALTER TABLE Triggers
-ADD CONSTRAINT chk_trigger_schedule_xor
-CHECK (
-    (cron IS NOT NULL)::int + (time_once IS NOT NULL)::int <= 1
-);
+ADD CONSTRAINT chk_triggers_cron_xor_time_once
+CHECK (cron IS NULL OR time_once IS NULL);
 
 
 

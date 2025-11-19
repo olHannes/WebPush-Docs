@@ -47,7 +47,7 @@ CREATE TABLE Triggers (
     active BOOLEAN DEFAULT TRUE
 );
 
-CREATE TABLE Condition (
+CREATE TABLE Conditions (
     id SERIAL PRIMARY KEY,
     data_field TEXT NOT NULL,
     operator TEXT NOT NULL CHECK (operator IN ('>', '<', '==', '>=', '<=', '!=')),
@@ -163,10 +163,8 @@ CREATE INDEX idx_group_achievement_achievement ON Group_Achievement(achievement_
 -- Constraints
 -- =========================================================
 ALTER TABLE Triggers
-ADD CONSTRAINT chk_trigger_schedule_xor
-CHECK (
-    (cron IS NOT NULL)::int + (time_once IS NOT NULL)::int <= 1
-);
+ADD CONSTRAINT chk_triggers_cron_xor_time_once
+CHECK (cron IS NULL OR time_once IS NULL);
 
 
 
@@ -207,7 +205,7 @@ SELECT
     ) AS conditions
 FROM Triggers t
 JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
-JOIN Condition c ON c.id = tc.condition_id
+JOIN Conditions c ON c.id = tc.condition_id
 WHERE t.active = TRUE
   AND (t.cron IS NOT NULL OR t.time_once IS NOT NULL)
 GROUP BY
@@ -233,13 +231,35 @@ SELECT
     ) AS conditions
 FROM Triggers t
 JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
-JOIN Condition c ON c.id = tc.condition_id
+JOIN Conditions c ON c.id = tc.condition_id
 WHERE t.active = TRUE
   AND (t.cron IS NULL AND t.time_once IS NULL)
 GROUP BY
     t.id, t.description, t.active, t.last_triggered_at, t.cron, t.time_once;
 
-
+CREATE OR REPLACE VIEW view_triggers_with_conditions AS
+SELECT
+    t.id AS trigger_id,
+    t.description,
+    t.active,
+    t.last_triggered_at,
+    t.cron,
+    t.time_once,
+    json_agg(
+        json_build_object(
+            'condition_id', c.id,
+            'data_field', c.data_field,
+            'operator', c.operator,
+            'threshold', c.threshold
+        )
+        ORDER BY c.id
+    ) AS conditions
+FROM Triggers t
+JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
+JOIN Conditions c ON c.id = tc.condition_id
+WHERE t.active = TRUE
+GROUP BY
+    t.id, t.description, t.active, t.last_triggered_at, t.cron, t.time_once;
 
 -- Groups, Members and Leaderboard / Achievements
 CREATE OR REPLACE VIEW view_leaderboard AS

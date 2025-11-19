@@ -1,17 +1,18 @@
 import subprocess
 import os
 
+BASE = r"C:\SmartDeveloper"   # fester Hauptpfad
+
 folders = [
-    "./projects/SmartDataJobs",
-    "./projects/WebPush",
-    "./software/payara6/glassfish/domains/domain1/docroot/SWAC",
-    "./software/payara6/glassfish/domains/domain1/docroot/WebPush-PWA",
-    "./software/payara6/glassfish/domains/domain1/docroot/WebPush-Admin-Interface"
+    os.path.join(BASE, r"projects\SmartDataJobs"),
+    os.path.join(BASE, r"projects\WebPush"),
+    os.path.join(BASE, r"software\payara6\glassfish\domains\domain1\docroot\SWAC"),
+    os.path.join(BASE, r"software\payara6\glassfish\domains\domain1\docroot\WebPush-PWA"),
+    os.path.join(BASE, r"software\payara6\glassfish\domains\domain1\docroot\WebPush-Admin-Interface")
 ]
 
 for folder in folders:
     print(f"\n--- Pulling in {folder} ---")
-    # Wechsle in das Verzeichnis und führe git pull aus
     subprocess.run(["git", "-C", folder, "pull"], shell=False)
 
 print("\nFertig!")

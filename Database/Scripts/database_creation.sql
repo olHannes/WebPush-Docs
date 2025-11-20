@@ -200,18 +200,24 @@ SELECT
     t.last_triggered_at,
     t.cron,
     t.time_once,
-    json_agg(
-        json_build_object(
-            'condition_id', c.id,
-            'data_field', c.data_field,
-            'operator', c.operator,
-            'threshold', c.threshold
-        )
-        ORDER BY c.id
+    COALESCE(
+        json_agg(
+            CASE
+                WHEN c.id IS NOT NULL THEN
+                    json_build_object(
+                        'condition_id', c.id,
+                        'data_field', c.data_field,
+                        'operator', c.operator,
+                        'threshold', c.threshold
+                    )
+            END
+            ORDER BY c.id
+        ) FILTER (WHERE c.id IS NOT NULL),
+        '[]'::json
     ) AS conditions
 FROM Triggers t
-JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
-JOIN Conditions c ON c.id = tc.condition_id
+LEFT JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
+LEFT JOIN Conditions c ON c.id = tc.condition_id
 WHERE t.active = TRUE
   AND (t.cron IS NOT NULL OR t.time_once IS NOT NULL)
 GROUP BY
@@ -226,18 +232,24 @@ SELECT
     t.last_triggered_at,
     t.cron,
     t.time_once,
-    json_agg(
-        json_build_object(
-            'condition_id', c.id,
-            'data_field', c.data_field,
-            'operator', c.operator,
-            'threshold', c.threshold
-        )
-        ORDER BY c.id
+    COALESCE(
+        json_agg(
+            CASE
+                WHEN c.id IS NOT NULL THEN
+                    json_build_object(
+                        'condition_id', c.id,
+                        'data_field', c.data_field,
+                        'operator', c.operator,
+                        'threshold', c.threshold
+                    )
+            END
+            ORDER BY c.id
+        ) FILTER (WHERE c.id IS NOT NULL),
+        '[]'::json
     ) AS conditions
 FROM Triggers t
-JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
-JOIN Conditions c ON c.id = tc.condition_id
+LEFT JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
+LEFT JOIN Conditions c ON c.id = tc.condition_id
 WHERE t.active = TRUE
   AND (t.cron IS NULL AND t.time_once IS NULL)
 GROUP BY
@@ -251,18 +263,24 @@ SELECT
     t.last_triggered_at,
     t.cron,
     t.time_once,
-    json_agg(
-        json_build_object(
-            'condition_id', c.id,
-            'data_field', c.data_field,
-            'operator', c.operator,
-            'threshold', c.threshold
-        )
-        ORDER BY c.id
+    COALESCE(
+        json_agg(
+            CASE
+                WHEN c.id IS NOT NULL THEN
+                    json_build_object(
+                        'condition_id', c.id,
+                        'data_field', c.data_field,
+                        'operator', c.operator,
+                        'threshold', c.threshold
+                    )
+            END
+            ORDER BY c.id
+        ) FILTER (WHERE c.id IS NOT NULL),
+        '[]'::json
     ) AS conditions
 FROM Triggers t
-JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
-JOIN Conditions c ON c.id = tc.condition_id
+LEFT JOIN Trigger_Conditions tc ON t.id = tc.trigger_id
+LEFT JOIN Conditions c ON c.id = tc.condition_id
 WHERE t.active = TRUE
 GROUP BY
     t.id, t.description, t.active, t.last_triggered_at, t.cron, t.time_once;

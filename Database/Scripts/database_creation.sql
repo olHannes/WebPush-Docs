@@ -606,3 +606,30 @@ SELECT jsonb_build_object(
         FROM period_actions)
 ) AS result;
 
+
+
+CREATE OR REPLACE VIEW view_global_statistics_all AS
+WITH
+period_actions AS (
+    SELECT
+        action_name,
+        SUM(amount) AS total_amount
+    FROM view_global_statistics_base
+    WHERE action_name IS NOT NULL
+    GROUP BY action_name
+)
+SELECT jsonb_build_object(
+    'period', 'all',
+    'since', (SELECT MIN(timestamp) FROM gamification.History),
+    'sent_notifications',
+        (SELECT COUNT(*) FROM gamification.History),
+    'actions',
+        (SELECT jsonb_agg(
+            jsonb_build_object(
+                'action', action_name,
+                'amount', total_amount
+            )
+            ORDER BY total_amount DESC
+        )
+        FROM period_actions)
+) AS result;

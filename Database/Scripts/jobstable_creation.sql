@@ -1,4 +1,3 @@
-
 -- delete all tables
 DROP TABLE IF EXISTS smartmonitoring.datajobs_chain CASCADE;
 DROP TABLE IF EXISTS smartmonitoring.datajobs_log CASCADE;
@@ -24,28 +23,22 @@ CREATE TABLE smartmonitoring.datajobs_params (
 	value varchar NOT NULL,
 	datajob_id int8 NOT NULL,
 	"type" varchar NOT NULL,
-	CONSTRAINT datajobs_params_pk PRIMARY KEY (id)
+	CONSTRAINT datajobs_params_pk PRIMARY KEY (id),
+	CONSTRAINT datajobs_params_datajobs_fk FOREIGN KEY (datajob_id) REFERENCES smartmonitoring.datajobs(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
-
--- smartmonitoring.datajobs_params foreign keys
-
-ALTER TABLE smartmonitoring.datajobs_params ADD CONSTRAINT datajobs_params_datajobs_fk FOREIGN KEY (datajob_id) REFERENCES smartmonitoring.datajobs(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 CREATE TABLE smartmonitoring.datajobs_log (
 	id bigserial NOT NULL,
 	datajob_id int8 NOT NULL,
 	"result" text NULL,
-	ts timestamp DEFAULT now() NOT NULL,
+	ts timestamptz DEFAULT now() NOT NULL,
 	iserror bool NULL,
+	processed bool DEFAULT false NOT NULL,
+	wastimeout bool DEFAULT false NOT NULL,
 	CONSTRAINT datajobs_log_pk PRIMARY KEY (id),
-	CONSTRAINT datajobs_log_unique UNIQUE (id)
+	CONSTRAINT datajobs_log_datajobs_fk FOREIGN KEY (datajob_id) REFERENCES smartmonitoring.datajobs(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
-
--- smartmonitoring.datajobs_log foreign keys
-
-ALTER TABLE smartmonitoring.datajobs_log ADD CONSTRAINT datajobs_log_datajobs_fk FOREIGN KEY (datajob_id) REFERENCES smartmonitoring.datajobs(id) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 CREATE TABLE smartmonitoring.datajobs_chain (
 	id bigserial NOT NULL,
@@ -54,12 +47,8 @@ CREATE TABLE smartmonitoring.datajobs_chain (
 	checkkey varchar NULL,
 	checkvalue varchar NULL,
 	checkchanged varchar NULL,
-	CONSTRAINT datajobs_chain_pk PRIMARY KEY (id)
+	active bool DEFAULT true NOT NULL,
+	CONSTRAINT datajobs_chain_pk PRIMARY KEY (id),
+	CONSTRAINT datajobs_chain_datajobs_postjob_fk FOREIGN KEY (post_job_id) REFERENCES smartmonitoring.datajobs(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT datajobs_chain_datajobs_prejob_fk FOREIGN KEY (pre_job_id) REFERENCES smartmonitoring.datajobs(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
-
--- smartmonitoring.datajobs_chain foreign keys
-
-ALTER TABLE smartmonitoring.datajobs_chain ADD CONSTRAINT datajobs_chain_datajobs_fk_post_job FOREIGN KEY (post_job_id) REFERENCES smartmonitoring.datajobs(id) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE smartmonitoring.datajobs_chain ADD CONSTRAINT datajobs_chain_datajobs_fk_pre_job FOREIGN KEY (pre_job_id) REFERENCES smartmonitoring.datajobs(id) ON DELETE CASCADE ON UPDATE CASCADE;
-

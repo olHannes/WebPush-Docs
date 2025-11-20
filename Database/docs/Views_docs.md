@@ -28,10 +28,16 @@ SELECT
     t.cron,
     t.time_once,
     t.last_triggered_at,
-    t.active
+    t.active,
+    CASE
+        WHEN t.cron IS NULL AND t.time_once IS NULL THEN 'event'
+        WHEN t.cron IS NULL AND t.time_once IS NOT NULL THEN 'once'
+        WHEN t.cron IS NOT NULL AND t.time_once IS NULL THEN 'time'
+        ELSE 'invalid'
+    END AS type
 FROM gamification.Triggers t;
 ```
-> Der View `view_triggers` liefert alle Trigger zurück und benennt `id` zu `t_id` um.
+> Der View `view_triggers` liefert alle Trigger zurück und benennt `id` zu `t_id` um und löst den Type auf.
 
 URL: *https://localhost:8181/SmartDataAirquality/smartdata/records/view_triggers?storage=gamification*
 

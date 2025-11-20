@@ -182,7 +182,13 @@ SELECT
     t.cron,
     t.time_once,
     t.last_triggered_at,
-    t.active
+    t.active,
+    CASE
+        WHEN t.cron IS NULL AND t.time_once IS NULL THEN 'event'
+        WHEN t.cron IS NULL AND t.time_once IS NOT NULL THEN 'once'
+        WHEN t.cron IS NOT NULL AND t.time_once IS NULL THEN 'time'
+        ELSE 'invalid'
+    END AS type
 FROM gamification.Triggers t;
 
 

@@ -84,8 +84,8 @@ INSERT INTO Conditions (data_field, operator, threshold) VALUES
 ('sensor:humidity', '<', 20);     -- id 5
 
 INSERT INTO Trigger_Conditions (trigger_id, condition_id) VALUES
-(4, 4),
-(4, 5);
+(3, 4),
+(3, 5);
 
 
 
@@ -105,7 +105,7 @@ INSERT INTO Notifications (title, body, icon_url, renotify, silent, trigger_id) 
 ('Daily Check', 'Dein täglicher Check wurde ausgeführt.', 'https://icons/info.png', FALSE, FALSE, 1),
 ('Montagsbericht', 'Dein Wochenbericht ist verfügbar.', 'https://icons/report.png', FALSE, FALSE, 2),
 ('Einmalige Erinnerung', 'Dies ist eine einmalige Nachricht.', 'https://icons/once.png', TRUE, FALSE, 3),
-('Sensorwarnung', 'Temperatur oder Luftfeuchtigkeit außerhalb der Norm!', 'https://icons/warning.png', FALSE, FALSE, 4);
+('Sensorwarnung', 'Temperatur oder Luftfeuchtigkeit außerhalb der Norm!', 'https://icons/warning.png', FALSE, FALSE, 3);
 
 -- =========================================================
 --  Notification-Actions Zuordnung
@@ -145,7 +145,7 @@ INSERT INTO Statistics (history_id, event_type_id, action_id, created_at) VALUES
 INSERT INTO Achievements (title, description, message, reward_xp, image_url, trigger_id) VALUES
 ('Level 1 erreicht', 'Deine Gruppe hat Level 1 erreicht.', 'Glückwunsch zu Level 1!', 25, NULL, 1),
 ('Wochenziel erreicht', '50 Aktionen in einer Woche!', 'Sehr gute Aktivität!', 50, NULL, 2),
-('Alarmreaktion', 'Du hast auf kritische Werte reagiert.', 'Gut aufgepasst!', 20, NULL, 4);
+('Alarmreaktion', 'Du hast auf kritische Werte reagiert.', 'Gut aufgepasst!', 20, NULL, 3);
 -- =========================================================
 --  Zugewiesene Achievements zu Gruppen
 -- =========================================================

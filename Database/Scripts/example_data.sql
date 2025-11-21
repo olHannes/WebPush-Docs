@@ -38,11 +38,8 @@ VALUES ('Täglicher 8-Uhr-Check', '0 0 8 * * ?', NULL, TRUE, '2025-11-14 08:00:0
 -- 2️⃣  Wöchentlicher Montag-Trigger
 INSERT INTO Triggers (description, cron, time_once, active, last_triggered_at)
 VALUES ('Montags-Statistik-Trigger', '0 0 9 ? * MON', NULL, TRUE, '2025-11-10 09:00:00.000');
--- 3️⃣  Einmaliger Trigger am festen Datum
-INSERT INTO Triggers (description, cron, time_once, active, last_triggered_at)
-VALUES ('Einmaliger Hinweis', NULL, '2025-12-01 10:00:00', TRUE, NULL);
 
--- 4️⃣  Trigger ohne Zeitplan (nur durch Datenbedingungen ausgelöst)
+-- Trigger ohne Zeitplan (nur durch Datenbedingungen ausgelöst)
 INSERT INTO Triggers (description, cron, time_once, active, last_triggered_at)
 VALUES ('Datenbedingter Trigger', NULL, NULL, TRUE, NULL);
 -- =========================================================

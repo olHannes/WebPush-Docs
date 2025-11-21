@@ -75,7 +75,7 @@ CREATE TABLE Notifications (
     renotify BOOLEAN DEFAULT FALSE,
     silent BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT NOW(),
-    trigger_id INT REFERENCES Triggers(id) ON DELETE SET NULL
+    trigger_id INT REFERENCES Triggers(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Notification_Actions (
@@ -86,7 +86,7 @@ CREATE TABLE Notification_Actions (
 
 CREATE TABLE History (
     id SERIAL PRIMARY KEY,
-    notification_id INT NOT NULL REFERENCES Notifications(id) ON DELETE CASCADE,
+    notification_id INT REFERENCES Notifications(id) ON DELETE SET NULL,
     timestamp TIMESTAMP DEFAULT NOW()
 );
 
@@ -165,7 +165,6 @@ CREATE INDEX idx_group_achievement_achievement ON Group_Achievement(achievement_
 ALTER TABLE Triggers
 ADD CONSTRAINT chk_triggers_cron_xor_time_once
 CHECK (cron IS NULL OR time_once IS NULL);
-
 
 
 
@@ -360,26 +359,33 @@ LEFT JOIN gamification.Triggers t
 CREATE OR REPLACE VIEW view_sent_notifications AS
 SELECT
     h.id AS history_id,
-    n.notification_id,
-    n.title AS notification_title,
-    n.body AS notification_body,
+    
+    h.notification_id,
+    COALESCE(n.title, 'Deleted') AS notification_title,
+    COALESCE(n.body, 'Deleted') AS notification_body,
     n.icon_url,
     n.image_url,
     n.renotify,
     n.silent,
-    n.type,
 
-    DATE(n.created_at) AS notification_date,
-    TO_CHAR(n.created_at, 'HH24:MI:SS') AS notification_time,
+    COALESCE(n.type, 'deleted') AS type,
+
+    COALESCE(DATE(n.created_at), DATE(h.timestamp)) AS notification_date,
+    COALESCE(TO_CHAR(n.created_at, 'HH24:MI:SS'), '') AS notification_time,
+
     DATE(h.timestamp) AS sent_date,
     TO_CHAR(h.timestamp, 'HH24:MI:SS') AS sent_time,
 
     t.id AS trigger_id,
     t.description AS trigger_description
+
 FROM gamification.History h
-JOIN gamification.view_notifications_with_type n ON h.notification_id = n.notification_id
-LEFT JOIN gamification.Triggers t ON n.trigger_id = t.id
+LEFT JOIN gamification.view_notifications_with_type n
+       ON h.notification_id = n.notification_id
+LEFT JOIN gamification.Triggers t
+       ON n.trigger_id = t.id
 ORDER BY h.timestamp DESC;
+
 
 
 -- Check Group Activities

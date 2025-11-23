@@ -389,67 +389,160 @@ ORDER BY h.timestamp DESC;
 
 
 -- Check Group Activities
--- DROP FUNCTION gamification.group_today_stats();
-
-CREATE OR REPLACE FUNCTION gamification.group_today_stats()
-RETURNS TABLE(
-    group_id integer,
-    group_name text,
-    has_today boolean,
-    pm2_5_min double precision,
-    pm2_5_max double precision,
-    pm10_0_min double precision,
-    pm10_0_max double precision,
-    temp1_min double precision,
-    temp1_max double precision,
-    temp2_min double precision,
-    temp2_max double precision,
-    temp3_min double precision,
-    temp3_max double precision
-)
-LANGUAGE plpgsql
+-- DROP FUNCTION gamification.group_stats_today();
+CREATE OR REPLACE FUNCTION gamification.group_stats_today()
+ RETURNS TABLE(group_id integer, group_name text, has_today boolean, pm2_5_min double precision, pm2_5_max double precision, pm2_5_mean double precision, pm10_0_min double precision, pm10_0_max double precision, pm10_0_mean double precision, temp1_min double precision, temp1_max double precision, temp1_mean double precision, temp2_min double precision, temp2_max double precision, temp2_mean double precision, temp3_min double precision, temp3_max double precision, temp3_mean double precision, pos_altitude_min double precision, pos_altitude_max double precision, pos_altitude_mean double precision, distance_km double precision)
+ LANGUAGE plpgsql
 AS $function$
 DECLARE
-    tbl TEXT;
-    g_name TEXT;
-    g_id INTEGER;
+    rec RECORD;
     sql TEXT;
+    table_exists BOOLEAN;
 BEGIN
-    -- Tabellenname und Gruppeninformationen laden (hier z.B. erste Gruppe)
-    SELECT id, data_table, name INTO g_id, tbl, g_name
-    FROM gamification.groups
-    LIMIT 1;
+    FOR rec IN
+        SELECT id, data_table, name
+        FROM gamification.groups
+        WHERE data_table IS NOT NULL
+    LOOP
+        -- Tabelle prüfen
+        SELECT EXISTS (
+            SELECT FROM pg_tables
+            WHERE schemaname = 'smartmonitoring'
+              AND tablename = rec.data_table
+        ) INTO table_exists;
 
-    IF tbl IS NULL THEN
-        RAISE EXCEPTION 'No data_table found for group';
-    END IF;
+        IF NOT table_exists THEN
+            RAISE NOTICE 'Tabelle smartmonitoring.% nicht gefunden – Gruppe % wird übersprungen.',
+                rec.data_table, rec.name;
+            CONTINUE;
+        END IF;
 
-    -- Dynamisches SQL für die Messwerte der Tabelle
-    sql := format(
-        $f$
-        SELECT
-            %s AS group_id,
-            '%s' AS group_name,
-            EXISTS (
-                SELECT 1 FROM smartmonitoring.%I
+        sql := format(
+            $f$
+            WITH todays AS (
+                SELECT *
+                FROM smartmonitoring.%I
                 WHERE ts::date = CURRENT_DATE
-            ) AS has_today,
-            MIN(pm2_5), MAX(pm2_5),
-            MIN(pm10_0), MAX(pm10_0),
-            MIN(temp1), MAX(temp1),
-            MIN(temp2), MAX(temp2),
-            MIN(temp3), MAX(temp3)
-        FROM smartmonitoring.%I
-        $f$,
-        g_id, g_name, tbl, tbl
-    );
+                ORDER BY ts
+            ),
+            dist_pts AS (
+                SELECT
+                    ST_DistanceSphere(
+                        lag(pos) OVER (ORDER BY ts),
+                        pos
+                    ) AS segment_m
+                FROM todays
+            ),
+            dist_total AS (
+                SELECT SUM(segment_m) / 1000.0 AS distance_km
+                FROM dist_pts
+            )
+            SELECT
+                %s AS group_id,
+                %L AS group_name,
+                (SELECT EXISTS(SELECT 1 FROM todays)) AS has_today,
 
-    -- Ergebnis direkt als ResultSet zurückgeben
-    RETURN QUERY EXECUTE sql;
+                MIN(pm2_5), MAX(pm2_5), AVG(pm2_5),
+                MIN(pm10_0), MAX(pm10_0), AVG(pm10_0),
+                MIN(temp1),  MAX(temp1),  AVG(temp1),
+                MIN(temp2),  MAX(temp2),  AVG(temp2),
+                MIN(temp3),  MAX(temp3),  AVG(temp3),
+				MIN(pos_altitude),  MAX(pos_altitude),  AVG(pos_altitude),
+
+                (SELECT distance_km FROM dist_total)
+
+            FROM todays;
+            $f$,
+            rec.data_table,
+            rec.id,
+            rec.name
+        );
+
+        RETURN QUERY EXECUTE sql;
+    END LOOP;
+
 END;
-$function$;
+$function$
+;
 
 
+
+-- DROP FUNCTION gamification.group_stats_global();
+
+CREATE OR REPLACE FUNCTION gamification.group_stats_global()
+ RETURNS TABLE(group_id integer, group_name text, has_data boolean, pm2_5_min double precision, pm2_5_max double precision, pm2_5_mean double precision, pm10_0_min double precision, pm10_0_max double precision, pm10_0_mean double precision, temp1_min double precision, temp1_max double precision, temp1_mean double precision, temp2_min double precision, temp2_max double precision, temp2_mean double precision, temp3_min double precision, temp3_max double precision, temp3_mean double precision, pos_altitude_min double precision, pos_altitude_max double precision, pos_altitude_mean double precision, distance_km double precision)
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+    rec RECORD;
+    sql TEXT;
+    table_exists BOOLEAN;
+BEGIN
+    FOR rec IN
+        SELECT id, data_table, name
+        FROM gamification.groups
+        WHERE data_table IS NOT NULL
+    LOOP
+        -- Tabelle prüfen
+        SELECT EXISTS (
+            SELECT FROM pg_tables
+            WHERE schemaname = 'smartmonitoring'
+              AND tablename = rec.data_table
+        ) INTO table_exists;
+
+        IF NOT table_exists THEN
+            RAISE NOTICE 'Tabelle smartmonitoring.% nicht gefunden – Gruppe % wird übersprungen.',
+                rec.data_table, rec.name;
+            CONTINUE;
+        END IF;
+
+        -- Global stats + Distanz
+        sql := format(
+            $f$
+            WITH all_data AS (
+                SELECT *
+                FROM smartmonitoring.%I
+                ORDER BY ts
+            ),
+            dist_pts AS (
+                SELECT
+                    ST_DistanceSphere(
+                        lag(pos) OVER (ORDER BY ts),
+                        pos
+                    ) AS segment_m
+                FROM all_data
+            ),
+            dist_total AS (
+                SELECT SUM(segment_m) / 1000.0 AS distance_km
+                FROM dist_pts
+            )
+            SELECT
+                %s AS group_id,
+                %L AS group_name,
+                (SELECT EXISTS(SELECT 1 FROM all_data)) AS has_data,
+
+                MIN(pm2_5), MAX(pm2_5), AVG(pm2_5),
+                MIN(pm10_0), MAX(pm10_0), AVG(pm10_0),
+                MIN(temp1),  MAX(temp1),  AVG(temp1),
+                MIN(temp2),  MAX(temp2),  AVG(temp2),
+                MIN(temp3),  MAX(temp3),  AVG(temp3),
+				MIN(pos_altitude),  MAX(pos_altitude),  AVG(pos_altitude),
+
+                (SELECT distance_km FROM dist_total)
+
+            FROM all_data;
+            $f$,
+            rec.data_table,
+            rec.id,
+            rec.name
+        );
+
+        RETURN QUERY EXECUTE sql;
+    END LOOP;
+
+END;
+$function$
+;
 
 
 -- Statistics

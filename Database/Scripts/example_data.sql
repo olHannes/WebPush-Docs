@@ -31,17 +31,28 @@ INSERT INTO Group_Member (member_id, group_id) VALUES
 -- =========================================================
 --  Trigger Beispiel
 -- =========================================================
--- 1️⃣  Täglicher Check um 08:00
-INSERT INTO Triggers (description, cron, time_once, active, last_triggered_at)
-VALUES ('Täglicher 8-Uhr-Check', '0 0 8 * * ?', NULL, TRUE, '2025-11-14 08:00:00.000');
+INSERT INTO Triggers (description, cron, time_once, active, last_triggered_at) VALUES
+-- 1️⃣ Täglicher Check um 08:00 Uhr
+('Täglicher 8-Uhr-Check', '0 0 8 * * ?', NULL, TRUE, '2025-11-14 08:00:00.000'),
+-- 2️⃣ Wöchentlicher Montag-Trigger
+('Montags-Statistik-Trigger', '0 0 9 ? * MON', NULL, TRUE, '2025-11-10 09:00:00.000'),
+-- 3️⃣ Trigger ohne Zeitplan (nur durch Datenbedingungen ausgelöst)
+('Datenbedingter Trigger', NULL, NULL, TRUE, NULL),
+('Leaderbord Reset', '0 0 12 1 * ?', NULL, TRUE, NULL),
+('Star Wars Tag', '0 38 11 4 MAY ?', NULL, TRUE, NULL),
+('Frohe Weihnachten', '0 0 12 25 DEC ?', NULL, TRUE, NULL),
+('Silvester', '0 0 12 31 DEC ?', NULL, TRUE, NULL),
+('Neujahr', '0 0 0 1 JAN ?', NULL, TRUE, NULL),
+('Valentinstag', '0 0 9 14 FEB ?', NULL, TRUE, NULL),
+('Halloween', '0 0 18 31 OCT ?', NULL, TRUE, NULL),
+('Ostern', '0 0 9 1 APR ?', NULL, TRUE, NULL),
+('Tag der Arbeit', '0 0 9 1 MAY ?', NULL, TRUE, NULL),
+('Daily Streak Reminder', '0 0 18 * * ?', NULL, TRUE, NULL),
+('Weekly XP Summary', '0 0 20 ? * FRI', NULL, TRUE, NULL),
+('Monthly Achievement Summary', '0 0 20 1 * ?', NULL, TRUE, NULL),
+('Leaderbord Reset Reminder', '0 0 12 L-2 * ?', NULL, TRUE, NULL),
+('WebPush Anniversary', '0 10 14 14 OCT ?', NULL, TRUE, NULL);
 
--- 2️⃣  Wöchentlicher Montag-Trigger
-INSERT INTO Triggers (description, cron, time_once, active, last_triggered_at)
-VALUES ('Montags-Statistik-Trigger', '0 0 9 ? * MON', NULL, TRUE, '2025-11-10 09:00:00.000');
-
--- Trigger ohne Zeitplan (nur durch Datenbedingungen ausgelöst)
-INSERT INTO Triggers (description, cron, time_once, active, last_triggered_at)
-VALUES ('Datenbedingter Trigger', NULL, NULL, TRUE, NULL);
 -- =========================================================
 --  Conditions
 --  Jede Condition ist eine einfache Prüfung.
@@ -102,10 +113,24 @@ INSERT INTO Actions (action_type, title, icon) VALUES
 --  Notifications
 -- =========================================================
 INSERT INTO Notifications (title, body, icon_url, renotify, silent, trigger_id) VALUES
-('Daily Check', 'Dein täglicher Check wurde ausgeführt.', 'https://icons/info.png', FALSE, FALSE, 1),
-('Montagsbericht', 'Dein Wochenbericht ist verfügbar.', 'https://icons/report.png', FALSE, FALSE, 2),
-('Einmalige Erinnerung', 'Dies ist eine einmalige Nachricht.', 'https://icons/once.png', TRUE, FALSE, 3),
-('Sensorwarnung', 'Temperatur oder Luftfeuchtigkeit außerhalb der Norm!', 'https://icons/warning.png', FALSE, FALSE, 3);
+('Daily Check', 'Dein täglicher Check wurde ausgeführt.', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 1),
+('Montagsbericht', 'Dein Wochenbericht ist verfügbar.', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 2),
+('Einmalige Erinnerung 🕒', 'Dies ist eine einmalige Nachricht.', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', TRUE, FALSE, 3),
+('Leaderboard Reset 🆕', 'Collect new data now and climb the ranks!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 4),
+('Happy Star Wars Day 💫', 'May the 4th be with you!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 5),
+('Merry Christmas 🎄', 'Merry Christmas and a happy New Year!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 6),
+('New Year''s Eve 🎉', 'Celebrate the turn of the year!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 7),
+('New Year 🎆', 'Welcome to the new year!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 8),
+('Valentine''s Day 💘', 'Share the love on Valentine''s Day!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 9),
+('Halloween 🎃', 'Spooky greetings for Halloween!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 10),
+('Easter 🐰', 'Happy Easter!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 11),
+('Tag der Arbeit 🛠️', 'Es ist Zeit Daten zu sammeln!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 12),
+('Daily Streak Reminder 🍃', 'Keep your streak going!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 13),
+('Weekly XP Summary 📊', 'Your weekly XP summary is here!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 14),
+('Monthly Achievement Summary 📅', 'Your monthly achievement overview is available!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 15),
+('Leaderboard Reset Reminder 🔁', 'The leaderboard reset is imminent!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 16),
+('WebPush Anniversary 🥳', 'Celebrate our Anniversary with us!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 17);
+
 
 -- =========================================================
 --  Notification-Actions Zuordnung
@@ -114,10 +139,19 @@ INSERT INTO Notification_Actions (action_id, notification_id) VALUES
 (1, 1),
 (2, 1),
 (1, 2),
-(4, 2),
 (1, 3),
+(4, 4),
 (1, 4),
-(2, 4);
+(2, 4),
+(1, 13),
+(2, 13),
+(1, 16),
+(2, 16),
+(4, 16),
+(1, 14),
+(2, 14),
+(1, 15),
+(2, 15);
 
 -- =========================================================
 --  Notification-History (gesendete Nachrichten)

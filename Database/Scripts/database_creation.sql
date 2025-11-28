@@ -32,7 +32,7 @@ INSERT INTO Group_Picture (picture) VALUES
     ('profile_icon_5.png'), 
     ('profile_icon_6.png');
 
-CREATE TABLE "Group" (
+CREATE TABLE "group" (
     id SERIAL PRIMARY KEY,
     data_table TEXT,
     last_activity TIMESTAMP,
@@ -45,7 +45,7 @@ CREATE TABLE "Group" (
 
 CREATE TABLE Group_Member (
     member_id INT NOT NULL REFERENCES Member(id) ON DELETE CASCADE,
-    group_id INT NOT NULL REFERENCES "Group"(id) ON DELETE CASCADE,
+    group_id INT NOT NULL REFERENCES "group"(id) ON DELETE CASCADE,
     PRIMARY KEY (member_id, group_id)
 );
 
@@ -159,7 +159,7 @@ CREATE TABLE Achievement (
 );
 
 CREATE TABLE Group_Achievement (
-    group_id INT NOT NULL REFERENCES "Group"(id) ON DELETE CASCADE,
+    group_id INT NOT NULL REFERENCES "group"(id) ON DELETE CASCADE,
     achievement_id INT NOT NULL REFERENCES Achievement(id) ON DELETE CASCADE,
     PRIMARY KEY (group_id, achievement_id)
 );
@@ -171,9 +171,9 @@ CREATE TABLE Group_Achievement (
 CREATE INDEX idx_member_name ON Member(name);
 CREATE UNIQUE INDEX idx_member_endpoint ON Member(endpoint);
 
-CREATE INDEX idx_group_name ON "Group"(name);
-CREATE INDEX idx_group_level_xp ON "Group"(level_xp DESC, current_xp DESC);
-CREATE INDEX idx_group_streak ON "Group"(streak DESC);
+CREATE INDEX idx_group_name ON "group"(name);
+CREATE INDEX idx_group_level_xp ON "group"(level_xp DESC, current_xp DESC);
+CREATE INDEX idx_group_streak ON "group"(streak DESC);
 
 CREATE INDEX idx_triggers_active ON Trigger(active);
 CREATE INDEX idx_triggers_type ON Trigger(description);
@@ -335,7 +335,7 @@ SELECT
     g.picture_id,
     p.picture,
     RANK() OVER (ORDER BY g.current_xp DESC, g.level_xp DESC) AS rank
-FROM gamification."Group" g
+FROM gamification."group" g
 LEFT JOIN gamification.Group_Picture p ON g.picture_id = p.id
 ORDER BY g.current_xp DESC;
 
@@ -350,7 +350,7 @@ SELECT
     g.current_xp,
     g.picture_id,
     p.picture
-FROM gamification."Group" g
+FROM gamification."group" g
 LEFT JOIN gamification.Group_Picture p ON g.picture_id = p.id;
 
 
@@ -368,7 +368,7 @@ SELECT
     a.reward_xp AS achievement_reward_xp,
     a.trigger_id
 FROM Group_Achievement ga
-JOIN "Group" g ON ga.group_id = g.id
+JOIN "group" g ON ga.group_id = g.id
 LEFT JOIN gamification.Group_Picture p ON g.picture_id = p.id
 JOIN Achievement a ON ga.achievement_id = a.id;
 
@@ -387,7 +387,7 @@ SELECT
     m.name AS member_name,
     m.endpoint AS member_endpoint
 FROM gamification.Group_Member gm
-JOIN gamification."Group" g ON gm.group_id = g.id
+JOIN gamification."group" g ON gm.group_id = g.id
 JOIN gamification.Member m ON gm.member_id = m.id
 LEFT JOIN gamification.Group_Picture p ON g.picture_id = p.id
 ORDER BY g.id;
@@ -464,7 +464,7 @@ DECLARE
 BEGIN
     FOR g_id, tbl, g_name IN
         SELECT id, data_table, name
-        FROM gamification."Group"
+        FROM gamification."group"
     LOOP
         -- Tabelle existiert?
         PERFORM 1
@@ -550,7 +550,7 @@ DECLARE
 BEGIN
     FOR g_id, tbl, g_name IN
         SELECT id, data_table, name
-        FROM gamification."Group"
+        FROM gamification."group"
     LOOP
         -- Tabelle existiert?
         PERFORM 1

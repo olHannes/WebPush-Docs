@@ -14,7 +14,7 @@ INSERT INTO Member (name, endpoint, key, auth) VALUES
 -- =========================================================
 --  Groups
 -- =========================================================
-INSERT INTO "Group" (data_table, name, picture_id, streak, level_xp, current_xp) VALUES
+INSERT INTO "group" (data_table, name, picture_id, streak, level_xp, current_xp) VALUES
 ('sensor_table_m1', 'Sensor M1', 1, 3, 1, 55),
 ('sensor_table_m2', 'Sensor M2', 4, 7, 2, 140),
 ('sensor_table_m3', 'Sensor M3', 6, 1, 0, 10);

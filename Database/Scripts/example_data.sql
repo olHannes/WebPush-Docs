@@ -14,10 +14,10 @@ INSERT INTO Member (name, endpoint, key, auth) VALUES
 -- =========================================================
 --  Groups
 -- =========================================================
-INSERT INTO Groups (data_table, name, streak, level, xp) VALUES
-('sensor_table_m1', 'Sensor M1', 3, 1, 55),
-('sensor_table_m2', 'Sensor M2', 7, 2, 140),
-('sensor_table_m3', 'Sensor M3', 1, 0, 10);
+INSERT INTO "Group" (data_table, name, picture_id, streak, level_xp, current_xp) VALUES
+('sensor_table_m1', 'Sensor M1', 1, 3, 1, 55),
+('sensor_table_m2', 'Sensor M2', 4, 7, 2, 140),
+('sensor_table_m3', 'Sensor M3', 6, 1, 0, 10);
 
 -- =========================================================
 --  Group-Member Zuordnung
@@ -32,15 +32,15 @@ INSERT INTO Group_Member (member_id, group_id) VALUES
 --  Trigger Beispiel
 -- =========================================================
 -- 1️⃣  Täglicher Check um 08:00
-INSERT INTO Triggers (description, cron, time_once, active, last_triggered_at)
+INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at)
 VALUES ('Täglicher 8-Uhr-Check', '0 0 8 * * ?', NULL, TRUE, '2025-11-14 08:00:00.000');
 
 -- 2️⃣  Wöchentlicher Montag-Trigger
-INSERT INTO Triggers (description, cron, time_once, active, last_triggered_at)
+INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at)
 VALUES ('Montags-Statistik-Trigger', '0 0 9 ? * MON', NULL, TRUE, '2025-11-10 09:00:00.000');
 
 -- Trigger ohne Zeitplan (nur durch Datenbedingungen ausgelöst)
-INSERT INTO Triggers (description, cron, time_once, active, last_triggered_at)
+INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at)
 VALUES ('Datenbedingter Trigger', NULL, NULL, TRUE, NULL);
 -- =========================================================
 --  Conditions
@@ -51,11 +51,11 @@ VALUES ('Datenbedingter Trigger', NULL, NULL, TRUE, NULL);
 -- Condition-Logik:
 -- streak >= 5
 -- xp     >= 100
-INSERT INTO Conditions (data_field, operator, threshold) VALUES
-('gamification:groups:streak', '>=', 5),   -- id 1
-('gamification:groups:xp', '>=', 100);     -- id 2
+INSERT INTO condition (type_id, operator, threshold) VALUES
+(1, '>=', 5),   -- id 1
+(12, '>=', 100);     -- id 2
 
-INSERT INTO Trigger_Conditions (trigger_id, condition_id) VALUES
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (1, 1),
 (1, 2);
 
@@ -63,10 +63,10 @@ INSERT INTO Trigger_Conditions (trigger_id, condition_id) VALUES
 -- Beispiel-Trigger 2: Montags-Statistik-Trigger
 -- Condition-Logik: -> Idee von Chat
 -- count_today >= 50
-INSERT INTO Conditions (data_field, operator, threshold) VALUES
-('gamification:group_today_stats():has_today', '==', 1);  -- id 3
+INSERT INTO Condition (type_id, operator, threshold) VALUES
+(9, '==', 1);   -- has_today == 1
 
-INSERT INTO Trigger_Conditions (trigger_id, condition_id) VALUES
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (2, 1);
 -- (2, 3);
 
@@ -79,11 +79,11 @@ INSERT INTO Trigger_Conditions (trigger_id, condition_id) VALUES
 -- Condition-Logik:
 -- sensor_temp > 30
 -- sensor_humidity < 20
-INSERT INTO Conditions (data_field, operator, threshold) VALUES
-('sensor:temperature', '>', 30),  -- id 4
-('sensor:humidity', '<', 20);     -- id 5
+INSERT INTO Condition (type_id, operator, threshold) VALUES
+(1, '>', 30),  -- id 4
+(2, '<', 20);     -- id 5
 
-INSERT INTO Trigger_Conditions (trigger_id, condition_id) VALUES
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (3, 4),
 (3, 5);
 
@@ -92,7 +92,7 @@ INSERT INTO Trigger_Conditions (trigger_id, condition_id) VALUES
 -- =========================================================
 --  Actions (verfügbare Interaktionen)
 -- =========================================================
-INSERT INTO Actions (action_type, title, icon) VALUES
+INSERT INTO Action (action_type, title, icon) VALUES
 ('open', 'Öffnen', 'https://icons/open.png'),
 ('dismiss', 'Schließen', 'https://icons/close.png'),
 ('measure', 'Messung starten', 'https://icons/start.png'),
@@ -101,7 +101,7 @@ INSERT INTO Actions (action_type, title, icon) VALUES
 -- =========================================================
 --  Notifications
 -- =========================================================
-INSERT INTO Notifications (title, body, icon_url, renotify, silent, trigger_id) VALUES
+INSERT INTO Notification (title, body, icon_url, renotify, silent, trigger_id) VALUES
 ('Daily Check', 'Dein täglicher Check wurde ausgeführt.', 'https://icons/info.png', FALSE, FALSE, 1),
 ('Montagsbericht', 'Dein Wochenbericht ist verfügbar.', 'https://icons/report.png', FALSE, FALSE, 2),
 ('Einmalige Erinnerung', 'Dies ist eine einmalige Nachricht.', 'https://icons/once.png', TRUE, FALSE, 3),
@@ -110,7 +110,7 @@ INSERT INTO Notifications (title, body, icon_url, renotify, silent, trigger_id) 
 -- =========================================================
 --  Notification-Actions Zuordnung
 -- =========================================================
-INSERT INTO Notification_Actions (action_id, notification_id) VALUES
+INSERT INTO Notification_Action (action_id, notification_id) VALUES
 (1, 1),
 (2, 1),
 (1, 2),
@@ -133,7 +133,7 @@ INSERT INTO History (notification_id, timestamp) VALUES
 -- =========================================================
 -- Hinweis: Event_Types wurde beim Schema bereits mit ('click', 'swipe') befüllt.
 -- IDs: 1 = click, 2 = swipe
-INSERT INTO Statistics (history_id, event_type_id, action_id, created_at) VALUES
+INSERT INTO Statistic (history_id, event_type_id, action_id, created_at) VALUES
 (1, 1, 1, NOW() - INTERVAL '50 minutes'),
 (1, 2, 2, NOW() - INTERVAL '40 minutes'),
 (2, 1, 1, NOW() - INTERVAL '2 hours'),
@@ -142,7 +142,7 @@ INSERT INTO Statistics (history_id, event_type_id, action_id, created_at) VALUES
 -- =========================================================
 --  Achievements
 -- =========================================================
-INSERT INTO Achievements (title, description, message, reward_xp, image_url, trigger_id) VALUES
+INSERT INTO Achievement (title, description, message, reward_xp, image_url, trigger_id) VALUES
 ('Level 1 erreicht', 'Deine Gruppe hat Level 1 erreicht.', 'Glückwunsch zu Level 1!', 25, NULL, 1),
 ('Wochenziel erreicht', '50 Aktionen in einer Woche!', 'Sehr gute Aktivität!', 50, NULL, 2),
 ('Alarmreaktion', 'Du hast auf kritische Werte reagiert.', 'Gut aufgepasst!', 20, NULL, 3);

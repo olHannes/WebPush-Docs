@@ -26,12 +26,7 @@
     - gibt `reward_xp` -> wiederkehrendes Achievement
 - *zeitlich begrenzt -> z.B. nur im Sommer*
 
-## 5. Negative Gamification
-- `XP-Verlust bei inaktiven Tagen`
-- `Streak-Verlust` bei Ausfall (oder schrumpfender Streak -> /2)
-> Vorsichtig einsetzen
-
-## 6. Store & Items
+## 5. Store & Items
 - zusätzlicher `Coins` Eintrag pro Gruppe
 - erhöht sich durch `Achievements`
 - Können in *kleinem Shop* eingesetzt werden
@@ -39,3 +34,8 @@
         - Skins (default = normale Taube, 10 Coins = lilane Taube, 20 Coins = goldene Taube, ...)
         - Banner für App-Aussehen
     (neue Tabellen notwendig)
+        - Luftfilter (Wiederherstellung der Streak)
+
+## 6. Distanz-Daten
+- Achievementes basierend auch Orten und Distanzen 
+- Map-Erkundung von unbekannten Orten

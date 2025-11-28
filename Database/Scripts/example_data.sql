@@ -31,7 +31,7 @@ INSERT INTO Group_Member (member_id, group_id) VALUES
 -- =========================================================
 --  Trigger Beispiel
 -- =========================================================
-INSERT INTO Triggers (description, cron, time_once, active, last_triggered_at) VALUES
+INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
 -- 1️⃣ Täglicher Check um 08:00 Uhr
 ('Täglicher 8-Uhr-Check', '0 0 8 * * ?', NULL, TRUE, '2025-11-14 08:00:00.000'),
 -- 2️⃣ Wöchentlicher Montag-Trigger
@@ -110,9 +110,9 @@ INSERT INTO Action (action_type, title, icon) VALUES
 ('leaderboard', 'Rangliste', 'https://icons/rank.png');
 
 -- =========================================================
---  Notifications
+--  Notification
 -- =========================================================
-INSERT INTO Notifications (title, body, icon_url, renotify, silent, trigger_id) VALUES
+INSERT INTO Notification (title, body, icon_url, renotify, silent, trigger_id) VALUES
 ('Daily Check', 'Dein täglicher Check wurde ausgeführt.', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 1),
 ('Montagsbericht', 'Dein Wochenbericht ist verfügbar.', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 2),
 ('Einmalige Erinnerung 🕒', 'Dies ist eine einmalige Nachricht.', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', TRUE, FALSE, 3),

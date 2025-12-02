@@ -38,7 +38,7 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Montags-Statistik-Trigger', '0 0 9 ? * MON', NULL, TRUE, '2025-11-10 09:00:00.000'),
 -- 3️⃣ Trigger ohne Zeitplan (nur durch Datenbedingungen ausgelöst)
 ('Datenbedingter Trigger', NULL, NULL, TRUE, NULL),
-('Leaderbord Reset', '0 0 12 1 * ?', NULL, TRUE, NULL),
+('Leaderboard Reset', '0 0 12 1 * ?', NULL, TRUE, NULL),
 ('Star Wars Tag', '0 38 11 4 MAY ?', NULL, TRUE, NULL),
 ('Frohe Weihnachten', '0 0 12 25 DEC ?', NULL, TRUE, NULL),
 ('Silvester', '0 0 12 31 DEC ?', NULL, TRUE, NULL),
@@ -50,7 +50,7 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Daily Streak Reminder', '0 0 18 * * ?', NULL, TRUE, NULL),
 ('Weekly XP Summary', '0 0 20 ? * FRI', NULL, TRUE, NULL),
 ('Monthly Achievement Summary', '0 0 20 1 * ?', NULL, TRUE, NULL),
-('Leaderbord Reset Reminder', '0 0 12 L-2 * ?', NULL, TRUE, NULL),
+('Leaderboard Reset Reminder', '0 0 12 L-2 * ?', NULL, TRUE, NULL),
 ('WebPush Anniversary', '0 10 14 14 OCT ?', NULL, TRUE, NULL);
 
 -- =========================================================

@@ -133,7 +133,7 @@ CREATE TABLE Event_Type (
     id SERIAL PRIMARY KEY,
     name TEXT UNIQUE NOT NULL
 );
-INSERT INTO Event_Type (name) VALUES ('click'), ('swipe');
+INSERT INTO Event_Type (name) VALUES ('click'), ('close');
 
 
 CREATE TABLE Statistic (

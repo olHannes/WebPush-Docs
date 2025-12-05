@@ -431,6 +431,21 @@ SELECT
 FROM gamification."group" g
 LEFT JOIN gamification.Group_Picture p ON g.picture_id = p.id;
 
+CREATE OR REPLACE VIEW view_achievement_to_send AS
+SELECT t.id AS tier_id,
+    t.reward_xp,
+    t.image_url,
+    t.trigger_id,
+
+    s.id AS set_id,
+    s.title,
+    s.description,
+    s.body
+FROM Achievement_Tier t JOIN Achievement_Set s ON
+    s.tier1_id = t.id OR
+    s.tier2_id = t.id OR
+    s.tier3_id = t.id
+WHERE t.trigger_id IS NOT NULL;
 
 CREATE OR REPLACE VIEW view_group_achievements AS
 SELECT

@@ -191,19 +191,27 @@ CREATE TABLE Statistic (
 --  Achievements / gamification
 -- =========================================================
 
-CREATE TABLE Achievement (
+CREATE TABLE Achievement_Tier (
     id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL,
-    description TEXT NOT NULL,
-    message TEXT NOT NULL,
     reward_xp INT DEFAULT 0 CHECK (reward_xp >= 0),
     image_url TEXT,
     trigger_id INT REFERENCES Trigger(id) ON DELETE SET NULL
 );
 
+CREATE TABLE Achievement_Set (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    message TEXT NOT NULL,
+    tier1_id INT NOT NULL REFERENCES Achievement_Tier(id) ON DELETE CASCADE,
+    tier2_id INT NOT NULL REFERENCES Achievement_Tier(id) ON DELETE CASCADE,
+    tier3_id INT NOT NULL REFERENCES Achievement_Tier(id) ON DELETE CASCADE
+);
+
+
 CREATE TABLE Group_Achievement (
     group_id INT NOT NULL REFERENCES "group"(id) ON DELETE CASCADE,
-    achievement_id INT NOT NULL REFERENCES Achievement(id) ON DELETE CASCADE,
+    achievement_id INT NOT NULL REFERENCES Achievement_Tier(id) ON DELETE CASCADE,
     PRIMARY KEY (group_id, achievement_id)
 );
 
@@ -233,7 +241,7 @@ CREATE INDEX idx_stats_event_type ON Statistic(event_type_id);
 CREATE INDEX idx_stats_action ON Statistic(action_id);
 CREATE INDEX idx_stats_history ON Statistic(history_id);
 
-CREATE INDEX idx_achievement_trigger ON Achievement(trigger_id);
+CREATE INDEX idx_achievement_trigger ON Achievement_Tier(trigger_id);
 CREATE INDEX idx_group_achievement_group ON Group_Achievement(group_id);
 CREATE INDEX idx_group_achievement_achievement ON Group_Achievement(achievement_id);
 
@@ -428,19 +436,121 @@ CREATE OR REPLACE VIEW view_group_achievements AS
 SELECT
     g.id AS group_id,
     g.name AS group_name,
-    g.picture_id,
     p.picture,
     g.data_table,
-    a.id AS achievement_id,
-    a.title AS achievement_title,
-    a.description AS achievement_description,
-    a.image_url AS achievement_image_url,
-    a.reward_xp AS achievement_reward_xp,
-    a.trigger_id
+
+    t.id AS achievement_tier_id,
+    t.reward_xp,
+    t.image_url AS tier_image_url,
+    t.trigger_id,
+
+    s.id AS achievement_set_id,
+    s.title AS set_title,
+    s.description AS set_description,
+    s.message AS set_message
 FROM Group_Achievement ga
 JOIN "group" g ON ga.group_id = g.id
-LEFT JOIN gamification.Group_Picture p ON g.picture_id = p.id
-JOIN Achievement a ON ga.achievement_id = a.id;
+LEFT JOIN Group_Picture p ON g.picture_id = p.id
+JOIN Achievement_Tier t ON ga.achievement_id = t.id
+LEFT JOIN Achievement_Set s ON 
+    s.tier1_id = t.id OR
+    s.tier2_id = t.id OR
+    s.tier3_id = t.id;
+
+
+CREATE OR REPLACE VIEW view_group_achievement_progress AS 
+SELECT
+    g.id AS group_id,
+    s.id AS achievement_set_id,
+    s.title AS achievement_title,
+    s.description AS achievement_description,
+    s.message AS achievement_message,
+
+    --level
+    CASE
+        WHEN ga3.achievement_id IS NOT NULL THEN 3
+        WHEN ga2.achievement_id IS NOT NULL THEN 2
+        WHEN ga1.achievement_id IS NOT NULL THEN 1
+        ELSE 0
+    END AS level,
+
+    --image
+    CASE
+        WHEN ga3.achievement_id IS NOT NULL THEN t3.image_url
+        WHEN ga2.achievement_id IS NOT NULL THEN t2.image_url
+        WHEN ga1.achievement_id IS NOT NULL THEN t1.image_url
+        ELSE NULL
+    END AS img_url,
+
+    --xp
+    CASE
+        WHEN ga3.achievement_id IS NOT NULL THEN t3.reward_xp
+        WHEN ga2.achievement_id IS NOT NULL THEN t2.reward_xp
+        WHEN ga1.achievement_id IS NOT NULL THEN t1.reward_xp
+        ELSE 0
+    END AS achievement_reward_xp
+
+FROM "group" g
+CROSS JOIN Achievement_Set s
+LEFT JOIN Achievement_Tier t1 ON s.tier1_id = t1.id
+LEFT JOIN Achievement_Tier t2 ON s.tier2_id = t2.id
+LEFT JOIN Achievement_Tier t3 ON s.tier3_id = t3.id
+
+LEFT JOIN Group_Achievement ga1 
+    ON ga1.group_id = g.id AND ga1.achievement_id = s.tier1_id
+
+LEFT JOIN Group_Achievement ga2 
+    ON ga2.group_id = g.id AND ga2.achievement_id = s.tier2_id
+
+LEFT JOIN Group_Achievement ga3 
+    ON ga3.group_id = g.id AND ga3.achievement_id = s.tier3_id;
+
+
+
+CREATE OR REPLACE VIEW view_group_achievement_tiers AS
+SELECT
+    g.id AS group_id,
+    s.id AS achievement_set_id,
+    s.title AS achievement_title,
+    s.description AS achievement_description,
+    s.message AS achievement_message,
+
+    jsonb_build_array(
+        jsonb_build_object(
+            'tier', 1,
+            'img_url', t1.image_url,
+            'reward_xp', t1.reward_xp,
+            'achieved', (ga1.achievement_id IS NOT NULL)
+        ),
+        jsonb_build_object(
+            'tier', 2,
+            'img_url', t2.image_url,
+            'reward_xp', t2.reward_xp,
+            'achieved', (ga2.achievement_id IS NOT NULL)
+        ),
+        jsonb_build_object(
+            'tier', 3,
+            'img_url', t3.image_url,
+            'reward_xp', t3.reward_xp,
+            'achieved', (ga3.achievement_id IS NOT NULL)
+        )
+    ) AS tiers
+
+FROM "group" g
+CROSS JOIN Achievement_Set s
+LEFT JOIN Achievement_Tier t1 ON t1.id = s.tier1_id
+LEFT JOIN Achievement_Tier t2 ON t2.id = s.tier2_id
+LEFT JOIN Achievement_Tier t3 ON t3.id = s.tier3_id
+
+LEFT JOIN Group_Achievement ga1 
+    ON ga1.group_id = g.id AND ga1.achievement_id = s.tier1_id
+
+LEFT JOIN Group_Achievement ga2 
+    ON ga2.group_id = g.id AND ga2.achievement_id = s.tier2_id
+
+LEFT JOIN Group_Achievement ga3 
+    ON ga3.group_id = g.id AND ga3.achievement_id = s.tier3_id;
+
 
 
 CREATE OR REPLACE VIEW view_group_members AS

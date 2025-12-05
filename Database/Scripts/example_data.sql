@@ -197,15 +197,52 @@ INSERT INTO Statistic (history_id, event_type_id, action_id, created_at) VALUES
 -- =========================================================
 --  Achievements
 -- =========================================================
-INSERT INTO Achievement (title, description, message, reward_xp, image_url, trigger_id) VALUES
-('Level 1 erreicht', 'Deine Gruppe hat Level 1 erreicht.', 'Glückwunsch zu Level 1!', 25, NULL, 1),
-('Wochenziel erreicht', '50 Aktionen in einer Woche!', 'Sehr gute Aktivität!', 50, NULL, 2),
-('Alarmreaktion', 'Du hast auf kritische Werte reagiert.', 'Gut aufgepasst!', 20, NULL, 3),
-('Test Achievement', 'Dies ist ein Test-Achievement.', 'Dies ist nur ein Test.', 100, NULL, 18);
--- =========================================================
---  Zugewiesene Achievements zu Gruppen
--- =========================================================
-INSERT INTO Group_Achievement (group_id, achievement_id) VALUES
-(1, 1),
-(2, 2),
-(3, 3);
+-- Achievement-Set 1: Level erreicht (Tier 1–3)
+INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
+(10, 'level_1.png', 1),  -- Tier 1
+(20, 'level_2.png', 2),  -- Tier 2
+(40, 'level_3.png', 3);
+
+INSERT INTO Achievement_Set (title, description, message, tier1_id, tier2_id, tier3_id)
+VALUES (
+    'Level-Meister',
+    'Erreiche Level 1, 2 und 3.',
+    'Deine Gruppe steigt im Level auf!',
+    1, 2, 3
+);
+
+INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
+(15, 'activity_1.png', 4),
+(30, 'activity_2.png', 5),
+(60, 'activity_3.png', 6);
+
+INSERT INTO Achievement_Set (title, description, message, tier1_id, tier2_id, tier3_id)
+VALUES (
+    'Wöchentliche Aktivität',
+    'Sammle Aktionen über mehrere Wochen.',
+    'Starke Aktivität pro Woche!',
+    4, 5, 6
+);
+
+INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
+(5, 'alert_1.png', 7),
+(10, 'alert_2.png', 8),
+(25, 'alert_3.png', 9);
+
+INSERT INTO Achievement_Set (title, description, message, tier1_id, tier2_id, tier3_id)
+VALUES (
+    'Alarmreaktionen',
+    'Reagiere auf kritische Werte.',
+    'Schnell & aufmerksam!',
+    7, 8, 9
+);
+
+-- Gruppe 1 hat Level 1 erreicht
+INSERT INTO Group_Achievement (group_id, achievement_id) VALUES (1, 1);
+
+-- Gruppe 2 hat Level 2 erreicht
+INSERT INTO Group_Achievement (group_id, achievement_id) VALUES (2, 2);
+
+-- Gruppe 3 hat Alarmreaktion Tier 1 erreicht
+INSERT INTO Group_Achievement (group_id, achievement_id) VALUES (3, 7);
+

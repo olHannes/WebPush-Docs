@@ -64,28 +64,71 @@ CREATE TABLE Trigger (
 
 CREATE TABLE Condition_Type (
     id SERIAL PRIMARY KEY,
-    type TEXT NOT NULL UNIQUE
+    type TEXT NOT NULL UNIQUE,
+    url TEXT NULL
 );
 
-INSERT INTO Condition_Type (type) VALUES
-    ('streak'),
-    ('level'),
-    ('pm2_5_min'),
-    ('pm2_5_max'),
-    ('pm10_min'),
-    ('pm10_max'),
-    ('temp_min'),
-    ('temp_max'),
-    ('distance_all'),
-    ('distance_month'),
-    ('distance_week'),
-    ('duration'),
-    ('speed'),
-    ('location');
+INSERT INTO Condition_Type (type, url) VALUES
+    ('count', 'http://localhost:8080/SmartDataAirquality/smartdata/records/'),
+    -- könnte durch count gelöst werden: ('active', 'http://localhost:8080/SmartDataAirquality/smartdata/records/group?storage=gamification&includes=last_activity&filter=id,eq,{id}filter=last_activity,ge,{activity_date}&filter=last_activity,lt,{activity_date}'),
+    ('streak', NULL/*'http://localhost:8080/SmartDataAirquality/smartdata/records/group/{id}?storage=gamification&includes=streak'*/),
+    ('level', NULL/*'http://localhost:8080/SmartDataAirquality/smartdata/records/group/{id}?storage=gamification&includes=level_xp'*/),
+    ('xp', NULL/*'http://localhost:8080/SmartDataAirquality/smartdata/records/group/{id}?storage=gamification&includes=current_xp'*/),
+    ('pm2_5_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5'),
+    ('pm2_5_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5'),
+    ('pm10_0_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0'),
+    ('pm10_0_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0'),
+    ('temp_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=temp1'),
+    ('temp_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=temp1'),
+    ('distance', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/distance?smartdataurl=/SmartDataAirquality&storage=smartmonitoring'),
+    ('duration', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/duration?smartdataurl=/SmartDataAirquality&storage=smartmonitoring'),
+    ('speed', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/speed?smartdataurl=/SmartDataAirquality&storage=smartmonitoring'),
+    ('location', '');
+
+CREATE TABLE Condition_Period (
+    id SERIAL PRIMARY KEY,
+    type TEXT NOT NULL DEFAULT 'all'
+        CHECK (type IN ('all', 'year', 'month', 'week', 'day', 'route', 'date', 'daily_time', 'range')),
+    period_date DATE NULL,
+    time_start TIME NULL,
+    time_end   TIME NULL,
+    range_start TIMESTAMP NULL,
+    range_end   TIMESTAMP NULL,
+    CONSTRAINT period_validation CHECK (
+        (type = 'date'
+        AND period_date IS NOT NULL
+        AND time_start IS NULL AND time_end IS NULL
+        AND range_start IS NULL AND range_end IS NULL)
+        OR
+        (type = 'daily_time'
+            AND time_start IS NOT NULL AND time_end IS NOT NULL
+            AND period_date IS NULL
+            AND range_start IS NULL AND range_end IS NULL)
+        OR
+        (type = 'range'
+            AND range_start IS NOT NULL AND range_end IS NOT NULL
+            AND period_date IS NULL
+            AND time_start IS NULL AND time_end IS NULL)
+        OR
+        (type IN ('all', 'year', 'month', 'week', 'day', 'route')
+            AND period_date IS NULL
+            AND time_start IS NULL AND time_end IS NULL
+            AND range_start IS NULL AND range_end IS NULL)
+    )
+);
+
+INSERT INTO Condition_Period (type) VALUES
+('all'),                                                                            -- id 1
+('year'),                                                                           -- id 2
+('month'),                                                                          -- id 3
+('week'),                                                                           -- id 4
+('day'),                                                                            -- id 5
+('route');
 
 CREATE TABLE Condition (
     id SERIAL PRIMARY KEY,
-    type_id INT REFERENCES Condition_Type(id) ON DELETE cascade,
+    type_id INT NOT NULL REFERENCES Condition_Type(id) ON DELETE CASCADE,
+    period_id INT NOT NULL REFERENCES Condition_Period(id) ON DELETE CASCADE,
     operator TEXT NOT NULL CHECK (operator IN ('>', '<', '==', '>=', '<=', '!=')),
     threshold NUMERIC NOT NULL
 );
@@ -159,7 +202,7 @@ CREATE TABLE Achievement_Set (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
-    message TEXT NOT NULL,
+    body TEXT NOT NULL,
     tier1_id INT NOT NULL REFERENCES Achievement_Tier(id) ON DELETE CASCADE,
     tier2_id INT NOT NULL REFERENCES Achievement_Tier(id) ON DELETE CASCADE,
     tier3_id INT NOT NULL REFERENCES Achievement_Tier(id) ON DELETE CASCADE
@@ -250,8 +293,16 @@ SELECT
                     json_build_object(
                         'condition_id', c.id,
                         'type', ct.type,
+                        'url', ct.url,
                         'operator', c.operator,
-                        'threshold', c.threshold
+                        'threshold', c.threshold,
+                        'period_id', p.id,
+                        'period_type', p.type,
+                        'period_date', p.period_date,
+                        'time_start', p.time_start,
+                        'time_end', p.time_end,
+                        'range_start', p.range_start,
+                        'range_end', p.range_end
                     )
             END
             ORDER BY c.id
@@ -262,6 +313,7 @@ FROM Trigger t
 LEFT JOIN Trigger_Condition tc ON t.id = tc.trigger_id
 LEFT JOIN Condition c ON c.id = tc.condition_id
 LEFT JOIN Condition_Type ct ON c.type_id = ct.id
+LEFT JOIN Condition_Period p ON p.id = c.period_id
 WHERE t.active = TRUE
   AND (t.cron IS NOT NULL OR t.time_once IS NOT NULL)
 GROUP BY
@@ -283,8 +335,16 @@ SELECT
                     json_build_object(
                         'condition_id', c.id,
                         'type', ct.type,
+                        'url', ct.url,
                         'operator', c.operator,
-                        'threshold', c.threshold
+                        'threshold', c.threshold,
+                        'period_id', p.id,
+                        'period_type', p.type,
+                        'period_date', p.period_date,
+                        'time_start', p.time_start,
+                        'time_end', p.time_end,
+                        'range_start', p.range_start,
+                        'range_end', p.range_end
                     )
             END
             ORDER BY c.id
@@ -295,6 +355,7 @@ FROM Trigger t
 LEFT JOIN Trigger_Condition tc ON t.id = tc.trigger_id
 LEFT JOIN Condition c ON c.id = tc.condition_id
 LEFT JOIN Condition_Type ct ON c.type_id = ct.id
+LEFT JOIN Condition_Period p ON p.id = c.period_id
 WHERE t.active = TRUE
   AND (t.cron IS NULL AND t.time_once IS NULL)
 GROUP BY
@@ -315,8 +376,16 @@ SELECT
                     json_build_object(
                         'condition_id', c.id,
                         'type', ct.type,
+                        'url', ct.url,
                         'operator', c.operator,
-                        'threshold', c.threshold
+                        'threshold', c.threshold,
+                        'period_id', p.id,
+                        'period_type', p.type,
+                        'period_date', p.period_date,
+                        'time_start', p.time_start,
+                        'time_end', p.time_end,
+                        'range_start', p.range_start,
+                        'range_end', p.range_end
                     )
             END
             ORDER BY c.id
@@ -327,6 +396,7 @@ FROM Trigger t
 LEFT JOIN Trigger_Condition tc ON t.id = tc.trigger_id
 LEFT JOIN Condition c ON c.id = tc.condition_id
 LEFT JOIN Condition_Type ct ON c.type_id = ct.id
+LEFT JOIN Condition_Period p ON p.id = c.period_id
 WHERE t.active = TRUE
 GROUP BY
     t.id, t.description, t.active, t.last_triggered_at, t.cron, t.time_once;
@@ -377,7 +447,7 @@ SELECT
     s.id AS achievement_set_id,
     s.title AS set_title,
     s.description AS set_description,
-    s.message AS set_message
+    s.body AS set_body
 FROM Group_Achievement ga
 JOIN "group" g ON ga.group_id = g.id
 LEFT JOIN Group_Picture p ON g.picture_id = p.id
@@ -394,7 +464,7 @@ SELECT
     s.id AS achievement_set_id,
     s.title AS achievement_title,
     s.description AS achievement_description,
-    s.message AS achievement_message,
+    s.body AS achievement_body,
 
     --level
     CASE
@@ -443,7 +513,7 @@ SELECT
     s.id AS achievement_set_id,
     s.title AS achievement_title,
     s.description AS achievement_description,
-    s.message AS achievement_message,
+    s.body AS achievement_body,
 
     jsonb_build_array(
         jsonb_build_object(

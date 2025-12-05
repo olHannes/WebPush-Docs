@@ -277,7 +277,14 @@ public Response speed(
             .getJsonNumber("durationH")
             .doubleValue();
 
-    rob.add("avgSpeedKMH", (totalDistance / totalDuration));
+    double speed;
+        if (totalDuration == 0.0) {
+            speed = 0.0;
+        } else {
+            speed = totalDistance / totalDuration;
+        }
+
+    rob.add("avgSpeedKMH", speed);
     rob.setStatus(Response.Status.OK);
     return rob.toResponse();
 }

@@ -48,20 +48,25 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Weekly XP Summary', '0 0 20 ? * FRI', NULL, TRUE, NULL),
 ('Monthly Achievement Summary', '0 0 20 1 * ?', NULL, TRUE, NULL),
 ('Leaderboard Reset Reminder', '0 0 12 L-2 * ?', NULL, TRUE, NULL),
-('WebPush Anniversary', '0 10 14 14 OCT ?', NULL, TRUE, NULL);
+('WebPush Anniversary', '0 10 14 14 OCT ?', NULL, TRUE, NULL),
+('Achievement Test', NULL, NULL, TRUE, NULL);
 
 -- =========================================================
 --  Conditions
 --  Jede Condition ist eine einfache Prüfung.
 -- =========================================================
+INSERT INTO Condition_Period (type, period_date, time_start, time_end, range_start, range_end) VALUES                                                                         -- id 6
+('date', '2025-12-25', NULL, NULL, NULL, NULL),                                     -- id 7
+('daily_time', NULL, '14:00:00', '16:00:00', NULL, NULL),                           -- id 8
+('range', NULL, NULL, NULL, '2025-10-28 06:13:51.071', '2025-10-28 06:56:47.317');  -- id 9
 
 -- Beispiel-Trigger 1: Täglicher Check
 -- Condition-Logik:
 -- streak >= 5
 -- xp     >= 100
-INSERT INTO condition (type_id, operator, threshold) VALUES
-(1, '>=', 5),   -- id 1
-(12, '>=', 100);     -- id 2
+INSERT INTO Condition (type_id, period_id, operator, threshold) VALUES
+(1, 1, '>=', 5),   -- id 1
+(12, 1, '>=', 100);     -- id 2
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (1, 1),
@@ -71,8 +76,8 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 -- Beispiel-Trigger 2: Montags-Statistik-Trigger
 -- Condition-Logik: -> Idee von Chat
 -- count_today >= 50
-INSERT INTO Condition (type_id, operator, threshold) VALUES
-(9, '==', 1);   -- has_today == 1
+INSERT INTO Condition (type_id, period_id, operator, threshold) VALUES
+(9, 1, '==', 1);   -- has_today == 1
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (2, 1);
@@ -87,14 +92,30 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 -- Condition-Logik:
 -- sensor_temp > 30
 -- sensor_humidity < 20
-INSERT INTO Condition (type_id, operator, threshold) VALUES
-(1, '>', 30),  -- id 4
-(2, '<', 20);     -- id 5
+INSERT INTO Condition (type_id, period_id,operator, threshold) VALUES
+(1, 1, '>', 30),  -- id 4
+(2, 1, '<', 20);     -- id 5
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (3, 4),
 (3, 5);
 
+
+INSERT INTO Condition (type_id, period_id, operator, threshold) VALUES
+(1, 6, '>', 5),    -- id 6
+(2, 6, '>=', 42),  -- id 7
+(5, 6, '<', 15),   -- id 8
+(11, 6, '>', 3),   -- id 9
+(12, 6, '<=', 3),  -- id 10
+(13, 6, '!=', 50); -- id 11
+
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(18, 6),
+(18, 7),
+(18, 8),
+(18, 9),
+(18, 10),
+(18, 11);
 
 
 -- =========================================================
@@ -195,7 +216,7 @@ INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (20, 'FDS_2.png', 19), 
 (40, 'FDS_3.png', 20);
 
-INSERT INTO Achievement_Set (title, description, message, tier1_id, tier2_id, tier3_id)
+INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
     'Fine Dust Sentinel',
     'Capture extremely high PM2.5 values.',
@@ -232,7 +253,7 @@ INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (20, 'PAG_2.png', 22), 
 (40, 'PAG_3.png', 23);
 
-INSERT INTO Achievement_Set (title, description, message, tier1_id, tier2_id, tier3_id)
+INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
     'Pure Air Guardian',
     'Measured ultra-low fine particle pollution.',
@@ -266,7 +287,7 @@ INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (20, 'DPD_2.png', 25), 
 (40, 'DPD_3.png', 26);
 
-INSERT INTO Achievement_Set (title, description, message, tier1_id, tier2_id, tier3_id)
+INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
     'Dust Peak Detector',
     'Recorded unusually high PM10 concentrations.',

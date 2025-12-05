@@ -32,11 +32,8 @@ INSERT INTO Group_Member (member_id, group_id) VALUES
 --  Trigger Beispiel
 -- =========================================================
 INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
--- 1️⃣ Täglicher Check um 08:00 Uhr
 ('Täglicher 8-Uhr-Check', '0 0 8 * * ?', NULL, TRUE, '2025-11-14 08:00:00.000'),
--- 2️⃣ Wöchentlicher Montag-Trigger
 ('Montags-Statistik-Trigger', '0 0 9 ? * MON', NULL, TRUE, '2025-11-10 09:00:00.000'),
--- 3️⃣ Trigger ohne Zeitplan (nur durch Datenbedingungen ausgelöst)
 ('Datenbedingter Trigger', NULL, NULL, TRUE, NULL),
 ('Leaderboard Reset', '0 0 12 1 * ?', NULL, TRUE, NULL),
 ('Star Wars Tag', '0 38 11 4 MAY ?', NULL, TRUE, NULL),
@@ -197,52 +194,295 @@ INSERT INTO Statistic (history_id, event_type_id, action_id, created_at) VALUES
 -- =========================================================
 --  Achievements
 -- =========================================================
--- Achievement-Set 1: Level erreicht (Tier 1–3)
+
+-- Achievement-Set 1: Fine Dust Sentinel
+INSERT INTO condition (type_id, period_id, operator, threshold) VALUES
+(4, 1, '>=', 40),
+(4, 1, '>=', 60),    
+(4, 1, '>=', 80);   
+
+INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
+('Fine Dust Sentinel I', NUll, NULL, TRUE, NULL),
+('Fine Dust Sentinel II', NULL, NULL, TRUE, NULL),
+('Fine Dust Sentinel III', NULL, NULL, TRUE, NULL);
+
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(18, 6),
+(19, 7),
+(20, 8);
+
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'level_1.png', 1),  -- Tier 1
-(20, 'level_2.png', 2),  -- Tier 2
-(40, 'level_3.png', 3);
+(10, 'FDS_1.png', 18), 
+(20, 'FDS_2.png', 19), 
+(40, 'FDS_3.png', 20);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
-    'Level-Meister',
-    'Erreiche Level 1, 2 und 3.',
-    'Deine Gruppe steigt im Level auf!',
+    'Fine Dust Sentinel',
+    'Capture extremely high PM2.5 values.',
+    'Next tier achieved for Fine Dust Sentinel! Another extreme PM2.5 reading logged.',
     1, 2, 3
 );
 
+INSERT INTO Group_Achievement (group_id, achievement_id) VALUES 
+(1, 1),
+(1, 2),
+(2, 1),
+(3, 1),
+(3, 2),
+(3, 3);
+
+-- Achievement-Set 2: Pure Air Guardian
+INSERT INTO condition (type_id, period_id, operator, threshold) VALUES
+(3, 1, '<=', 15),
+(3, 1, '<=', 10),    
+(3, 1, '<=', 5);   
+
+INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
+('Pure Air Guardian I', NUll, NULL, TRUE, NULL),
+('Pure Air Guardian II', NULL, NULL, TRUE, NULL),
+('Pure Air Guardian III', NULL, NULL, TRUE, NULL);
+
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(21, 9),
+(22, 10),
+(23, 11);
+
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(15, 'activity_1.png', 4),
-(30, 'activity_2.png', 5),
-(60, 'activity_3.png', 6);
+(10, 'PAG_1.png', 21), 
+(20, 'PAG_2.png', 22), 
+(40, 'PAG_3.png', 23);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
-    'Wöchentliche Aktivität',
-    'Sammle Aktionen über mehrere Wochen.',
-    'Starke Aktivität pro Woche!',
+    'Pure Air Guardian',
+    'Measured ultra-low fine particle pollution.',
+    'You’ve hit the next tier of Pure Air Guardian! PM2.5 is exceptionally low again.',
     4, 5, 6
 );
 
+INSERT INTO Group_Achievement (group_id, achievement_id) VALUES 
+(2, 4),
+(2, 5),
+(3, 4);
+
+-- Achievement-Set 3: Dust Peak Detector
+INSERT INTO condition (type_id, period_id, operator, threshold) VALUES
+(6, 1, '>=', 50),
+(6, 1, '>=', 100),    
+(6, 1, '>=', 150);   
+
+INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
+('Dust Peak Detector I', NUll, NULL, TRUE, NULL),
+('Dust Peak Detector II', NULL, NULL, TRUE, NULL),
+('Dust Peak Detector III', NULL, NULL, TRUE, NULL);
+
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(24, 12),
+(25, 13),
+(26, 14);
+
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(5, 'alert_1.png', 7),
-(10, 'alert_2.png', 8),
-(25, 'alert_3.png', 9);
+(10, 'DPD_1.png', 24), 
+(20, 'DPD_2.png', 25), 
+(40, 'DPD_3.png', 26);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
-    'Alarmreaktionen',
-    'Reagiere auf kritische Werte.',
-    'Schnell & aufmerksam!',
+    'Dust Peak Detector',
+    'Recorded unusually high PM10 concentrations.',
+    'New tier reached: Dust Peak Detector! You recorded another major PM10 peak.',
     7, 8, 9
 );
 
--- Gruppe 1 hat Level 1 erreicht
-INSERT INTO Group_Achievement (group_id, achievement_id) VALUES (1, 1);
+INSERT INTO Group_Achievement (group_id, achievement_id) VALUES 
+(1, 7),
+(1, 8),
+(2, 7),
+(2, 8),
+(2, 9);
 
--- Gruppe 2 hat Level 2 erreicht
-INSERT INTO Group_Achievement (group_id, achievement_id) VALUES (2, 2);
+-- Achievement-Set 4: Clean Air Spotter
+INSERT INTO condition (type_id, period_id, operator, threshold) VALUES
+(5, 1, '<=', 5),
+(5, 1, '<=', 10),    
+(5, 1, '<=', 15);   
 
--- Gruppe 3 hat Alarmreaktion Tier 1 erreicht
-INSERT INTO Group_Achievement (group_id, achievement_id) VALUES (3, 7);
+INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
+('Clean Air Spotter I', NUll, NULL, TRUE, NULL),
+('Clean Air Spotter II', NULL, NULL, TRUE, NULL),
+('Clean Air Spotter III', NULL, NULL, TRUE, NULL);
+
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(27, 15),
+(28, 16),
+(29, 17);
+
+INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
+(10, 'CAS_1.png', 27), 
+(20, 'CAS_2.png', 28), 
+(40, 'CAS_3.png', 29);
+
+INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
+VALUES (
+    'Fine Dust Sentinel',
+    'Capture extremely high PM2.5 values.',
+    'Next tier achieved for Fine Dust Sentinel! Another extreme PM2.5 reading logged.',
+    10, 11, 12
+);
+
+INSERT INTO Group_Achievement (group_id, achievement_id) VALUES 
+(1, 10),
+(1, 11),
+(2, 10),
+(3, 10),
+(3, 11),
+(3, 12);
+
+-- Achievement-Set 5: Marathon Mapper
+INSERT INTO condition (type_id, period_id, operator, threshold) VALUES
+(9, 1, '>=', 50),
+(9, 1, '>=', 100),    
+(9, 1, '>=', 250);   
+
+INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
+('Marathon Mapper I', NUll, NULL, TRUE, NULL),
+('Marathon Mapper II', NULL, NULL, TRUE, NULL),
+('Marathon Mapper III', NULL, NULL, TRUE, NULL);
+
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(30, 18),
+(31, 19),
+(32, 20);
+
+INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
+(10, 'MM_1.png', 30), 
+(20, 'MM_2.png', 31), 
+(40, 'MM_3.png', 32);
+
+INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
+VALUES (
+    'marathon Mapper',
+    'Covered an impressive amount of distance while collecting data.',
+    'Great progress! You reached a new Marathon Mapper tier by covering even more distance.',
+    13, 14, 15
+);
+
+INSERT INTO Group_Achievement (group_id, achievement_id) VALUES 
+(1, 13),
+(1, 14),
+(1, 15),
+(2, 13),
+(3, 13);
+
+-- Achievement-Set 6: Unbroken Flame
+INSERT INTO condition (type_id, period_id, operator, threshold) VALUES
+(1, 1, '>=', 50),
+(1, 1, '>=', 250),    
+(1, 1, '>=', 1000);   
+
+INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
+('Unbroken Flame I', NUll, NULL, TRUE, NULL),
+('Unbroken Flame II', NULL, NULL, TRUE, NULL),
+('Unbroken Flame III', NULL, NULL, TRUE, NULL);
+
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(33, 21),
+(34, 22),
+(35, 23);
+
+INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
+(10, 'UF_1.png', 33), 
+(20, 'UF_2.png', 34), 
+(40, 'UF_3.png', 35);
+
+INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
+VALUES (
+    'Unbroken Flame',
+    'Maintained a long, unbroken series of measurements.',
+    'Your streak keeps burning! You`ve reached the next Unbroken Flame tier.',
+    16, 17, 18
+);
+
+INSERT INTO Group_Achievement (group_id, achievement_id) VALUES 
+(1, 16),
+(1, 17),
+(2, 16),
+(3, 16),
+(3, 17),
+(3, 18);
+
+-- Achievement-Set 7: Deep Freeze Explorer
+INSERT INTO condition (type_id, period_id, operator, threshold) VALUES
+(7, 1, '<=', 10),
+(7, 1, '<=', 0),    
+(7, 1, '<=', -10);   
+
+INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
+('Deep Freeze Explorer I', NUll, NULL, TRUE, NULL),
+('Deep Freeze Explorer II', NULL, NULL, TRUE, NULL),
+('Deep Freeze Explorer III', NULL, NULL, TRUE, NULL);
+
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(36, 24),
+(37, 25),
+(38, 26);
+
+INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
+(10, 'DFE_1.png', 36), 
+(20, 'DFE_2.png', 37), 
+(40, 'DFE_3.png', 38);
+
+INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
+VALUES (
+    'Deep Freeze Explorer',
+    'Collected data in extremely cold conditions.',
+    'Next tier achieved: Deep Freeze Explorer! Your cold-weather measurements keep getting stronger.',
+    19, 20, 21
+);
+
+INSERT INTO Group_Achievement (group_id, achievement_id) VALUES 
+(1, 19),
+(2, 19),
+(2, 20),
+(2, 21),
+(3, 19);
+
+-- Achievement-Set 8: Extreme Heat Scout
+INSERT INTO condition (type_id, period_id, operator, threshold) VALUES
+(8, 1, '>=', 25),
+(8, 1, '>=', 32),    
+(8, 1, '>=', 40);   
+
+INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
+('Extreme Heat Scout I', NUll, NULL, TRUE, NULL),
+('Extreme Heat Scout II', NULL, NULL, TRUE, NULL),
+('Extreme Heat Scout III', NULL, NULL, TRUE, NULL);
+
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(39, 27),
+(40, 28),
+(41, 29);
+
+INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
+(10, 'EHS_1.png', 39), 
+(20, 'EHS_2.png', 40), 
+(40, 'EHS_3.png', 41);
+
+INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
+VALUES (
+    'Extreme Heat Scout',
+    'Measured air quality during exceptionally high temperatures.',
+    'You’ve reached the next tier of Extreme Heat Scout! Your measurements in extreme heat are leveling up.',
+    22, 23, 24
+);
+
+INSERT INTO Group_Achievement (group_id, achievement_id) VALUES 
+(1, 22),
+(1, 23),
+(2, 22),
+(3, 22),
+(3, 23),
+(3, 24);
+
 

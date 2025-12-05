@@ -202,7 +202,7 @@ CREATE TABLE Achievement_Set (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
-    message TEXT NOT NULL,
+    body TEXT NOT NULL,
     tier1_id INT NOT NULL REFERENCES Achievement_Tier(id) ON DELETE CASCADE,
     tier2_id INT NOT NULL REFERENCES Achievement_Tier(id) ON DELETE CASCADE,
     tier3_id INT NOT NULL REFERENCES Achievement_Tier(id) ON DELETE CASCADE
@@ -447,7 +447,7 @@ SELECT
     s.id AS achievement_set_id,
     s.title AS set_title,
     s.description AS set_description,
-    s.message AS set_message
+    s.body AS set_body
 FROM Group_Achievement ga
 JOIN "group" g ON ga.group_id = g.id
 LEFT JOIN Group_Picture p ON g.picture_id = p.id
@@ -464,7 +464,7 @@ SELECT
     s.id AS achievement_set_id,
     s.title AS achievement_title,
     s.description AS achievement_description,
-    s.message AS achievement_message,
+    s.body AS achievement_body,
 
     --level
     CASE
@@ -513,7 +513,7 @@ SELECT
     s.id AS achievement_set_id,
     s.title AS achievement_title,
     s.description AS achievement_description,
-    s.message AS achievement_message,
+    s.body AS achievement_body,
 
     jsonb_build_array(
         jsonb_build_object(

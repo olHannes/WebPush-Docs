@@ -203,7 +203,7 @@ INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (20, 'level_2.png', 2),  -- Tier 2
 (40, 'level_3.png', 3);
 
-INSERT INTO Achievement_Set (title, description, message, tier1_id, tier2_id, tier3_id)
+INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
     'Level-Meister',
     'Erreiche Level 1, 2 und 3.',
@@ -216,7 +216,7 @@ INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (30, 'activity_2.png', 5),
 (60, 'activity_3.png', 6);
 
-INSERT INTO Achievement_Set (title, description, message, tier1_id, tier2_id, tier3_id)
+INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
     'Wöchentliche Aktivität',
     'Sammle Aktionen über mehrere Wochen.',
@@ -229,7 +229,7 @@ INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, 'alert_2.png', 8),
 (25, 'alert_3.png', 9);
 
-INSERT INTO Achievement_Set (title, description, message, tier1_id, tier2_id, tier3_id)
+INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
     'Alarmreaktionen',
     'Reagiere auf kritische Werte.',

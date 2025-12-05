@@ -51,20 +51,25 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Weekly XP Summary', '0 0 20 ? * FRI', NULL, TRUE, NULL),
 ('Monthly Achievement Summary', '0 0 20 1 * ?', NULL, TRUE, NULL),
 ('Leaderboard Reset Reminder', '0 0 12 L-2 * ?', NULL, TRUE, NULL),
-('WebPush Anniversary', '0 10 14 14 OCT ?', NULL, TRUE, NULL);
+('WebPush Anniversary', '0 10 14 14 OCT ?', NULL, TRUE, NULL),
+('Achievement Test', NULL, NULL, TRUE, NULL);
 
 -- =========================================================
 --  Conditions
 --  Jede Condition ist eine einfache Prüfung.
 -- =========================================================
+INSERT INTO Condition_Period (type, period_date, time_start, time_end, range_start, range_end) VALUES                                                                         -- id 6
+('date', '2025-12-25', NULL, NULL, NULL, NULL),                                     -- id 7
+('daily_time', NULL, '14:00:00', '16:00:00', NULL, NULL),                           -- id 8
+('range', NULL, NULL, NULL, '2025-10-28 06:13:51.071', '2025-10-28 06:56:47.317');  -- id 9
 
 -- Beispiel-Trigger 1: Täglicher Check
 -- Condition-Logik:
 -- streak >= 5
 -- xp     >= 100
-INSERT INTO condition (type_id, operator, threshold) VALUES
-(1, '>=', 5),   -- id 1
-(12, '>=', 100);     -- id 2
+INSERT INTO Condition (type_id, period_id, operator, threshold) VALUES
+(1, 1, '>=', 5),   -- id 1
+(12, 1, '>=', 100);     -- id 2
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (1, 1),
@@ -74,8 +79,8 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 -- Beispiel-Trigger 2: Montags-Statistik-Trigger
 -- Condition-Logik: -> Idee von Chat
 -- count_today >= 50
-INSERT INTO Condition (type_id, operator, threshold) VALUES
-(9, '==', 1);   -- has_today == 1
+INSERT INTO Condition (type_id, period_id, operator, threshold) VALUES
+(9, 1, '==', 1);   -- has_today == 1
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (2, 1);
@@ -90,14 +95,30 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 -- Condition-Logik:
 -- sensor_temp > 30
 -- sensor_humidity < 20
-INSERT INTO Condition (type_id, operator, threshold) VALUES
-(1, '>', 30),  -- id 4
-(2, '<', 20);     -- id 5
+INSERT INTO Condition (type_id, period_id,operator, threshold) VALUES
+(1, 1, '>', 30),  -- id 4
+(2, 1, '<', 20);     -- id 5
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (3, 4),
 (3, 5);
 
+
+INSERT INTO Condition (type_id, period_id, operator, threshold) VALUES
+(1, 6, '>', 5),    -- id 6
+(2, 6, '>=', 42),  -- id 7
+(5, 6, '<', 15),   -- id 8
+(11, 6, '>', 3),   -- id 9
+(12, 6, '<=', 3),  -- id 10
+(13, 6, '!=', 50); -- id 11
+
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(18, 6),
+(18, 7),
+(18, 8),
+(18, 9),
+(18, 10),
+(18, 11);
 
 
 -- =========================================================
@@ -179,7 +200,8 @@ INSERT INTO Statistic (history_id, event_type_id, action_id, created_at) VALUES
 INSERT INTO Achievement (title, description, message, reward_xp, image_url, trigger_id) VALUES
 ('Level 1 erreicht', 'Deine Gruppe hat Level 1 erreicht.', 'Glückwunsch zu Level 1!', 25, NULL, 1),
 ('Wochenziel erreicht', '50 Aktionen in einer Woche!', 'Sehr gute Aktivität!', 50, NULL, 2),
-('Alarmreaktion', 'Du hast auf kritische Werte reagiert.', 'Gut aufgepasst!', 20, NULL, 3);
+('Alarmreaktion', 'Du hast auf kritische Werte reagiert.', 'Gut aufgepasst!', 20, NULL, 3),
+('Test Achievement', 'Dies ist ein Test-Achievement.', 'Dies ist nur ein Test.', 100, NULL, 18);
 -- =========================================================
 --  Zugewiesene Achievements zu Gruppen
 -- =========================================================

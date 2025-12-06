@@ -48,8 +48,7 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Weekly XP Summary', '0 0 20 ? * FRI', NULL, TRUE, NULL),
 ('Monthly Achievement Summary', '0 0 20 1 * ?', NULL, TRUE, NULL),
 ('Leaderboard Reset Reminder', '0 0 12 L-2 * ?', NULL, TRUE, NULL),
-('WebPush Anniversary', '0 10 14 14 OCT ?', NULL, TRUE, NULL),
-('Achievement Test', NULL, NULL, TRUE, NULL);
+('WebPush Anniversary', '0 10 14 14 OCT ?', NULL, TRUE, NULL);
 
 -- =========================================================
 --  Conditions
@@ -99,23 +98,6 @@ INSERT INTO Condition (type_id, period_id,operator, threshold) VALUES
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (3, 4),
 (3, 5);
-
-
-INSERT INTO Condition (type_id, period_id, operator, threshold) VALUES
-(1, 6, '>', 5),    -- id 6
-(2, 6, '>=', 42),  -- id 7
-(5, 6, '<', 15),   -- id 8
-(11, 6, '>', 3),   -- id 9
-(12, 6, '<=', 3),  -- id 10
-(13, 6, '!=', 50); -- id 11
-
-INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(18, 6),
-(18, 7),
-(18, 8),
-(18, 9),
-(18, 10),
-(18, 11);
 
 
 -- =========================================================

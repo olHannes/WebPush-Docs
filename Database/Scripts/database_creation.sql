@@ -90,32 +90,23 @@ CREATE TABLE Condition_Period (
     type TEXT NOT NULL DEFAULT 'all'
         CHECK (type IN ('all', 'year', 'month', 'week', 'day', 'route', 'date', 'daily_time', 'range')),
     period_date DATE NULL,
-    time_start TIME NULL,
-    time_end   TIME NULL,
-    range_start TIMESTAMP NULL,
-    range_end   TIMESTAMP NULL,
+    period_start TIMESTAMP NULL,
+    period_end   TIMESTAMP NULL,
     CONSTRAINT period_validation CHECK (
         (type = 'date'
-        AND period_date IS NOT NULL
-        AND time_start IS NULL AND time_end IS NULL
-        AND range_start IS NULL AND range_end IS NULL)
+            AND period_date IS NOT NULL
+            AND period_start IS NULL AND period_end IS NULL)
         OR
-        (type = 'daily_time'
-            AND time_start IS NOT NULL AND time_end IS NOT NULL
-            AND period_date IS NULL
-            AND range_start IS NULL AND range_end IS NULL)
-        OR
-        (type = 'range'
-            AND range_start IS NOT NULL AND range_end IS NOT NULL
-            AND period_date IS NULL
-            AND time_start IS NULL AND time_end IS NULL)
+        (type IN ('daily_time', 'range')
+            AND period_start IS NOT NULL AND period_end IS NOT NULL
+            AND period_date IS NULL)
         OR
         (type IN ('all', 'year', 'month', 'week', 'day', 'route')
             AND period_date IS NULL
-            AND time_start IS NULL AND time_end IS NULL
-            AND range_start IS NULL AND range_end IS NULL)
+            AND period_start IS NULL AND period_end IS NULL)
     )
 );
+
 
 INSERT INTO Condition_Period (type) VALUES
 ('all'),                                                                            -- id 1
@@ -299,10 +290,8 @@ SELECT
                         'period_id', p.id,
                         'period_type', p.type,
                         'period_date', p.period_date,
-                        'time_start', p.time_start,
-                        'time_end', p.time_end,
-                        'range_start', p.range_start,
-                        'range_end', p.range_end
+                        'period_start', p.period_start,
+                        'period_end', p.period_end
                     )
             END
             ORDER BY c.id
@@ -341,10 +330,8 @@ SELECT
                         'period_id', p.id,
                         'period_type', p.type,
                         'period_date', p.period_date,
-                        'time_start', p.time_start,
-                        'time_end', p.time_end,
-                        'range_start', p.range_start,
-                        'range_end', p.range_end
+                        'period_start', p.period_start,
+                        'period_end', p.period_end
                     )
             END
             ORDER BY c.id
@@ -382,10 +369,8 @@ SELECT
                         'period_id', p.id,
                         'period_type', p.type,
                         'period_date', p.period_date,
-                        'time_start', p.time_start,
-                        'time_end', p.time_end,
-                        'range_start', p.range_start,
-                        'range_end', p.range_end
+                        'period_start', p.period_start,
+                        'period_end', p.period_end
                     )
             END
             ORDER BY c.id

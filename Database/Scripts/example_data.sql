@@ -54,10 +54,10 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 --  Conditions
 --  Jede Condition ist eine einfache Prüfung.
 -- =========================================================
-INSERT INTO Condition_Period (type, period_date, time_start, time_end, range_start, range_end) VALUES                                                                         -- id 6
-('date', '2025-12-25', NULL, NULL, NULL, NULL),                                     -- id 7
-('daily_time', NULL, '14:00:00', '16:00:00', NULL, NULL),                           -- id 8
-('range', NULL, NULL, NULL, '2025-10-28 06:13:51.071', '2025-10-28 06:56:47.317');  -- id 9
+INSERT INTO Condition_Period (type, period_date, period_start, period_end) VALUES
+('date', '2025-12-25', NULL, NULL),  -- id 7
+('daily_time', NULL, '2025-12-06 14:00:00', '2025-12-06 16:00:00'), -- id 8
+('range', NULL, '2025-10-28 06:13:51', '2025-10-28 06:56:47'); -- id 9
 
 -- Beispiel-Trigger 1: Täglicher Check
 -- Condition-Logik:
@@ -468,8 +468,8 @@ INSERT INTO Group_Achievement (group_id, achievement_id) VALUES
 (3, 24);
 
 -- Achievement-Set 9: Night Shift Monitor
-INSERT INTO Condition_Period (type, period_date, time_start, time_end, range_start, range_end) VALUES                                                                         -- id 6
-('daily_time', NUll, '20:00:00', '23:59:59', NULL, NULL);                                   
+INSERT INTO Condition_Period (type, period_date, period_start, period_end) VALUES
+('daily_time', NULL, '2025-12-06 20:00:00', '2025-12-06 23:59:59'); -- id 10                                 
 
 INSERT INTO condition (type_id, period_id, operator, threshold) VALUES
 (11, 10, '>=', 10),
@@ -508,8 +508,8 @@ INSERT INTO Group_Achievement (group_id, achievement_id) VALUES
 (3, 27);
 
 -- Achievement-Set 10: Dawn Tracker
-INSERT INTO Condition_Period (type, period_date, time_start, time_end, range_start, range_end) VALUES                                                                         -- id 6
-('daily_time', NUll, '02:00:0', '06:00:00', NULL, NULL);                                     
+INSERT INTO Condition_Period (type, period_date, period_start, period_end) VALUES
+('daily_time', NULL, '2025-12-06 02:00:00', '2025-12-06 06:00:00'); -- id 11                                    
 
 INSERT INTO condition (type_id, period_id, operator, threshold) VALUES
 (11, 11, '>=', 10),

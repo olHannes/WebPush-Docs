@@ -344,7 +344,7 @@ INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
-    'marathon Mapper',
+    'Marathon Mapper',
     'Covered an impressive amount of distance while collecting data.',
     'Great progress! You reached a new Marathon Mapper tier by covering even more distance.',
     13, 14, 15

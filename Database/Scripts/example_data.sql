@@ -359,9 +359,9 @@ INSERT INTO Group_Achievement (group_id, achievement_id) VALUES
 
 -- Achievement-Set 6: Unbroken Flame
 INSERT INTO condition (type_id, period_id, operator, threshold) VALUES
-(1, 1, '>=', 50),
-(1, 1, '>=', 250),    
-(1, 1, '>=', 1000);   
+(2, 1, '>=', 50),
+(2, 1, '>=', 250),    
+(2, 1, '>=', 1000);   
 
 INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
 ('Unbroken Flame I', NUll, NULL, TRUE, NULL),

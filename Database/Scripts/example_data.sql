@@ -455,7 +455,7 @@ INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3
 VALUES (
     'Extreme Heat Scout',
     'Measured air quality during exceptionally high temperatures.',
-    'You’ve reached the next tier of Extreme Heat Scout! Your measurements in extreme heat are leveling up.',
+    'You`ve reached the next tier of Extreme Heat Scout! Your measurements in extreme heat are leveling up.',
     22, 23, 24
 );
 
@@ -467,4 +467,83 @@ INSERT INTO Group_Achievement (group_id, achievement_id) VALUES
 (3, 23),
 (3, 24);
 
+-- Achievement-Set 9: Night Shift Monitor
+INSERT INTO Condition_Period (type, period_date, time_start, time_end, range_start, range_end) VALUES                                                                         -- id 6
+('daily_time', NUll, '20:00:00', '23:59:59', NULL, NULL);                                   
+
+INSERT INTO condition (type_id, period_id, operator, threshold) VALUES
+(11, 10, '>=', 10),
+(11, 10, '>=', 25),    
+(11, 10, '>=', 50);   
+
+INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
+('Night Shift Monitor I', NUll, NULL, TRUE, NULL),
+('Night Shift Monitor II', NULL, NULL, TRUE, NULL),
+('Night Shift Monitor III', NULL, NULL, TRUE, NULL);
+
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(42, 30),
+(43, 31),
+(44, 32);
+
+INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
+(10, 'NSM_1.png', 42), 
+(20, 'NSM_2.png', 43), 
+(40, 'NSM_3.png', 44);
+
+INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
+VALUES (
+    'Night Shift Monitor',
+    'Performed measurements deep into the night.(8pm-12pm)',
+    'Another night, another tier! Night Shift Monitor has reached the next level.',
+    25, 26, 27
+);
+
+INSERT INTO Group_Achievement (group_id, achievement_id) VALUES 
+(1, 25),
+(1, 26),
+(2, 25),
+(3, 25),
+(3, 26),
+(3, 27);
+
+-- Achievement-Set 10: Dawn Tracker
+INSERT INTO Condition_Period (type, period_date, time_start, time_end, range_start, range_end) VALUES                                                                         -- id 6
+('daily_time', NUll, '02:00:0', '06:00:00', NULL, NULL);                                     
+
+INSERT INTO condition (type_id, period_id, operator, threshold) VALUES
+(11, 11, '>=', 10),
+(11, 11, '>=', 25),    
+(11, 11, '>=', 50);   
+
+INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
+('Dawn Tracker I', NUll, NULL, TRUE, NULL),
+('Dawn Tracker II', NULL, NULL, TRUE, NULL),
+('Dawn Tracker III', NULL, NULL, TRUE, NULL);
+
+INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(45, 33),
+(46, 34),
+(47, 35);
+
+INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
+(10, 'DT_1.png', 45), 
+(20, 'DT_2.png', 46), 
+(40, 'DT_3.png', 47);
+
+INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
+VALUES (
+    'Dawn Tracker',
+    'Collected data at the earliest hours of the day.(2am-6am)',
+    'You advanced to a new Dawn Tracker tier by measuring at dawn again.',
+    28, 29, 30
+);
+
+INSERT INTO Group_Achievement (group_id, achievement_id) VALUES 
+(1, 28),
+(2, 28),
+(2, 29),
+(2, 30),
+(3, 28),
+(3, 29);
 

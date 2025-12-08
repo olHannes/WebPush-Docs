@@ -402,33 +402,75 @@ FROM gamification."group" g
 LEFT JOIN gamification.Group_Picture p ON g.picture_id = p.id
 ORDER BY g.current_xp DESC;
 
+CREATE OR REPLACE VIEW view_period_types AS
+SELECT DISTINCT
+    type
+FROM gamification.Condition_Period;
+
 CREATE OR REPLACE VIEW view_groups AS
 WITH const AS (
     SELECT
         1000::numeric AS base_xp_per_level,
         1.1::numeric  AS xp_increase_per_level
-)
-SELECT
-    g.id AS group_id,
-    g.data_table,
-    g.last_activity,
-    g.name AS group_name,
-    g.streak,
-    g.level_xp,
-    g.current_xp,
-    1 +
+),
+lvl AS (
+    SELECT
+        g.*,
+        1 +
         FLOOR(
             LOG(
                 GREATEST(g.current_xp, 0) * (const.xp_increase_per_level - 1)
                 / const.base_xp_per_level + 1
+            ) / LOG(const.xp_increase_per_level)
+        ) AS level
+    FROM gamification."group" g, const
+),
+calc AS (
+    SELECT
+        l.*,
+
+        /* Level start XP */
+        (
+            const.base_xp_per_level *
+            (
+                POWER(const.xp_increase_per_level, l.level - 1) - 1
+            ) / (const.xp_increase_per_level - 1)
+        ) AS start_xp,
+
+        /* Level end XP */
+        (
+            const.base_xp_per_level *
+            (
+                POWER(const.xp_increase_per_level, l.level) - 1
+            ) / (const.xp_increase_per_level - 1)
+        ) AS end_xp
+
+    FROM lvl l, const
+)
+SELECT
+    c.id AS group_id,
+    c.data_table,
+    c.last_activity,
+    c.name AS group_name,
+    c.streak,
+    c.level_xp,
+    c.current_xp,
+    c.level,
+    c.picture_id,
+    p.picture,
+
+    /* progress in % */
+    CASE
+        WHEN c.current_xp < c.start_xp THEN 0
+        WHEN c.end_xp = c.start_xp THEN 1
+        ELSE
+            ROUND(
+                ((c.current_xp - c.start_xp) / (c.end_xp - c.start_xp)), 2
             )
-            / LOG(const.xp_increase_per_level)
-        ) AS level,
-    g.picture_id,
-    p.picture
-FROM gamification."group" g
-LEFT JOIN gamification.Group_Picture p ON g.picture_id = p.id,
-const;
+    END AS progress
+
+FROM calc c
+LEFT JOIN gamification.Group_Picture p ON c.picture_id = p.id;
 
 CREATE OR REPLACE VIEW view_achievement_to_send AS
 SELECT t.id AS tier_id,

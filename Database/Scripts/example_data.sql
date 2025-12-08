@@ -133,7 +133,7 @@ INSERT INTO Notification (title, body, icon_url, renotify, silent, trigger_id) V
 ('Monthly Achievement Summary 📅', 'Your monthly achievement overview is available!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 15),
 ('Leaderboard Reset Reminder 🔁', 'The leaderboard reset is imminent!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 16),
 ('WebPush Anniversary 🥳', 'Celebrate our Anniversary with us!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 17),
-('Streak Reset 🔥', 'Your streak has been reset. Start anew today!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 19);
+('Streak Reset 🔥', 'Your streak has been reset. Start anew today!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 18);
 
 
 -- =========================================================

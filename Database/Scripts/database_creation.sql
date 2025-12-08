@@ -114,7 +114,7 @@ INSERT INTO Condition_Period (type) VALUES
 ('month'),                                                                          -- id 3
 ('week'),                                                                           -- id 4
 ('day'),                                                                            -- id 5
-('route');
+('route');                                                                          -- id 6
 
 CREATE TABLE Condition (
     id SERIAL PRIMARY KEY,

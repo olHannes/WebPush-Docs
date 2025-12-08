@@ -462,10 +462,10 @@ SELECT
     /* progress in % */
     CASE
         WHEN c.current_xp < c.start_xp THEN 0
-        WHEN c.end_xp = c.start_xp THEN 1
+        WHEN c.end_xp = c.start_xp THEN 100
         ELSE
             ROUND(
-                ((c.current_xp - c.start_xp) / (c.end_xp - c.start_xp)), 2
+                ((c.current_xp - c.start_xp) / (c.end_xp - c.start_xp)) * 100, 2
             )
     END AS progress
 

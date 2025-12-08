@@ -48,7 +48,8 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Weekly XP Summary', '0 0 20 ? * FRI', NULL, TRUE, NULL),
 ('Monthly Achievement Summary', '0 0 20 1 * ?', NULL, TRUE, NULL),
 ('Leaderboard Reset Reminder', '0 0 12 L-2 * ?', NULL, TRUE, NULL),
-('WebPush Anniversary', '0 10 14 14 OCT ?', NULL, TRUE, NULL);
+('WebPush Anniversary', '0 10 14 14 OCT ?', NULL, TRUE, NULL),
+('Streak Reset', '0 59 23 * * ?', NULL, TRUE, NULL);
 
 -- =========================================================
 --  Conditions
@@ -56,7 +57,7 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 -- =========================================================
 INSERT INTO Condition_Period (type, period_date, period_start, period_end) VALUES
 ('date', '2025-12-25', NULL, NULL),  -- id 7
-('daily_time', NULL, '2025-12-06 14:00:00', '2025-12-06 16:00:00'), -- id 8
+('daily_time', NULL, CURRENT_DATE + time '00:00:00', CURRENT_DATE + time '23:59:59'), -- id 8
 ('range', NULL, '2025-10-28 06:13:51', '2025-10-28 06:56:47'); -- id 9
 
 -- Beispiel-Trigger 1: Täglicher Check
@@ -65,18 +66,20 @@ INSERT INTO Condition_Period (type, period_date, period_start, period_end) VALUE
 -- xp     >= 100
 INSERT INTO Condition (type_id, period_id, operator, threshold) VALUES
 (1, 1, '>=', 5),   -- id 1
-(12, 1, '>=', 100);     -- id 2
+(12, 1, '>=', 100),     -- id 2
+(1, 8, '>', 0);    -- id 3
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (1, 1),
-(1, 2);
+(1, 2),
+(18, 8);
 
 
 -- Beispiel-Trigger 2: Montags-Statistik-Trigger
 -- Condition-Logik: -> Idee von Chat
 -- count_today >= 50
 INSERT INTO Condition (type_id, period_id, operator, threshold) VALUES
-(9, 1, '==', 1);   -- has_today == 1
+(9, 1, '==', 1);   -- id 4
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (2, 1);
@@ -92,12 +95,12 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 -- sensor_temp > 30
 -- sensor_humidity < 20
 INSERT INTO Condition (type_id, period_id,operator, threshold) VALUES
-(1, 1, '>', 30),  -- id 4
-(2, 1, '<', 20);     -- id 5
+(1, 1, '>', 30),  -- id 5
+(2, 1, '<', 20);     -- id 6
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(3, 4),
-(3, 5);
+(3, 5),
+(3, 6);
 
 
 -- =========================================================
@@ -125,11 +128,12 @@ INSERT INTO Notification (title, body, icon_url, renotify, silent, trigger_id) V
 ('Halloween 🎃', 'Spooky greetings for Halloween!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 10),
 ('Easter 🐰', 'Happy Easter!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 11),
 ('Tag der Arbeit 🛠️', 'Es ist Zeit Daten zu sammeln!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 12),
-('Daily Streak Reminder 🍃', 'Keep your streak going!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 13),
+('Daily Streak Reminder 🍃', 'Keep your streak going! Only a few hours left to maintain your streak.', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 13),
 ('Weekly XP Summary 📊', 'Your weekly XP summary is here!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 14),
 ('Monthly Achievement Summary 📅', 'Your monthly achievement overview is available!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 15),
 ('Leaderboard Reset Reminder 🔁', 'The leaderboard reset is imminent!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 16),
-('WebPush Anniversary 🥳', 'Celebrate our Anniversary with us!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 17);
+('WebPush Anniversary 🥳', 'Celebrate our Anniversary with us!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 17),
+('Streak Reset 🔥', 'Your streak has been reset. Start anew today!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 19);
 
 
 -- =========================================================
@@ -189,14 +193,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Fine Dust Sentinel III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(18, 6),
-(19, 7),
-(20, 8);
+(19, 6),
+(20, 7),
+(21, 8);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'FDS_1.png', 18), 
-(20, 'FDS_2.png', 19), 
-(40, 'FDS_3.png', 20);
+(10, 'FDS_1.png', 19), 
+(20, 'FDS_2.png', 20), 
+(40, 'FDS_3.png', 21);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -226,14 +230,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Pure Air Guardian III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(21, 9),
-(22, 10),
-(23, 11);
+(22, 9),
+(23, 10),
+(24, 11);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'PAG_1.png', 21), 
-(20, 'PAG_2.png', 22), 
-(40, 'PAG_3.png', 23);
+(10, 'PAG_1.png', 22), 
+(20, 'PAG_2.png', 23), 
+(40, 'PAG_3.png', 24);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -260,14 +264,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Dust Peak Detector III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(24, 12),
-(25, 13),
-(26, 14);
+(25, 12),
+(26, 13),
+(27, 14);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'DPD_1.png', 24), 
-(20, 'DPD_2.png', 25), 
-(40, 'DPD_3.png', 26);
+(10, 'DPD_1.png', 25), 
+(20, 'DPD_2.png', 26), 
+(40, 'DPD_3.png', 27);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -296,14 +300,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Clean Air Spotter III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(27, 15),
-(28, 16),
-(29, 17);
+(28, 15),
+(29, 16),
+(30, 17);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'CAS_1.png', 27), 
-(20, 'CAS_2.png', 28), 
-(40, 'CAS_3.png', 29);
+(10, 'CAS_1.png', 28), 
+(20, 'CAS_2.png', 29), 
+(40, 'CAS_3.png', 30);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -333,14 +337,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Marathon Mapper III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(30, 18),
-(31, 19),
-(32, 20);
+(31, 18),
+(32, 19),
+(33, 20);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'MM_1.png', 30), 
-(20, 'MM_2.png', 31), 
-(40, 'MM_3.png', 32);
+(10, 'MM_1.png', 31), 
+(20, 'MM_2.png', 32), 
+(40, 'MM_3.png', 33);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -369,14 +373,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Unbroken Flame III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(33, 21),
-(34, 22),
-(35, 23);
+(34, 21),
+(35, 22),
+(36, 23);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'UF_1.png', 33), 
-(20, 'UF_2.png', 34), 
-(40, 'UF_3.png', 35);
+(10, 'UF_1.png', 34), 
+(20, 'UF_2.png', 35), 
+(40, 'UF_3.png', 36);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -406,14 +410,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Deep Freeze Explorer III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(36, 24),
-(37, 25),
-(38, 26);
+(37, 24),
+(38, 25),
+(39, 26);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'DFE_1.png', 36), 
-(20, 'DFE_2.png', 37), 
-(40, 'DFE_3.png', 38);
+(10, 'DFE_1.png', 37), 
+(20, 'DFE_2.png', 38), 
+(40, 'DFE_3.png', 39);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -442,14 +446,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Extreme Heat Scout III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(39, 27),
-(40, 28),
-(41, 29);
+(40, 27),
+(41, 28),
+(42, 29);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'EHS_1.png', 39), 
-(20, 'EHS_2.png', 40), 
-(40, 'EHS_3.png', 41);
+(10, 'EHS_1.png', 40), 
+(20, 'EHS_2.png', 41), 
+(40, 'EHS_3.png', 42);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -482,14 +486,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Night Shift Monitor III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(42, 30),
-(43, 31),
-(44, 32);
+(43, 30),
+(44, 31),
+(45, 32);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'NSM_1.png', 42), 
-(20, 'NSM_2.png', 43), 
-(40, 'NSM_3.png', 44);
+(10, 'NSM_1.png', 43), 
+(20, 'NSM_2.png', 44), 
+(40, 'NSM_3.png', 45);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -522,14 +526,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Dawn Tracker III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(45, 33),
-(46, 34),
-(47, 35);
+(46, 33),
+(47, 34),
+(48, 35);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'DT_1.png', 45), 
-(20, 'DT_2.png', 46), 
-(40, 'DT_3.png', 47);
+(10, 'DT_1.png', 46), 
+(20, 'DT_2.png', 47), 
+(40, 'DT_3.png', 48);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (

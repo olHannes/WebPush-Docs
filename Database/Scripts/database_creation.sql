@@ -402,7 +402,12 @@ FROM gamification."group" g
 LEFT JOIN gamification.Group_Picture p ON g.picture_id = p.id
 ORDER BY g.current_xp DESC;
 
-CREATE OR REPLACE VIEW view_groups AS 
+CREATE OR REPLACE VIEW view_groups AS
+WITH const AS (
+    SELECT
+        1000::numeric AS base_xp_per_level,
+        1.1::numeric  AS xp_increase_per_level
+)
 SELECT
     g.id AS group_id,
     g.data_table,
@@ -411,10 +416,19 @@ SELECT
     g.streak,
     g.level_xp,
     g.current_xp,
+    1 +
+        FLOOR(
+            LOG(
+                GREATEST(g.current_xp, 0) * (const.xp_increase_per_level - 1)
+                / const.base_xp_per_level + 1
+            )
+            / LOG(const.xp_increase_per_level)
+        ) AS level,
     g.picture_id,
     p.picture
 FROM gamification."group" g
-LEFT JOIN gamification.Group_Picture p ON g.picture_id = p.id;
+LEFT JOIN gamification.Group_Picture p ON g.picture_id = p.id,
+const;
 
 CREATE OR REPLACE VIEW view_achievement_to_send AS
 SELECT t.id AS tier_id,

@@ -72,7 +72,7 @@ INSERT INTO Condition (type_id, period_id, operator, threshold) VALUES
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (1, 1),
 (1, 2),
-(18, 8);
+(18, 3);
 
 
 -- Beispiel-Trigger 2: Montags-Statistik-Trigger

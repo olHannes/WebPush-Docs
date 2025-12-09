@@ -65,61 +65,50 @@ CREATE TABLE Trigger (
 CREATE TABLE Condition_Type (
     id SERIAL PRIMARY KEY,
     type TEXT NOT NULL UNIQUE,
-    url TEXT NULL
+    url TEXT NOT NULL,
+    periodic BOOLEAN DEFAULT FALSE
 );
 
-INSERT INTO Condition_Type (type, url) VALUES
-    ('count', 'http://localhost:8080/SmartDataAirquality/smartdata/records/'),
-    -- könnte durch count gelöst werden: ('active', 'http://localhost:8080/SmartDataAirquality/smartdata/records/group?storage=gamification&includes=last_activity&filter=id,eq,{id}filter=last_activity,ge,{activity_date}&filter=last_activity,lt,{activity_date}'),
-    ('streak', NULL/*'http://localhost:8080/SmartDataAirquality/smartdata/records/group/{id}?storage=gamification&includes=streak'*/),
-    ('level', NULL/*'http://localhost:8080/SmartDataAirquality/smartdata/records/group/{id}?storage=gamification&includes=level_xp'*/),
-    ('xp', NULL/*'http://localhost:8080/SmartDataAirquality/smartdata/records/group/{id}?storage=gamification&includes=current_xp'*/),
-    ('pm2_5_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5'),
-    ('pm2_5_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5'),
-    ('pm10_0_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0'),
-    ('pm10_0_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0'),
-    ('temp_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=temp1'),
-    ('temp_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=temp1'),
-    ('distance', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/distance?smartdataurl=/SmartDataAirquality&storage=smartmonitoring'),
-    ('duration', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/duration?smartdataurl=/SmartDataAirquality&storage=smartmonitoring'),
-    ('speed', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/speed?smartdataurl=/SmartDataAirquality&storage=smartmonitoring'),
-    ('location', '');
+INSERT INTO Condition_Type (type, url, periodic) VALUES
+    ('count', 'http://localhost:8080/SmartDataAirquality/smartdata/records/', TRUE),
+    ('streak', 'http://localhost:8080/SmartDataAirquality/smartdata/records/group/', FALSE),
+    ('level', 'http://localhost:8080/SmartDataAirquality/smartdata/records/group/', FALSE),
+    ('xp', 'http://localhost:8080/SmartDataAirquality/smartdata/records/group/', FALSE),
+    ('pm2_5_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5', TRUE),
+    ('pm2_5_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5', TRUE),
+    ('pm10_0_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0', TRUE),
+    ('pm10_0_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0', TRUE),
+    ('temp_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=temp1', TRUE),
+    ('temp_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=temp1', TRUE),
+    ('distance', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/distance?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
+    ('duration', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/duration?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
+    ('speed', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/speed?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
+    ('location', '', TRUE);
 
 CREATE TABLE Condition_Period (
     id SERIAL PRIMARY KEY,
-    type TEXT NOT NULL DEFAULT 'all'
-        CHECK (type IN ('all', 'year', 'month', 'week', 'day', 'route', 'date', 'daily_time', 'range')),
-    period_date DATE NULL,
-    period_start TIMESTAMP NULL,
-    period_end   TIMESTAMP NULL,
-    CONSTRAINT period_validation CHECK (
-        (type = 'date'
-            AND period_date IS NOT NULL
-            AND period_start IS NULL AND period_end IS NULL)
-        OR
-        (type IN ('daily_time', 'range')
-            AND period_start IS NOT NULL AND period_end IS NOT NULL
-            AND period_date IS NULL)
-        OR
-        (type IN ('all', 'year', 'month', 'week', 'day', 'route')
-            AND period_date IS NULL
-            AND period_start IS NULL AND period_end IS NULL)
-    )
+    type TEXT NOT NULL
 );
 
-
 INSERT INTO Condition_Period (type) VALUES
-('all'),                                                                            -- id 1
-('year'),                                                                           -- id 2
-('month'),                                                                          -- id 3
-('week'),                                                                           -- id 4
-('day'),                                                                            -- id 5
-('route');                                                                          -- id 6
+('all'),    -- id 1
+('year'),   -- id 2
+('month'),  -- id 3
+('week'),   -- id 4
+('day'),    -- id 5
+('route'),  -- id 6
+('date'),   -- id 7
+('time'),   -- id 8
+('range');  -- id 9
 
 CREATE TABLE Condition (
     id SERIAL PRIMARY KEY,
     type_id INT NOT NULL REFERENCES Condition_Type(id) ON DELETE CASCADE,
-    period_id INT NOT NULL REFERENCES Condition_Period(id) ON DELETE CASCADE,
+    period_id INT NOT NULL REFERENCES Condition_Period(id) ON DELETE CASCADE DEFAULT 1,
+    date_start DATE NULL,
+    date_end DATE NULL,
+    time_start TIME NULL,
+    time_end   TIME NULL,
     operator TEXT NOT NULL CHECK (operator IN ('>', '<', '==', '>=', '<=', '!=')),
     threshold NUMERIC NOT NULL
 );
@@ -252,7 +241,7 @@ CHECK (cron IS NULL OR time_once IS NULL);
 -- =========================================================
 
 -- Trigger-Views:
-CREATE OR REPLACE VIEW view_triggers AS 
+CREATE OR REPLACE VIEW view_triggers AS
 SELECT
     t.id AS t_id,
     t.description,
@@ -287,11 +276,12 @@ SELECT
                         'url', ct.url,
                         'operator', c.operator,
                         'threshold', c.threshold,
-                        'period_id', p.id,
+                        'period_id', c.period_id,
                         'period_type', p.type,
-                        'period_date', p.period_date,
-                        'period_start', p.period_start,
-                        'period_end', p.period_end
+                        'date_start', c.date_start,
+                        'date_end', c.date_end,
+                        'time_start', c.time_start,
+                        'time_end', c.time_end
                     )
             END
             ORDER BY c.id
@@ -327,11 +317,12 @@ SELECT
                         'url', ct.url,
                         'operator', c.operator,
                         'threshold', c.threshold,
-                        'period_id', p.id,
+                        'period_id', c.period_id,
                         'period_type', p.type,
-                        'period_date', p.period_date,
-                        'period_start', p.period_start,
-                        'period_end', p.period_end
+                        'date_start', c.date_start,
+                        'date_end', c.date_end,
+                        'time_start', c.time_start,
+                        'time_end', c.time_end
                     )
             END
             ORDER BY c.id
@@ -366,11 +357,12 @@ SELECT
                         'url', ct.url,
                         'operator', c.operator,
                         'threshold', c.threshold,
-                        'period_id', p.id,
+                        'period_id', c.period_id,
                         'period_type', p.type,
-                        'period_date', p.period_date,
-                        'period_start', p.period_start,
-                        'period_end', p.period_end
+                        'date_start', c.date_start,
+                        'date_end', c.date_end,
+                        'time_start', c.time_start,
+                        'time_end', c.time_end
                     )
             END
             ORDER BY c.id
@@ -401,11 +393,6 @@ SELECT
 FROM gamification."group" g
 LEFT JOIN gamification.Group_Picture p ON g.picture_id = p.id
 ORDER BY g.current_xp DESC;
-
-CREATE OR REPLACE VIEW view_period_types AS
-SELECT DISTINCT
-    type
-FROM gamification.Condition_Period;
 
 CREATE OR REPLACE VIEW view_groups AS
 WITH const AS (
@@ -508,13 +495,13 @@ FROM Group_Achievement ga
 JOIN "group" g ON ga.group_id = g.id
 LEFT JOIN Group_Picture p ON g.picture_id = p.id
 JOIN Achievement_Tier t ON ga.achievement_id = t.id
-LEFT JOIN Achievement_Set s ON 
+LEFT JOIN Achievement_Set s ON
     s.tier1_id = t.id OR
     s.tier2_id = t.id OR
     s.tier3_id = t.id;
 
 
-CREATE OR REPLACE VIEW view_group_achievement_progress AS 
+CREATE OR REPLACE VIEW view_group_achievement_progress AS
 SELECT
     g.id AS group_id,
     s.id AS achievement_set_id,
@@ -552,13 +539,13 @@ LEFT JOIN Achievement_Tier t1 ON s.tier1_id = t1.id
 LEFT JOIN Achievement_Tier t2 ON s.tier2_id = t2.id
 LEFT JOIN Achievement_Tier t3 ON s.tier3_id = t3.id
 
-LEFT JOIN Group_Achievement ga1 
+LEFT JOIN Group_Achievement ga1
     ON ga1.group_id = g.id AND ga1.achievement_id = s.tier1_id
 
-LEFT JOIN Group_Achievement ga2 
+LEFT JOIN Group_Achievement ga2
     ON ga2.group_id = g.id AND ga2.achievement_id = s.tier2_id
 
-LEFT JOIN Group_Achievement ga3 
+LEFT JOIN Group_Achievement ga3
     ON ga3.group_id = g.id AND ga3.achievement_id = s.tier3_id;
 
 
@@ -598,13 +585,13 @@ LEFT JOIN Achievement_Tier t1 ON t1.id = s.tier1_id
 LEFT JOIN Achievement_Tier t2 ON t2.id = s.tier2_id
 LEFT JOIN Achievement_Tier t3 ON t3.id = s.tier3_id
 
-LEFT JOIN Group_Achievement ga1 
+LEFT JOIN Group_Achievement ga1
     ON ga1.group_id = g.id AND ga1.achievement_id = s.tier1_id
 
-LEFT JOIN Group_Achievement ga2 
+LEFT JOIN Group_Achievement ga2
     ON ga2.group_id = g.id AND ga2.achievement_id = s.tier2_id
 
-LEFT JOIN Group_Achievement ga3 
+LEFT JOIN Group_Achievement ga3
     ON ga3.group_id = g.id AND ga3.achievement_id = s.tier3_id;
 
 
@@ -657,7 +644,7 @@ LEFT JOIN gamification.Trigger t
 CREATE OR REPLACE VIEW view_sent_notifications AS
 SELECT
     h.id AS history_id,
-    
+
     h.notification_id,
     COALESCE(n.title, 'Deleted') AS notification_title,
     COALESCE(n.body, 'Deleted') AS notification_body,
@@ -726,14 +713,14 @@ WITH
 hist AS (
     SELECT *
     FROM gamification.History
-), 
+),
 stats AS (
     SELECT
         s.*,
         h.timestamp AS sent_at
     FROM gamification.Statistic s
     JOIN gamification.History h ON h.id = s.history_id
-), 
+),
 actions AS (
     SELECT
         s.history_id,
@@ -760,7 +747,7 @@ period_actions AS (
         action_name,
         SUM(amount) AS total_amount
     FROM view_global_statistics_base
-    WHERE 
+    WHERE
         sent_at >= NOW() - INTERVAL '7 days'
         AND action_name IS NOT NULL
     GROUP BY action_name
@@ -791,7 +778,7 @@ period_actions AS (
         action_name,
         SUM(amount) AS total_amount
     FROM view_global_statistics_base
-    WHERE 
+    WHERE
         sent_at >= NOW() - INTERVAL '1 month'
         AND action_name IS NOT NULL
     GROUP BY action_name
@@ -822,7 +809,7 @@ period_actions AS (
         action_name,
         SUM(amount) AS total_amount
     FROM view_global_statistics_base
-    WHERE 
+    WHERE
         sent_at >= NOW() - INTERVAL '1 year'
         AND action_name IS NOT NULL
     GROUP BY action_name

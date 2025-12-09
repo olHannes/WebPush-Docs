@@ -289,3 +289,162 @@ public Response speed(
     return rob.toResponse();
 }
 ```
+
+## StatisticResource
+### Min
+```java
+@GET
+@Path("min")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@SmartUserAuth
+@Operation(summary = "Min",
+        description = "Calculates the minimum of a column")
+@APIResponse(
+        responseCode = "200",
+        description = "Min result")
+@APIResponse(
+        responseCode = "404",
+        description = "Collection could not be found")
+@APIResponse(
+        responseCode = "500",
+        description = "Internal error")
+public Response min(
+        @Parameter(description = "SmartData URL", required = true, example = "/SmartData") @QueryParam("smartdataurl") String smartdataurl,
+        @Parameter(description = "Collections name", example = "col1") @QueryParam("collection") String collection,
+        @Parameter(description = "Storage name",
+                schema = @Schema(type = STRING, defaultValue = "public")) @QueryParam("storage") String storage,
+        @Parameter(description = "Date attribute", example = "ts") @QueryParam("dateattribute") String dateattribute,
+        @Parameter(description = "Start date", example = "2020-12-24T18:00") @QueryParam("start") String start,
+        @Parameter(description = "End date", example = "2020-12-24T19:00") @QueryParam("end") String end,
+        @Parameter(description = "Column where to calculate min from", example = "temp") @QueryParam("column") String column) {
+
+    // ResponseObjectBuilder makes it easier to build REST responses (formats json, set status codes, etc)
+    ResponseObjectBuilder rob = new ResponseObjectBuilder();
+
+    // SmartDataAccessor accesses the SmartData either by URL (smartdataurl) or if locally available by useing the JDBC-Resource defined in the given SmartData Instance
+    SmartDataAccessor acc = new SmartDataAccessor(smartdataurl);
+
+    if (smartdataurl.startsWith("/")) {
+        smartdataurl = "http://localhost:8080" + smartdataurl;
+    }
+
+    if (collection == null) {
+        rob.setStatus(Response.Status.BAD_REQUEST);
+        rob.addErrorMessage("Parameter >collection< is missing.");
+        return rob.toResponse();
+    }
+
+    LocalDateTime startDate = LocalDateTime.MIN;
+    LocalDateTime endDate = LocalDateTime.MAX;
+    try {
+        if (start != null) {
+            startDate = LocalDateTime.parse(start);
+        }
+    } catch (DateTimeParseException ex) {
+        rob.addErrorMessage("Could not parse start date: " + ex.getLocalizedMessage());
+        rob.setStatus(Response.Status.INTERNAL_SERVER_ERROR);
+        return rob.toResponse();
+    }
+    try {
+        if (end != null) {
+            endDate = LocalDateTime.parse(end);
+        }
+    } catch (DateTimeParseException ex) {
+        rob.addErrorMessage("Could not parse end date: " + ex.getLocalizedMessage());
+        rob.setStatus(Response.Status.INTERNAL_SERVER_ERROR);
+        return rob.toResponse();
+    }
+
+    double min;
+    try {
+        min = acc.fetchMin(smartdataurl, collection, storage, dateattribute, startDate, endDate, column);
+        rob.add("min", min);
+        rob.setStatus(Response.Status.OK);
+    } catch (Exception ex) {
+        rob.addErrorMessage("Could not calculate min: " + ex.getClass().getSimpleName() + ": " + ex.getLocalizedMessage());
+        rob.setStatus(Response.Status.INTERNAL_SERVER_ERROR);
+    }
+
+    return rob.toResponse();
+}
+```
+
+### Max
+```java
+@GET
+@Path("max")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@SmartUserAuth
+@Operation(summary = "Max",
+        description = "Calculates the Maximum of a column")
+@APIResponse(
+        responseCode = "200",
+        description = "Max result")
+@APIResponse(
+        responseCode = "404",
+        description = "Collection could not be found")
+@APIResponse(
+        responseCode = "500",
+        description = "Internal error")
+public Response max(
+        @Parameter(description = "SmartData URL", required = true, example = "/SmartData") @QueryParam("smartdataurl") String smartdataurl,
+        @Parameter(description = "Collections name", example = "col1") @QueryParam("collection") String collection,
+        @Parameter(description = "Storage name",
+                schema = @Schema(type = STRING, defaultValue = "public")) @QueryParam("storage") String storage,
+        @Parameter(description = "Date attribute", example = "ts") @QueryParam("dateattribute") String dateattribute,
+        @Parameter(description = "Start date", example = "2020-12-24T18:00") @QueryParam("start") String start,
+        @Parameter(description = "End date", example = "2020-12-24T19:00") @QueryParam("end") String end,
+        @Parameter(description = "Column where to calculate max from", example = "temp") @QueryParam("column") String column) {
+
+    // ResponseObjectBuilder makes it easier to build REST responses (formats json, set status codes, etc)
+    ResponseObjectBuilder rob = new ResponseObjectBuilder();
+
+    // SmartDataAccessor accesses the SmartData either by URL (smartdataurl) or if locally available by useing the JDBC-Resource defined in the given SmartData Instance
+    SmartDataAccessor acc = new SmartDataAccessor(smartdataurl);
+
+    if (smartdataurl.startsWith("/")) {
+        smartdataurl = "http://localhost:8080" + smartdataurl;
+    }
+
+    if (collection == null) {
+        rob.setStatus(Response.Status.BAD_REQUEST);
+        rob.addErrorMessage("Parameter >collection< is missing.");
+        return rob.toResponse();
+    }
+
+    LocalDateTime startDate = LocalDateTime.MIN;
+    LocalDateTime endDate = LocalDateTime.MAX;
+    try {
+        if (start != null) {
+            startDate = LocalDateTime.parse(start);
+        }
+    } catch (DateTimeParseException ex) {
+        rob.addErrorMessage("Could not parse start date: " + ex.getLocalizedMessage());
+        rob.setStatus(Response.Status.INTERNAL_SERVER_ERROR);
+        return rob.toResponse();
+    }
+    try {
+        if (end != null) {
+            endDate = LocalDateTime.parse(end);
+        }
+    } catch (DateTimeParseException ex) {
+        rob.addErrorMessage("Could not parse end date: " + ex.getLocalizedMessage());
+        rob.setStatus(Response.Status.INTERNAL_SERVER_ERROR);
+        return rob.toResponse();
+    }
+
+    double max;
+    try {
+        max = acc.fetchMax(smartdataurl, collection, storage, dateattribute, startDate, endDate, column);
+        rob.add("max", max);
+        rob.setStatus(Response.Status.OK);
+    } catch (Exception ex) {
+        rob.addErrorMessage("Could not calculate max: " + ex.getClass().getSimpleName() + ": " + ex.getLocalizedMessage());
+        rob.setStatus(Response.Status.INTERNAL_SERVER_ERROR);
+    }
+
+    return rob.toResponse();
+}
+```

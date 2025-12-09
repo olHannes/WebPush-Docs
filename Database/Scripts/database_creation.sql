@@ -195,6 +195,28 @@ CREATE TABLE Group_Achievement (
     PRIMARY KEY (group_id, achievement_id)
 );
 
+CREATE TABLE Settings (
+    id SERIAL PRIMARY KEY,
+    key TEXT UNIQUE NOT NULL,
+    value TEXT NOT NULL,
+    type TEXT NOT NULL DEFAULT 'double'
+);
+
+INSERT INTO Settings (key, value, type) VALUES
+('base_xp_per_level', '1000.0'),
+('xp_increase_per_level', '1.1'),
+('base_xp_per_km', '10.0'),
+('speed_soft_cap', '30.0'),
+('max_speed_allowed_ebike', '45.0'),
+('max_speed_allowed_bike', '30.0'),
+('max_speed_allowed_walk', '10.0'),
+('min_speed_allowed_ebike', '5.0'),
+('min_speed_allowed_bike', '3.0'),
+('min_speed_allowed_walk', '1.0'),
+('min_density_per_km', '10.0'),
+('max_density_per_km', '300.0'),
+('max_duration_multiplier', '2.0');
+
 -- =========================================================
 --  Useful Indexes
 -- =========================================================
@@ -400,8 +422,9 @@ ORDER BY g.current_xp DESC;
 CREATE OR REPLACE VIEW view_groups AS
 WITH const AS (
     SELECT
-        1000::numeric AS base_xp_per_level,
-        1.1::numeric  AS xp_increase_per_level
+        SELECT
+        (SELECT value::numeric FROM Settings WHERE key = 'base_xp_per_level') AS base_xp_per_level,
+        (SELECT value::numeric FROM Settings WHERE key = 'xp_increase_per_level') AS xp_increase_per_level
 ),
 lvl AS (
     SELECT

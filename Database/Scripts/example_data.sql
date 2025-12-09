@@ -107,33 +107,33 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 --  Actions (verfügbare Interaktionen)
 -- =========================================================
 INSERT INTO Action (action_type, title, icon) VALUES
-('open', 'Öffnen', 'https://icons/open.png'),
-('dismiss', 'Schließen', 'https://icons/close.png'),
-('measure', 'Messung starten', 'https://icons/start.png'),
-('leaderboard', 'Rangliste', 'https://icons/rank.png');
+('open', 'Öffnen', '/WebPush-PWA/files/icons/open.png'),
+('dismiss', 'Schließen', '/WebPush-PWA/files/icons/close.png'),
+('measure', 'Messung starten', '/WebPush-PWA/files/icons/start.png'),
+('leaderboard', 'Rangliste', '/WebPush-PWA/files/icons/rank.png');
 
 -- =========================================================
 --  Notification
 -- =========================================================
 INSERT INTO Notification (title, body, icon_url, renotify, silent, trigger_id) VALUES
-('Daily Check', 'Dein täglicher Check wurde ausgeführt.', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 1),
-('Montagsbericht', 'Dein Wochenbericht ist verfügbar.', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 2),
-('Einmalige Erinnerung 🕒', 'Dies ist eine einmalige Nachricht.', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', TRUE, FALSE, 3),
-('Leaderboard Reset 🆕', 'Collect new data now and climb the ranks!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 4),
-('Happy Star Wars Day 💫', 'May the 4th be with you!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 5),
-('Merry Christmas 🎄', 'Merry Christmas and a happy New Year!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 6),
-('New Year''s Eve 🎉', 'Celebrate the turn of the year!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 7),
-('New Year 🎆', 'Welcome to the new year!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 8),
-('Valentine''s Day 💘', 'Share the love on Valentine''s Day!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 9),
-('Halloween 🎃', 'Spooky greetings for Halloween!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 10),
-('Easter 🐰', 'Happy Easter!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 11),
-('Tag der Arbeit 🛠️', 'Es ist Zeit Daten zu sammeln!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 12),
-('Daily Streak Reminder 🍃', 'Keep your streak going! Only a few hours left to maintain your streak.', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 13),
-('Weekly XP Summary 📊', 'Your weekly XP summary is here!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 14),
-('Monthly Achievement Summary 📅', 'Your monthly achievement overview is available!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 15),
-('Leaderboard Reset Reminder 🔁', 'The leaderboard reset is imminent!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 16),
-('WebPush Anniversary 🥳', 'Celebrate our Anniversary with us!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 17),
-('Streak Reset 🔥', 'Your streak has been reset. Start anew today!', 'http://localhost:8080/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 18);
+('Daily Check', 'Dein täglicher Check wurde ausgeführt.', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 1),
+('Montagsbericht', 'Dein Wochenbericht ist verfügbar.', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 2),
+('Einmalige Erinnerung 🕒', 'Dies ist eine einmalige Nachricht.', '/WebPush-PWA/files/icons/logo.png', TRUE, FALSE, 3),
+('Leaderboard Reset 🆕', 'Collect new data now and climb the ranks!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 4),
+('Happy Star Wars Day 💫', 'May the 4th be with you!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 5),
+('Merry Christmas 🎄', 'Merry Christmas and a happy New Year!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 6),
+('New Year''s Eve 🎉', 'Celebrate the turn of the year!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 7),
+('New Year 🎆', 'Welcome to the new year!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 8),
+('Valentine''s Day 💘', 'Share the love on Valentine''s Day!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 9),
+('Halloween 🎃', 'Spooky greetings for Halloween!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 10),
+('Easter 🐰', 'Happy Easter!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 11),
+('Tag der Arbeit 🛠️', 'Es ist Zeit Daten zu sammeln!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 12),
+('Daily Streak Reminder 🍃', 'Keep your streak going! Only a few hours left to maintain your streak.', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 13),
+('Weekly XP Summary 📊', 'Your weekly XP summary is here!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 14),
+('Monthly Achievement Summary 📅', 'Your monthly achievement overview is available!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 15),
+('Leaderboard Reset Reminder 🔁', 'The leaderboard reset is imminent!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 16),
+('WebPush Anniversary 🥳', 'Celebrate our Anniversary with us!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 17),
+('Streak Reset 🔥', 'Your streak has been reset. Start anew today!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 18);
 
 
 -- =========================================================
@@ -198,9 +198,9 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (21, 8);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'FDS_1.png', 19), 
-(20, 'FDS_2.png', 20), 
-(40, 'FDS_3.png', 21);
+(10, '/WebPush-PWA/files/icons/achievements/FDS_1.png', 19), 
+(20, '/WebPush-PWA/files/icons/achievements/FDS_2.png', 20), 
+(40, '/WebPush-PWA/files/icons/achievements/FDS_3.png', 21);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -235,9 +235,9 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (24, 11);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'PAG_1.png', 22), 
-(20, 'PAG_2.png', 23), 
-(40, 'PAG_3.png', 24);
+(10, '/WebPush-PWA/files/icons/achievements/PAG_1.png', 22), 
+(20, '/WebPush-PWA/files/icons/achievements/PAG_2.png', 23), 
+(40, '/WebPush-PWA/files/icons/achievements/PAG_3.png', 24);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -269,9 +269,9 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (27, 14);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'DPD_1.png', 25), 
-(20, 'DPD_2.png', 26), 
-(40, 'DPD_3.png', 27);
+(10, '/WebPush-PWA/files/icons/achievements/DPD_1.png', 25), 
+(20, '/WebPush-PWA/files/icons/achievements/DPD_2.png', 26), 
+(40, '/WebPush-PWA/files/icons/achievements/DPD_3.png', 27);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -305,9 +305,9 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (30, 17);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'CAS_1.png', 28), 
-(20, 'CAS_2.png', 29), 
-(40, 'CAS_3.png', 30);
+(10, '/WebPush-PWA/files/icons/achievements/CAS_1.png', 28), 
+(20, '/WebPush-PWA/files/icons/achievements/CAS_2.png', 29), 
+(40, '/WebPush-PWA/files/icons/achievements/CAS_3.png', 30);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -342,9 +342,9 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (33, 20);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'MM_1.png', 31), 
-(20, 'MM_2.png', 32), 
-(40, 'MM_3.png', 33);
+(10, '/WebPush-PWA/files/icons/achievements/MM_1.png', 31), 
+(20, '/WebPush-PWA/files/icons/achievements/MM_2.png', 32), 
+(40, '/WebPush-PWA/files/icons/achievements/MM_3.png', 33);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -378,9 +378,9 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (36, 23);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'UF_1.png', 34), 
-(20, 'UF_2.png', 35), 
-(40, 'UF_3.png', 36);
+(10, '/WebPush-PWA/files/icons/achievements/UF_1.png', 34), 
+(20, '/WebPush-PWA/files/icons/achievements/UF_2.png', 35), 
+(40, '/WebPush-PWA/files/icons/achievements/UF_3.png', 36);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -415,9 +415,9 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (39, 26);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'DFE_1.png', 37), 
-(20, 'DFE_2.png', 38), 
-(40, 'DFE_3.png', 39);
+(10, '/WebPush-PWA/files/icons/achievements/DFE_1.png', 37), 
+(20, '/WebPush-PWA/files/icons/achievements/DFE_2.png', 38), 
+(40, '/WebPush-PWA/files/icons/achievements/DFE_3.png', 39);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -451,9 +451,9 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (42, 29);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'EHS_1.png', 40), 
-(20, 'EHS_2.png', 41), 
-(40, 'EHS_3.png', 42);
+(10, '/WebPush-PWA/files/icons/achievements/EHS_1.png', 40), 
+(20, '/WebPush-PWA/files/icons/achievements/EHS_2.png', 41), 
+(40, '/WebPush-PWA/files/icons/achievements/EHS_3.png', 42);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -491,9 +491,9 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (45, 32);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'NSM_1.png', 43), 
-(20, 'NSM_2.png', 44), 
-(40, 'NSM_3.png', 45);
+(10, '/WebPush-PWA/files/icons/achievements/NSM_1.png', 43), 
+(20, '/WebPush-PWA/files/icons/achievements/NSM_2.png', 44), 
+(40, '/WebPush-PWA/files/icons/achievements/NSM_3.png', 45);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -531,9 +531,9 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (48, 35);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, 'DT_1.png', 46), 
-(20, 'DT_2.png', 47), 
-(40, 'DT_3.png', 48);
+(10, '/WebPush-PWA/files/icons/achievements/DT_1.png', 46), 
+(20, '/WebPush-PWA/files/icons/achievements/DT_2.png', 47), 
+(40, '/WebPush-PWA/files/icons/achievements/DT_3.png', 48);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (

@@ -70,20 +70,20 @@ CREATE TABLE Condition_Type (
 );
 
 INSERT INTO Condition_Type (type, url, periodic) VALUES
-    ('count', 'http://localhost:8080/SmartDataAirquality/smartdata/records/', TRUE),
-    ('streak', 'http://localhost:8080/SmartDataAirquality/smartdata/records/group/', FALSE),
-    ('level', 'http://localhost:8080/SmartDataAirquality/smartdata/records/group/', FALSE),
-    ('xp', 'http://localhost:8080/SmartDataAirquality/smartdata/records/group/', FALSE),
-    ('pm2_5_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5', TRUE),
-    ('pm2_5_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5', TRUE),
-    ('pm10_0_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0', TRUE),
-    ('pm10_0_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0', TRUE),
-    ('temp_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=temp1', TRUE),
-    ('temp_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/minmaxspan?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=temp1', TRUE),
-    ('distance', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/distance?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
-    ('duration', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/duration?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
-    ('speed', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/speed?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
-    ('location', '', TRUE);
+('count', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification', TRUE),
+('streak', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification', FALSE),
+('level', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification', FALSE),
+('xp', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification', FALSE),
+('pm2_5_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5', TRUE),
+('pm2_5_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5', TRUE),
+('pm10_0_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0', TRUE),
+('pm10_0_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0', TRUE),
+('temp_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=temp1', TRUE),
+('temp_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=temp1', TRUE),
+('distance', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/distance?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
+('duration', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/duration?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
+('speed', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/speed?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
+('location', '', TRUE);
 
 CREATE TABLE Condition_Period (
     id SERIAL PRIMARY KEY,
@@ -444,7 +444,7 @@ SELECT
     c.name AS group_name,
     c.streak,
     c.level_xp,
-    c.current_xp,
+    c.current_xp as xp,
     c.level,
     c.picture_id,
     p.picture,

@@ -202,7 +202,7 @@ CREATE TABLE Settings (
     type TEXT NOT NULL DEFAULT 'double'
 );
 
-INSERT INTO Settings (key, value, type) VALUES
+INSERT INTO Settings (key, value) VALUES
 ('base_xp_per_level', '1000.0'),
 ('xp_increase_per_level', '1.1'),
 ('base_xp_per_km', '10.0'),

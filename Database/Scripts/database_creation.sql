@@ -70,7 +70,7 @@ CREATE TABLE Condition_Type (
 );
 
 INSERT INTO Condition_Type (type, url, periodic) VALUES
-('count', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification', TRUE),
+('count', 'http://localhost:8080/SmartDataAirquality/smartdata/records/', TRUE),
 ('streak', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification', FALSE),
 ('level', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification', FALSE),
 ('xp', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification', FALSE),

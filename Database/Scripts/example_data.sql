@@ -189,9 +189,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Fine Dust Sentinel III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(19, 6),
-(20, 7),
-(21, 8);
+(19, 7),
+(20, 8),
+(21, 9);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/FDS_1.png', 19),
@@ -226,9 +226,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Pure Air Guardian III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(22, 9),
-(23, 10),
-(24, 11);
+(22, 10),
+(23, 11),
+(24, 12);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/PAG_1.png', 22),
@@ -260,9 +260,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Dust Peak Detector III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(25, 12),
-(26, 13),
-(27, 14);
+(25, 13),
+(26, 14),
+(27, 15);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/DPD_1.png', 25),
@@ -296,9 +296,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Clean Air Spotter III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(28, 15),
-(29, 16),
-(30, 17);
+(28, 16),
+(29, 17),
+(30, 18);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/CAS_1.png', 28),
@@ -333,9 +333,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Marathon Mapper III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(31, 18),
-(32, 19),
-(33, 20);
+(31, 19),
+(32, 20),
+(33, 21);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/MM_1.png', 31),
@@ -369,9 +369,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Unbroken Flame III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(34, 21),
-(35, 22),
-(36, 23);
+(34, 22),
+(35, 23),
+(36, 24);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/UF_1.png', 34),
@@ -406,9 +406,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Deep Freeze Explorer III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(37, 24),
-(38, 25),
-(39, 26);
+(37, 25),
+(38, 26),
+(39, 27);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/DFE_1.png', 37),
@@ -442,9 +442,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Extreme Heat Scout III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(40, 27),
-(41, 28),
-(42, 29);
+(40, 28),
+(41, 29),
+(42, 30);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/EHS_1.png', 40),
@@ -479,9 +479,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Night Shift Monitor III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(43, 30),
-(44, 31),
-(45, 32);
+(43, 31),
+(44, 32),
+(45, 33);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/NSM_1.png', 43),
@@ -516,9 +516,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Dawn Tracker III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(46, 33),
-(47, 34),
-(48, 35);
+(46, 34),
+(47, 35),
+(48, 36);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/DT_1.png', 46),

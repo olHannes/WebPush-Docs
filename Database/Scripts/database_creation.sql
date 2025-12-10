@@ -422,7 +422,6 @@ ORDER BY g.current_xp DESC;
 CREATE OR REPLACE VIEW view_groups AS
 WITH const AS (
     SELECT
-        SELECT
         (SELECT value::numeric FROM Settings WHERE key = 'base_xp_per_level') AS base_xp_per_level,
         (SELECT value::numeric FROM Settings WHERE key = 'xp_increase_per_level') AS xp_increase_per_level
 ),
@@ -432,7 +431,7 @@ lvl AS (
         1 +
         FLOOR(
             LOG(
-                GREATEST(g.current_xp, 0) * (const.xp_increase_per_level - 1)
+                GREATEST(g.level_xp, 0) * (const.xp_increase_per_level - 1)
                 / const.base_xp_per_level + 1
             ) / LOG(const.xp_increase_per_level)
         ) AS level
@@ -488,7 +487,7 @@ LEFT JOIN gamification.Group_Picture p ON c.picture_id = p.id;
 CREATE OR REPLACE VIEW view_achievement_to_send AS
 SELECT t.id AS tier_id,
     t.reward_xp,
-    t.image_url,
+    t.image_url AS icon_url,
     t.trigger_id,
 
     s.id AS set_id,

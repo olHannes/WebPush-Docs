@@ -213,9 +213,11 @@ INSERT INTO Settings (key, value) VALUES
 ('min_speed_allowed_ebike', '5.0'),
 ('min_speed_allowed_bike', '3.0'),
 ('min_speed_allowed_walk', '1.0'),
-('min_density_per_km', '10.0'),
+('min_density_per_km', '5.0'),
 ('max_density_per_km', '300.0'),
-('max_duration_multiplier', '2.0');
+('max_duration_multiplier', '2.0'),
+('min_distance_km', '0'),
+('min_duration_h', '0');
 
 -- =========================================================
 --  Useful Indexes

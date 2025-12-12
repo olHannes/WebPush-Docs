@@ -365,46 +365,6 @@ WHERE t.active = TRUE
 GROUP BY
     t.id, t.description, t.active, t.last_triggered_at, t.cron, t.time_once;
 
-CREATE OR REPLACE VIEW view_triggers_with_conditions AS
-SELECT
-    t.id AS trigger_id,
-    t.description,
-    t.active,
-    t.last_triggered_at,
-    t.cron,
-    t.time_once,
-    COALESCE(
-        json_agg(
-            CASE
-                WHEN c.id IS NOT NULL THEN
-                    json_build_object(
-                        'condition_id', c.id,
-                        'type', ct.type,
-                        'url', ct.url,
-                        'periodic', ct.periodic,
-                        'operator', c.operator,
-                        'threshold', c.threshold,
-                        'period_id', c.period_id,
-                        'period_type', p.type,
-                        'date_start', c.date_start,
-                        'date_end', c.date_end,
-                        'time_start', c.time_start,
-                        'time_end', c.time_end
-                    )
-            END
-            ORDER BY c.id
-        ) FILTER (WHERE c.id IS NOT NULL),
-        '[]'::json
-    ) AS conditions
-FROM Trigger t
-LEFT JOIN Trigger_Condition tc ON t.id = tc.trigger_id
-LEFT JOIN Condition c ON c.id = tc.condition_id
-LEFT JOIN Condition_Type ct ON c.type_id = ct.id
-LEFT JOIN Condition_Period p ON p.id = c.period_id
-WHERE t.active = TRUE
-GROUP BY
-    t.id, t.description, t.active, t.last_triggered_at, t.cron, t.time_once;
-
 -- Groups, Members and Leaderboard / Achievements
 CREATE OR REPLACE VIEW view_leaderboard AS
 SELECT

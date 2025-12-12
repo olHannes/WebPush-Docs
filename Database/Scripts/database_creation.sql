@@ -71,9 +71,9 @@ CREATE TABLE Condition_Type (
 
 INSERT INTO Condition_Type (type, url, periodic) VALUES
 ('count', 'http://localhost:8080/SmartDataAirquality/smartdata/records/', TRUE),
-('streak', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification', FALSE),
-('level', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification', FALSE),
-('xp', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification', FALSE),
+('streak', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<group>', FALSE),
+('level', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<group>', FALSE),
+('xp', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<group>', FALSE),
 ('pm2_5_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5', TRUE),
 ('pm2_5_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5', TRUE),
 ('pm10_0_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0', TRUE),

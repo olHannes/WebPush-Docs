@@ -624,23 +624,42 @@ LEFT JOIN Group_Achievement ga3
 
 
 CREATE OR REPLACE VIEW view_group_members AS
+WITH const AS (
+    SELECT
+        (SELECT value::numeric FROM Settings WHERE key = 'base_xp_per_level') AS base_xp_per_level,
+        (SELECT value::numeric FROM Settings WHERE key = 'xp_increase_per_level') AS xp_increase_per_level
+),
+lvl AS (
+    SELECT
+        g.*,
+        1 +
+        FLOOR(
+            LOG(
+                GREATEST(g.level_xp, 0) * (const.xp_increase_per_level - 1)
+                / const.base_xp_per_level + 1
+            ) / LOG(const.xp_increase_per_level)
+        ) AS level
+    FROM gamification."group" g, const
+)
 SELECT
-    g.id AS group_id,
-    g.name AS group_name,
-    g.picture_id,
+    l.id AS group_id,
+    l.name AS group_name,
+    l.picture_id,
     p.picture,
-    g.data_table,
-    g.level_xp,
-    g.current_xp,
-    g.streak,
+    l.data_table,
+    l.level_xp,
+    l.current_xp AS xp,
+    l.streak,
+    l.level,
     m.id AS member_id,
     m.name AS member_name,
     m.endpoint AS member_endpoint
-FROM gamification.Group_Member gm
-JOIN gamification."group" g ON gm.group_id = g.id
+
+FROM lvl l
+JOIN gamification.Group_Member gm ON gm.group_id = l.id
 JOIN gamification.Member m ON gm.member_id = m.id
-LEFT JOIN gamification.Group_Picture p ON g.picture_id = p.id
-ORDER BY g.id;
+LEFT JOIN gamification.Group_Picture p ON l.picture_id = p.id
+ORDER BY l.id;
 
 
 

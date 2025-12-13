@@ -12,7 +12,7 @@ work correctly on **desktop** and **mobile devices (iOS & Android)**.
 
 ## Prerequisites
 
-* `mkcert`
+* [mkcert](https://github.com/FiloSottile/mkcert)
 * `openssl`
 * `keytool`
 

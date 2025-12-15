@@ -125,6 +125,13 @@ CREATE TABLE Action (
     icon TEXT
 );
 
+INSERT INTO Action (action_type, title, icon) VALUES
+('open', 'Open', '/WebPush-PWA/files/icons/open.png'),
+('dismiss', 'Dismiss', '/WebPush-PWA/files/icons/close.png'),
+('measure', 'Measure', '/WebPush-PWA/files/icons/start.png'),
+('leaderboard', 'Leaderboard', '/WebPush-PWA/files/icons/rank.png');
+
+
 CREATE TABLE Notification (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
@@ -162,7 +169,7 @@ INSERT INTO Event_Type (name) VALUES ('click'), ('close');
 CREATE TABLE Statistic (
     id SERIAL PRIMARY KEY,
     history_id INT NOT NULL REFERENCES History(id) ON DELETE CASCADE,
-    event_type_id INT NOT NULL REFERENCES Event_Type(id) ON DELETE RESTRICT,
+    event_type_id INT REFERENCES Event_Type(id) ON DELETE RESTRICT DEFAULT 1,
     action_id INT REFERENCES Action(id),
     created_at TIMESTAMP DEFAULT NOW()
 );

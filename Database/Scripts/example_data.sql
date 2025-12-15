@@ -1,32 +1,3 @@
--- =========================================================
---  Beispiel-Datensätze für das neue Gamification-System
--- =========================================================
-
--- =========================================================
---  Member
--- =========================================================
-INSERT INTO Member (name, endpoint, key, auth) VALUES
-('Alice', 'https://endpoint/member1', 'keyA1', 'authA1'),
-('Bob', 'https://endpoint/member2', 'keyB2', 'authB2'),
-('Charlie', 'https://endpoint/member3', 'keyC3', 'authC3'),
-('Diana', 'https://endpoint/member4', 'keyD4', 'authD4');
-
--- =========================================================
---  Groups
--- =========================================================
-INSERT INTO "group" (data_table, name, picture_id, streak, level_xp, current_xp) VALUES
-('sensor_table_m1', 'Sensor M1', 1, 3, 1, 55),
-('sensor_table_m2', 'Sensor M2', 4, 7, 2, 140),
-('sensor_table_m3', 'Sensor M3', 6, 1, 0, 10);
-
--- =========================================================
---  Group-Member Zuordnung
--- =========================================================
-INSERT INTO Group_Member (member_id, group_id) VALUES
-(1, 1),
-(2, 1),
-(3, 2),
-(4, 3);
 
 -- =========================================================
 --  Trigger Beispiel
@@ -99,14 +70,6 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (3, 6);
 
 
--- =========================================================
---  Actions (verfügbare Interaktionen)
--- =========================================================
-INSERT INTO Action (action_type, title, icon) VALUES
-('open', 'Öffnen', '/WebPush-PWA/files/icons/open.png'),
-('dismiss', 'Schließen', '/WebPush-PWA/files/icons/close.png'),
-('measure', 'Messung starten', '/WebPush-PWA/files/icons/start.png'),
-('leaderboard', 'Rangliste', '/WebPush-PWA/files/icons/rank.png');
 
 -- =========================================================
 --  Notification

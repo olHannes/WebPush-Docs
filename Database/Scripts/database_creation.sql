@@ -453,6 +453,38 @@ SELECT
 FROM calc c
 LEFT JOIN gamification.Group_Picture p ON c.picture_id = p.id;
 
+
+CREATE OR REPLACE VIEW view_achievement_all AS
+SELECT
+    s.id               AS achievement_set_id,
+    s.title            AS title,
+    s.description      AS description,
+    s.body             AS body,
+
+    -- Tier 1
+    t1.id              AS tier_1_id,
+    t1.reward_xp       AS tier_1_reward_xp,
+    t1.image_url       AS tier_1_image_url,
+    t1.trigger_id      AS tier_1_trigger_id,
+
+    -- Tier 2
+    t2.id              AS tier_2_id,
+    t2.reward_xp       AS tier_2_reward_xp,
+    t2.image_url       AS tier_2_image_url,
+    t2.trigger_id      AS tier_2_trigger_id,
+
+    -- Tier 3
+    t3.id              AS tier_3_id,
+    t3.reward_xp       AS tier_3_reward_xp,
+    t3.image_url       AS tier_3_image_url,
+    t3.trigger_id      AS tier_3_trigger_id
+
+FROM gamification.Achievement_Set s
+JOIN gamification.Achievement_Tier t1 ON t1.id = s.tier1_id
+JOIN gamification.Achievement_Tier t2 ON t2.id = s.tier2_id
+JOIN gamification.Achievement_Tier t3 ON t3.id = s.tier3_id;
+
+
 CREATE OR REPLACE VIEW view_achievement_to_send AS
 SELECT t.id AS tier_id,
     t.reward_xp,

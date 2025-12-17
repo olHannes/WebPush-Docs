@@ -285,8 +285,7 @@ SELECT
         WHEN t.cron IS NULL AND t.time_once IS NOT NULL THEN 'once'
         WHEN t.cron IS NOT NULL AND t.time_once IS NULL THEN 'time'
         ELSE 'invalid'
-    END AS type,
-    p.datajob_id
+    END AS type
 FROM gamification.trigger t
 LEFT JOIN smartmonitoring.datajobs_params p
     ON t.id = p.value::numeric

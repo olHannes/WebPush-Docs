@@ -272,7 +272,7 @@ CHECK (cron IS NULL OR time_once IS NULL);
 -- =========================================================
 
 -- Trigger-Views:
-CREATE OR REPLACE VIEW view_triggers AS
+CREATE OR REPLACE VIEW gamification.view_triggers AS
 SELECT
     t.id AS t_id,
     t.description,
@@ -285,8 +285,12 @@ SELECT
         WHEN t.cron IS NULL AND t.time_once IS NOT NULL THEN 'once'
         WHEN t.cron IS NOT NULL AND t.time_once IS NULL THEN 'time'
         ELSE 'invalid'
-    END AS type
-FROM gamification.Trigger t;
+    END AS type,
+    p.datajob_id
+FROM gamification.trigger t
+LEFT JOIN smartmonitoring.datajobs_params p
+    ON t.id = p.value::numeric
+   AND p.key = 'trigger_id';
 
 
 CREATE OR REPLACE VIEW view_triggers_with_schedule AS

@@ -70,19 +70,19 @@ CREATE TABLE Condition_Type (
 );
 
 INSERT INTO Condition_Type (type, url, periodic) VALUES
-('count', 'http://localhost:8080/SmartDataAirquality/smartdata/records/', TRUE),
-('streak', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<group>', FALSE),
-('level', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<group>', FALSE),
-('xp', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<group>', FALSE),
-('pm2_5_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5', TRUE),
-('pm2_5_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5', TRUE),
-('pm10_0_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0', TRUE),
-('pm10_0_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0', TRUE),
-('temp_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=temp1', TRUE),
-('temp_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=temp1', TRUE),
-('distance', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/distance?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
-('duration', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/duration?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
-('speed', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/speed?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
+('count', 'http://localhost:8080/WebPush/webpush/condition/count?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>', TRUE),
+('streak', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<id>', FALSE),
+('level', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<id>', FALSE),
+('xp', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<id>', FALSE),
+('pm2_5_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>&column=pm2_5', TRUE),
+('pm2_5_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>&column=pm2_5', TRUE),
+('pm10_0_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>&column=pm10_0', TRUE),
+('pm10_0_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>&column=pm10_0', TRUE),
+('temp_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>&column=temp1', TRUE),
+('temp_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>&column=temp1', TRUE),
+('distance', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/distance?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>', TRUE),
+('duration', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/duration?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>', TRUE),
+('speed', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/speed?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>', TRUE),
 ('location', '', TRUE);
 
 CREATE TABLE Condition_Period (

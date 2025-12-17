@@ -395,8 +395,8 @@ ORDER BY g.current_xp DESC;
 CREATE OR REPLACE VIEW view_groups AS
 WITH const AS (
     SELECT
-        (SELECT value::numeric FROM Settings WHERE key = 'base_xp_per_level') AS base_xp_per_level,
-        (SELECT value::numeric FROM Settings WHERE key = 'xp_increase_per_level') AS xp_increase_per_level
+        (SELECT value::numeric FROM gamification.settings WHERE key = 'base_xp_per_level') AS base_xp_per_level,
+        (SELECT value::numeric FROM gamification.settings WHERE key = 'xp_increase_per_level') AS xp_increase_per_level
 ),
 lvl AS (
     SELECT
@@ -404,7 +404,7 @@ lvl AS (
         1 +
         FLOOR(
             LOG(
-                GREATEST(g.level_xp, 0) * (const.xp_increase_per_level - 1)
+                GREATEST(g.level_xp, 0)::numeric * (const.xp_increase_per_level - 1)
                 / const.base_xp_per_level + 1
             ) / LOG(const.xp_increase_per_level)
         ) AS level
@@ -446,11 +446,11 @@ SELECT
 
     /* progress in % */
     CASE
-        WHEN c.current_xp < c.start_xp THEN 0
+        WHEN c.level_xp < c.start_xp THEN 0
         WHEN c.end_xp = c.start_xp THEN 100
         ELSE
             ROUND(
-                ((c.current_xp - c.start_xp) / (c.end_xp - c.start_xp)) * 100, 2
+                ((c.level_xp - c.start_xp)::numeric / NULLIF((c.end_xp - c.start_xp), 0)) * 100, 2
             )
     END AS progress
 

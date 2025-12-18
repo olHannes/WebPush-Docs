@@ -6,9 +6,9 @@ WITH
 c_ins AS (
   INSERT INTO Condition(type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold)
   VALUES
-    (4,1,NULL,NULL,NULL,NULL,'>=',40),
-    (4,1,NULL,NULL,NULL,NULL,'>=',60),
-    (4,1,NULL,NULL,NULL,NULL,'>=',80)
+    (6,1,NULL,NULL,NULL,NULL,'>=',40),
+    (6,1,NULL,NULL,NULL,NULL,'>=',60),
+    (6,1,NULL,NULL,NULL,NULL,'>=',80)
   RETURNING id, threshold
 ),
 c AS (
@@ -64,9 +64,9 @@ WITH
 c_ins AS (
   INSERT INTO Condition(type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold)
   VALUES
-    (3,1,NULL,NULL,NULL,NULL,'<=',15),
-    (3,1,NULL,NULL,NULL,NULL,'<=',10),
-    (3,1,NULL,NULL,NULL,NULL,'<=',5)
+    (5,1,NULL,NULL,NULL,NULL,'<=',15),
+    (5,1,NULL,NULL,NULL,NULL,'<=',10),
+    (5,1,NULL,NULL,NULL,NULL,'<=',5)
   RETURNING id, threshold
 ),
 c AS (
@@ -122,9 +122,9 @@ WITH
 c_ins AS (
   INSERT INTO Condition(type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold)
   VALUES
-    (6,1,NULL,NULL,NULL,NULL,'>=',50),
-    (6,1,NULL,NULL,NULL,NULL,'>=',100),
-    (6,1,NULL,NULL,NULL,NULL,'>=',150)
+    (8,1,NULL,NULL,NULL,NULL,'>=',50),
+    (8,1,NULL,NULL,NULL,NULL,'>=',100),
+    (8,1,NULL,NULL,NULL,NULL,'>=',150)
   RETURNING id, threshold
 ),
 c AS (
@@ -174,15 +174,15 @@ SELECT
 FROM tier;
 
 -- =========================================================
--- Achievement-Set 4: Clean Air Spotter (Achtung: Set-Titel/Texts wie im Original "Fine Dust Sentinel")
+-- Achievement-Set 4: Clean Air Spotter 
 -- =========================================================
 WITH
 c_ins AS (
   INSERT INTO Condition(type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold)
   VALUES
-    (5,1,NULL,NULL,NULL,NULL,'<=',5),
-    (5,1,NULL,NULL,NULL,NULL,'<=',10),
-    (5,1,NULL,NULL,NULL,NULL,'<=',15)
+    (7,1,NULL,NULL,NULL,NULL,'<=',15),
+    (7,1,NULL,NULL,NULL,NULL,'<=',10),
+    (7,1,NULL,NULL,NULL,NULL,'<=',5)
   RETURNING id, threshold
 ),
 c AS (
@@ -223,9 +223,9 @@ tier AS (
 )
 INSERT INTO Achievement_Set(title, description, body, tier1_id, tier2_id, tier3_id)
 SELECT
-  'Fine Dust Sentinel',
-  'Capture extremely high PM2.5 values.',
-  'Next tier achieved for Fine Dust Sentinel! Another extreme PM2.5 reading logged.',
+  'Clean Air Spotter',
+  'Detected exceptionally low coarse particle levels.',
+  'You advanced to the next tier of Clean Air Spotter! Ultra-low PM10 detected again.',
   max(id) FILTER (WHERE rn=1),
   max(id) FILTER (WHERE rn=2),
   max(id) FILTER (WHERE rn=3)
@@ -238,9 +238,9 @@ WITH
 c_ins AS (
   INSERT INTO Condition(type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold)
   VALUES
-    (9,1,NULL,NULL,NULL,NULL,'>=',50),
-    (9,1,NULL,NULL,NULL,NULL,'>=',100),
-    (9,1,NULL,NULL,NULL,NULL,'>=',250)
+    (11,1,NULL,NULL,NULL,NULL,'>=',50),
+    (11,1,NULL,NULL,NULL,NULL,'>=',100),
+    (11,1,NULL,NULL,NULL,NULL,'>=',250)
   RETURNING id, threshold
 ),
 c AS (
@@ -354,9 +354,9 @@ WITH
 c_ins AS (
   INSERT INTO Condition(type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold)
   VALUES
-    (7,1,NULL,NULL,NULL,NULL,'<=',10),
-    (7,1,NULL,NULL,NULL,NULL,'<=',0),
-    (7,1,NULL,NULL,NULL,NULL,'<=',-10)
+    (9,1,NULL,NULL,NULL,NULL,'<=',10),
+    (9,1,NULL,NULL,NULL,NULL,'<=',0),
+    (9,1,NULL,NULL,NULL,NULL,'<=',-10)
   RETURNING id, threshold
 ),
 c AS (
@@ -412,9 +412,9 @@ WITH
 c_ins AS (
   INSERT INTO Condition(type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold)
   VALUES
-    (8,1,NULL,NULL,NULL,NULL,'>=',25),
-    (8,1,NULL,NULL,NULL,NULL,'>=',32),
-    (8,1,NULL,NULL,NULL,NULL,'>=',40)
+    (10,1,NULL,NULL,NULL,NULL,'>=',25),
+    (10,1,NULL,NULL,NULL,NULL,'>=',32),
+    (10,1,NULL,NULL,NULL,NULL,'>=',40)
   RETURNING id, threshold
 ),
 c AS (

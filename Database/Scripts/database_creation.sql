@@ -70,19 +70,19 @@ CREATE TABLE Condition_Type (
 );
 
 INSERT INTO Condition_Type (type, url, periodic) VALUES
-('count', 'http://localhost:8080/SmartDataAirquality/smartdata/records/', TRUE),
-('streak', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<group>', FALSE),
-('level', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<group>', FALSE),
-('xp', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<group>', FALSE),
-('pm2_5_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5', TRUE),
-('pm2_5_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm2_5', TRUE),
-('pm10_0_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0', TRUE),
-('pm10_0_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=pm10_0', TRUE),
-('temp_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=temp1', TRUE),
-('temp_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&column=temp1', TRUE),
-('distance', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/distance?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
-('duration', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/duration?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
-('speed', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/speed?smartdataurl=/SmartDataAirquality&storage=smartmonitoring', TRUE),
+('count', 'http://localhost:8080/WebPush/webpush/condition/count?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>', TRUE),
+('streak', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<id>', FALSE),
+('level', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<id>', FALSE),
+('xp', 'http://localhost:8080/SmartDataAirquality/smartdata/records/view_groups?storage=gamification&filter=group_id,eq,<id>', FALSE),
+('pm2_5_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>&column=pm2_5', TRUE),
+('pm2_5_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>&column=pm2_5', TRUE),
+('pm10_0_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>&column=pm10_0', TRUE),
+('pm10_0_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>&column=pm10_0', TRUE),
+('temp_min', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/min?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>&column=temp1', TRUE),
+('temp_max', 'http://localhost:8080/SmartDataLyser/smartdatalyser/statistic/max?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>&column=temp1', TRUE),
+('distance', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/distance?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>', TRUE),
+('duration', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/duration?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>', TRUE),
+('speed', 'http://localhost:8080/SmartDataLyser/smartdatalyser/geo/speed?smartdataurl=/SmartDataAirquality&storage=smartmonitoring&collection=<collection>', TRUE),
 ('location', '', TRUE);
 
 CREATE TABLE Condition_Period (
@@ -272,7 +272,7 @@ CHECK (cron IS NULL OR time_once IS NULL);
 -- =========================================================
 
 -- Trigger-Views:
-CREATE OR REPLACE VIEW view_triggers AS
+CREATE OR REPLACE VIEW gamification.view_triggers AS
 SELECT
     t.id AS t_id,
     t.description,
@@ -286,7 +286,10 @@ SELECT
         WHEN t.cron IS NOT NULL AND t.time_once IS NULL THEN 'time'
         ELSE 'invalid'
     END AS type
-FROM gamification.Trigger t;
+FROM gamification.trigger t
+LEFT JOIN smartmonitoring.datajobs_params p
+    ON t.id = p.value::numeric
+   AND p.key = 'trigger_id';
 
 
 CREATE OR REPLACE VIEW view_triggers_with_schedule AS
@@ -391,8 +394,8 @@ ORDER BY g.current_xp DESC;
 CREATE OR REPLACE VIEW view_groups AS
 WITH const AS (
     SELECT
-        (SELECT value::numeric FROM Settings WHERE key = 'base_xp_per_level') AS base_xp_per_level,
-        (SELECT value::numeric FROM Settings WHERE key = 'xp_increase_per_level') AS xp_increase_per_level
+        (SELECT value::numeric FROM gamification.settings WHERE key = 'base_xp_per_level') AS base_xp_per_level,
+        (SELECT value::numeric FROM gamification.settings WHERE key = 'xp_increase_per_level') AS xp_increase_per_level
 ),
 lvl AS (
     SELECT
@@ -400,7 +403,7 @@ lvl AS (
         1 +
         FLOOR(
             LOG(
-                GREATEST(g.level_xp, 0) * (const.xp_increase_per_level - 1)
+                GREATEST(g.level_xp, 0)::numeric * (const.xp_increase_per_level - 1)
                 / const.base_xp_per_level + 1
             ) / LOG(const.xp_increase_per_level)
         ) AS level
@@ -442,11 +445,11 @@ SELECT
 
     /* progress in % */
     CASE
-        WHEN c.current_xp < c.start_xp THEN 0
+        WHEN c.level_xp < c.start_xp THEN 0
         WHEN c.end_xp = c.start_xp THEN 100
         ELSE
             ROUND(
-                ((c.current_xp - c.start_xp) / (c.end_xp - c.start_xp)) * 100, 2
+                ((c.level_xp - c.start_xp)::numeric / NULLIF((c.end_xp - c.start_xp), 0)) * 100, 2
             )
     END AS progress
 

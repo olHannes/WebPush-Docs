@@ -129,9 +129,9 @@ INSERT INTO Statistic (history_id, event_type_id, action_id, created_at) VALUES
 
 -- Achievement-Set 1: Fine Dust Sentinel
 INSERT INTO Condition (type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold) VALUES
-(4, 1, NULL, NULL, NULL, NULL, '>=', 40),
-(4, 1, NULL, NULL, NULL, NULL, '>=', 60),
-(4, 1, NULL, NULL, NULL, NULL, '>=', 80);
+(6, 1, NULL, NULL, NULL, NULL, '>=', 40),
+(6, 1, NULL, NULL, NULL, NULL, '>=', 60),
+(6, 1, NULL, NULL, NULL, NULL, '>=', 80);
 
 INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
 ('Fine Dust Sentinel I', NUll, NULL, TRUE, NULL),
@@ -166,9 +166,9 @@ INSERT INTO Group_Achievement (group_id, achievement_id) VALUES
 
 -- Achievement-Set 2: Pure Air Guardian
 INSERT INTO Condition (type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold) VALUES
-(3, 1, NULL, NULL, NULL, NULL, '<=', 15),
-(3, 1, NULL, NULL, NULL, NULL, '<=', 10),
-(3, 1, NULL, NULL, NULL, NULL, '<=', 5);
+(5, 1, NULL, NULL, NULL, NULL, '<=', 15),
+(5, 1, NULL, NULL, NULL, NULL, '<=', 10),
+(5, 1, NULL, NULL, NULL, NULL, '<=', 5);
 
 INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
 ('Pure Air Guardian I', NUll, NULL, TRUE, NULL),
@@ -200,9 +200,9 @@ INSERT INTO Group_Achievement (group_id, achievement_id) VALUES
 
 -- Achievement-Set 3: Dust Peak Detector
 INSERT INTO Condition (type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold) VALUES
-(6, 1, NULL, NULL, NULL, NULL, '>=', 50),
-(6, 1, NULL, NULL, NULL, NULL, '>=', 100),
-(6, 1, NULL, NULL, NULL, NULL, '>=', 150);
+(8, 1, NULL, NULL, NULL, NULL, '>=', 50),
+(8, 1, NULL, NULL, NULL, NULL, '>=', 100),
+(8, 1, NULL, NULL, NULL, NULL, '>=', 150);
 
 INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
 ('Dust Peak Detector I', NUll, NULL, TRUE, NULL),
@@ -236,9 +236,9 @@ INSERT INTO Group_Achievement (group_id, achievement_id) VALUES
 
 -- Achievement-Set 4: Clean Air Spotter
 INSERT INTO Condition (type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold) VALUES
-(5, 1, NULL, NULL, NULL, NULL, '<=', 5),
-(5, 1, NULL, NULL, NULL, NULL, '<=', 10),
-(5, 1, NULL, NULL, NULL, NULL, '<=', 15);
+(7, 1, NULL, NULL, NULL, NULL, '<=', 15),
+(7, 1, NULL, NULL, NULL, NULL, '<=', 10),
+(7, 1, NULL, NULL, NULL, NULL, '<=', 5);
 
 INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
 ('Clean Air Spotter I', NUll, NULL, TRUE, NULL),
@@ -257,9 +257,9 @@ INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
-    'Fine Dust Sentinel',
-    'Capture extremely high PM2.5 values.',
-    'Next tier achieved for Fine Dust Sentinel! Another extreme PM2.5 reading logged.',
+    'Clean Air Spotter',
+    'Detected exceptionally low coarse particle levels.',
+    'You advanced to the next tier of Clean Air Spotter! Ultra-low PM10 detected again.',
     10, 11, 12
 );
 
@@ -273,9 +273,9 @@ INSERT INTO Group_Achievement (group_id, achievement_id) VALUES
 
 -- Achievement-Set 5: Marathon Mapper
 INSERT INTO Condition (type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold) VALUES
-(9, 1, NULL, NULL, NULL, NULL, '>=', 50),
-(9, 1, NULL, NULL, NULL, NULL, '>=', 100),
-(9, 1, NULL, NULL, NULL, NULL, '>=', 250);
+(11, 1, NULL, NULL, NULL, NULL, '>=', 50),
+(11, 1, NULL, NULL, NULL, NULL, '>=', 100),
+(11, 1, NULL, NULL, NULL, NULL, '>=', 250);
 
 INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
 ('Marathon Mapper I', NUll, NULL, TRUE, NULL),
@@ -346,9 +346,9 @@ INSERT INTO Group_Achievement (group_id, achievement_id) VALUES
 
 -- Achievement-Set 7: Deep Freeze Explorer
 INSERT INTO Condition (type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold) VALUES
-(7, 1, NULL, NULL, NULL, NULL, '<=', 10),
-(7, 1, NULL, NULL, NULL, NULL, '<=', 0),
-(7, 1, NULL, NULL, NULL, NULL, '<=', -10);
+(9, 1, NULL, NULL, NULL, NULL, '<=', 10),
+(9, 1, NULL, NULL, NULL, NULL, '<=', 0),
+(9, 1, NULL, NULL, NULL, NULL, '<=', -10);
 
 INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
 ('Deep Freeze Explorer I', NUll, NULL, TRUE, NULL),
@@ -382,9 +382,9 @@ INSERT INTO Group_Achievement (group_id, achievement_id) VALUES
 
 -- Achievement-Set 8: Extreme Heat Scout
 INSERT INTO Condition (type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold) VALUES
-(8, 1, NULL, NULL, NULL, NULL, '>=', 25),
-(8, 1, NULL, NULL, NULL, NULL, '>=', 32),
-(8, 1, NULL, NULL, NULL, NULL, '>=', 40);
+(10, 1, NULL, NULL, NULL, NULL, '>=', 25),
+(10, 1, NULL, NULL, NULL, NULL, '>=', 32),
+(10, 1, NULL, NULL, NULL, NULL, '>=', 40);
 
 INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
 ('Extreme Heat Scout I', NUll, NULL, TRUE, NULL),
@@ -419,7 +419,7 @@ INSERT INTO Group_Achievement (group_id, achievement_id) VALUES
 
 -- Achievement-Set 9: Night Shift Monitor
 INSERT INTO Condition (type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold) VALUES
-(11, 8, NULL, NULL, '20:00:00', '23:59:59', '>=', 8),
+(11, 8, NULL, NULL, '20:00:00', '23:59:59', '>=', 10),
 (11, 8, NULL, NULL, '20:00:00', '23:59:59', '>=', 25),
 (11, 8, NULL, NULL, '20:00:00', '23:59:59', '>=', 50);
 

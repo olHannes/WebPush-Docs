@@ -5,7 +5,7 @@
 INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VALUES
 ('Täglicher 8-Uhr-Check', '0 0 8 * * ?', NULL, TRUE, '2025-11-14 08:00:00.000'),
 ('Montags-Statistik-Trigger', '0 0 9 ? * MON', NULL, TRUE, '2025-11-10 09:00:00.000'),
-('Datenbedingter Trigger', NULL, NULL, TRUE, NULL),
+('Route Report', NULL, NULL, TRUE, NULL),
 ('Leaderboard Reset', '0 0 12 1 * ?', NULL, TRUE, NULL),
 ('Star Wars Tag', '0 38 11 4 MAY ?', NULL, TRUE, NULL),
 ('Frohe Weihnachten', '0 0 12 25 DEC ?', NULL, TRUE, NULL),
@@ -57,19 +57,6 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 -- Keine Conditions nötig → reine Zeitaktion
 
 
--- Beispiel-Trigger 4: Datenbedingter Trigger
--- Condition-Logik:
--- sensor_temp > 30
--- sensor_humidity < 20
-INSERT INTO Condition (type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold) VALUES
-(1, 1, NULL, NULL, NULL, NULL, '>', 30),  -- id 5
-(2, 1, NULL, NULL, NULL, NULL, '<', 20);     -- id 6
-
-INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(3, 5),
-(3, 6);
-
-
 
 -- =========================================================
 --  Notification
@@ -77,7 +64,7 @@ INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 INSERT INTO Notification (title, body, icon_url, renotify, silent, trigger_id) VALUES
 ('Daily Check', 'Dein täglicher Check wurde ausgeführt.', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 1),
 ('Montagsbericht', 'Dein Wochenbericht ist verfügbar.', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 2),
-('Einmalige Erinnerung 🕒', 'Dies ist eine einmalige Nachricht.', '/WebPush-PWA/files/icons/logo.png', TRUE, FALSE, 3),
+('Yeah, <name>! Your group <group> has finished a route 📍', '+ <earned_xp> XP', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 3),
 ('Leaderboard Reset 🆕', 'Collect new data now and climb the ranks!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 4),
 ('Happy Star Wars Day 💫', 'May the 4th be with you!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 5),
 ('Merry Christmas 🎄', 'Merry Christmas and a happy New Year!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 6),
@@ -152,9 +139,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Fine Dust Sentinel III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(19, 7),
-(20, 8),
-(21, 9);
+(19, 5),
+(20, 6),
+(21, 7);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/FDS_1.png', 19),
@@ -189,9 +176,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Pure Air Guardian III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(22, 10),
-(23, 11),
-(24, 12);
+(22, 8),
+(23, 9),
+(24, 10);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/PAG_1.png', 22),
@@ -223,9 +210,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Dust Peak Detector III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(25, 13),
-(26, 14),
-(27, 15);
+(25, 11),
+(26, 12),
+(27, 13);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/DPD_1.png', 25),
@@ -259,9 +246,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Clean Air Spotter III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(28, 16),
-(29, 17),
-(30, 18);
+(28, 14),
+(29, 15),
+(30, 16);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/CAS_1.png', 28),
@@ -296,9 +283,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Marathon Mapper III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(31, 19),
-(32, 20),
-(33, 21);
+(31, 17),
+(32, 18),
+(33, 19);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/MM_1.png', 31),
@@ -332,9 +319,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Unbroken Flame III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(34, 22),
-(35, 23),
-(36, 24);
+(34, 20),
+(35, 21),
+(36, 22);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/UF_1.png', 34),
@@ -369,9 +356,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Deep Freeze Explorer III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(37, 25),
-(38, 26),
-(39, 27);
+(37, 23),
+(38, 24),
+(39, 25);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/DFE_1.png', 37),
@@ -405,9 +392,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Extreme Heat Scout III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(40, 28),
-(41, 29),
-(42, 30);
+(40, 26),
+(41, 27),
+(42, 28);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/EHS_1.png', 40),
@@ -442,9 +429,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Night Shift Monitor III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(43, 31),
-(44, 32),
-(45, 33);
+(43, 29),
+(44, 30),
+(45, 31);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/NSM_1.png', 43),
@@ -479,9 +466,9 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Dawn Tracker III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
-(46, 34),
-(47, 35),
-(48, 36);
+(46, 32),
+(47, 33),
+(48, 34);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
 (10, '/WebPush-PWA/files/icons/achievements/DT_1.png', 46),

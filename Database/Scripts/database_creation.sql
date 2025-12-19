@@ -40,7 +40,8 @@ CREATE TABLE "group" (
     picture_id INT REFERENCES Group_Picture(id) ON DELETE SET NULL DEFAULT 1,
     streak INT NOT NULL DEFAULT 0 CHECK (streak >= 0),
     level_xp INT NOT NULL DEFAULT 0 CHECK (level_xp >= 0),
-    current_xp INT NOT NULL DEFAULT 0 CHECK (current_xp >= 0)
+    current_xp INT NOT NULL DEFAULT 0 CHECK (current_xp >= 0),
+    last_xp INT NOT NULL DEFAULT 0 CHECK (last_xp >= 0)
 );
 
 CREATE TABLE Group_Member (
@@ -653,6 +654,7 @@ SELECT
     l.current_xp AS xp,
     l.streak,
     l.level,
+    l.last_xp,
     m.id AS member_id,
     m.name AS member_name,
     m.endpoint AS member_endpoint

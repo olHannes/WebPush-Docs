@@ -19,8 +19,7 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Weekly XP Summary', '0 0 20 ? * FRI', NULL, TRUE, NULL),
 ('Monthly Achievement Summary', '0 0 20 1 * ?', NULL, TRUE, NULL),
 ('Leaderboard Reset Reminder', '0 0 12 L-2 * ?', NULL, TRUE, NULL),
-('WebPush Anniversary', '0 10 14 14 OCT ?', NULL, TRUE, NULL),
-('Streak Reset', '0 59 23 * * ?', NULL, TRUE, NULL);
+('WebPush Anniversary', '0 10 14 14 OCT ?', NULL, TRUE, NULL);
 
 -- =========================================================
 --  Conditions
@@ -33,20 +32,18 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 -- xp     >= 100
 INSERT INTO Condition (type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold) VALUES
 (1, 1, NULL, NULL, NULL, NULL, '>=', 5),   -- id 1
-(12, 1, NULL, NULL, NULL, NULL, '>=', 100),     -- id 2
-(1, 8, NULL, NULL, '00:00:00', '23:59:59', '>', 0);    -- id 3
+(12, 1, NULL, NULL, NULL, NULL, '>=', 100);     -- id 2
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (1, 1),
-(1, 2),
-(18, 3);
+(1, 2);
 
 
 -- Beispiel-Trigger 2: Montags-Statistik-Trigger
 -- Condition-Logik: -> Idee von Chat
 -- count_today >= 50
 INSERT INTO Condition (type_id, period_id, date_start, date_end, time_start, time_end, operator, threshold) VALUES
-(9, 1, NULL, NULL, NULL, NULL, '==', 1);   -- id 4
+(9, 1, NULL, NULL, NULL, NULL, '==', 1);   -- id 3
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
 (2, 1);
@@ -78,8 +75,7 @@ INSERT INTO Notification (title, body, icon_url, renotify, silent, trigger_id) V
 ('Weekly XP Summary 📊', 'Your weekly XP summary is here!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 14),
 ('Monthly Achievement Summary 📅', 'Your monthly achievement overview is available!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 15),
 ('Leaderboard Reset Reminder 🔁', 'The leaderboard reset is imminent!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 16),
-('WebPush Anniversary 🥳', 'Celebrate our Anniversary with us!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 17),
-('Streak Reset 🔥', 'Your streak has been reset. Start anew today!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 18);
+('WebPush Anniversary 🥳', 'Celebrate our Anniversary with us!', '/WebPush-PWA/files/icons/logo.png', FALSE, FALSE, 17);
 
 
 -- =========================================================
@@ -139,14 +135,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Fine Dust Sentinel III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(18, 4),
 (19, 5),
-(20, 6),
-(21, 7);
+(20, 6);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, '/WebPush-PWA/files/icons/achievements/FDS_1.png', 19),
-(20, '/WebPush-PWA/files/icons/achievements/FDS_2.png', 20),
-(40, '/WebPush-PWA/files/icons/achievements/FDS_3.png', 21);
+(10, '/WebPush-PWA/files/icons/achievements/FDS_1.png', 18),
+(20, '/WebPush-PWA/files/icons/achievements/FDS_2.png', 19),
+(40, '/WebPush-PWA/files/icons/achievements/FDS_3.png', 20);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -176,14 +172,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Pure Air Guardian III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(21, 7),
 (22, 8),
-(23, 9),
-(24, 10);
+(23, 9);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, '/WebPush-PWA/files/icons/achievements/PAG_1.png', 22),
-(20, '/WebPush-PWA/files/icons/achievements/PAG_2.png', 23),
-(40, '/WebPush-PWA/files/icons/achievements/PAG_3.png', 24);
+(10, '/WebPush-PWA/files/icons/achievements/PAG_1.png', 21),
+(20, '/WebPush-PWA/files/icons/achievements/PAG_2.png', 22),
+(40, '/WebPush-PWA/files/icons/achievements/PAG_3.png', 23);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -210,14 +206,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Dust Peak Detector III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(24, 10),
 (25, 11),
-(26, 12),
-(27, 13);
+(26, 12);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, '/WebPush-PWA/files/icons/achievements/DPD_1.png', 25),
-(20, '/WebPush-PWA/files/icons/achievements/DPD_2.png', 26),
-(40, '/WebPush-PWA/files/icons/achievements/DPD_3.png', 27);
+(10, '/WebPush-PWA/files/icons/achievements/DPD_1.png', 24),
+(20, '/WebPush-PWA/files/icons/achievements/DPD_2.png', 25),
+(40, '/WebPush-PWA/files/icons/achievements/DPD_3.png', 26);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -246,14 +242,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Clean Air Spotter III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(27, 13),
 (28, 14),
-(29, 15),
-(30, 16);
+(29, 15);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, '/WebPush-PWA/files/icons/achievements/CAS_1.png', 28),
-(20, '/WebPush-PWA/files/icons/achievements/CAS_2.png', 29),
-(40, '/WebPush-PWA/files/icons/achievements/CAS_3.png', 30);
+(10, '/WebPush-PWA/files/icons/achievements/CAS_1.png', 27),
+(20, '/WebPush-PWA/files/icons/achievements/CAS_2.png', 28),
+(40, '/WebPush-PWA/files/icons/achievements/CAS_3.png', 29);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -283,14 +279,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Marathon Mapper III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(30, 16),
 (31, 17),
-(32, 18),
-(33, 19);
+(32, 18);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, '/WebPush-PWA/files/icons/achievements/MM_1.png', 31),
-(20, '/WebPush-PWA/files/icons/achievements/MM_2.png', 32),
-(40, '/WebPush-PWA/files/icons/achievements/MM_3.png', 33);
+(10, '/WebPush-PWA/files/icons/achievements/MM_1.png', 30),
+(20, '/WebPush-PWA/files/icons/achievements/MM_2.png', 31),
+(40, '/WebPush-PWA/files/icons/achievements/MM_3.png', 32);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -319,14 +315,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Unbroken Flame III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(33, 19),
 (34, 20),
-(35, 21),
-(36, 22);
+(35, 21);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, '/WebPush-PWA/files/icons/achievements/UF_1.png', 34),
-(20, '/WebPush-PWA/files/icons/achievements/UF_2.png', 35),
-(40, '/WebPush-PWA/files/icons/achievements/UF_3.png', 36);
+(10, '/WebPush-PWA/files/icons/achievements/UF_1.png', 33),
+(20, '/WebPush-PWA/files/icons/achievements/UF_2.png', 34),
+(40, '/WebPush-PWA/files/icons/achievements/UF_3.png', 35);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -356,14 +352,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Deep Freeze Explorer III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(36, 22),
 (37, 23),
-(38, 24),
-(39, 25);
+(38, 24);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, '/WebPush-PWA/files/icons/achievements/DFE_1.png', 37),
-(20, '/WebPush-PWA/files/icons/achievements/DFE_2.png', 38),
-(40, '/WebPush-PWA/files/icons/achievements/DFE_3.png', 39);
+(10, '/WebPush-PWA/files/icons/achievements/DFE_1.png', 36),
+(20, '/WebPush-PWA/files/icons/achievements/DFE_2.png', 37),
+(40, '/WebPush-PWA/files/icons/achievements/DFE_3.png', 38);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -392,14 +388,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Extreme Heat Scout III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(39, 25),
 (40, 26),
-(41, 27),
-(42, 28);
+(41, 27);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, '/WebPush-PWA/files/icons/achievements/EHS_1.png', 40),
-(20, '/WebPush-PWA/files/icons/achievements/EHS_2.png', 41),
-(40, '/WebPush-PWA/files/icons/achievements/EHS_3.png', 42);
+(10, '/WebPush-PWA/files/icons/achievements/EHS_1.png', 39),
+(20, '/WebPush-PWA/files/icons/achievements/EHS_2.png', 40),
+(40, '/WebPush-PWA/files/icons/achievements/EHS_3.png', 41);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -429,14 +425,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Night Shift Monitor III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(42, 28),
 (43, 29),
-(44, 30),
-(45, 31);
+(44, 30);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, '/WebPush-PWA/files/icons/achievements/NSM_1.png', 43),
-(20, '/WebPush-PWA/files/icons/achievements/NSM_2.png', 44),
-(40, '/WebPush-PWA/files/icons/achievements/NSM_3.png', 45);
+(10, '/WebPush-PWA/files/icons/achievements/NSM_1.png', 42),
+(20, '/WebPush-PWA/files/icons/achievements/NSM_2.png', 43),
+(40, '/WebPush-PWA/files/icons/achievements/NSM_3.png', 44);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (
@@ -466,14 +462,14 @@ INSERT INTO Trigger (description, cron, time_once, active, last_triggered_at) VA
 ('Dawn Tracker III', NULL, NULL, TRUE, NULL);
 
 INSERT INTO Trigger_Condition (trigger_id, condition_id) VALUES
+(45, 31),
 (46, 32),
-(47, 33),
-(48, 34);
+(47, 33);
 
 INSERT INTO Achievement_Tier (reward_xp, image_url, trigger_id) VALUES
-(10, '/WebPush-PWA/files/icons/achievements/DT_1.png', 46),
-(20, '/WebPush-PWA/files/icons/achievements/DT_2.png', 47),
-(40, '/WebPush-PWA/files/icons/achievements/DT_3.png', 48);
+(10, '/WebPush-PWA/files/icons/achievements/DT_1.png', 45),
+(20, '/WebPush-PWA/files/icons/achievements/DT_2.png', 46),
+(40, '/WebPush-PWA/files/icons/achievements/DT_3.png', 47);
 
 INSERT INTO Achievement_Set (title, description, body, tier1_id, tier2_id, tier3_id)
 VALUES (

@@ -593,19 +593,22 @@ SELECT
             'tier', 1,
             'img_url', t1.image_url,
             'reward_xp', t1.reward_xp,
-            'achieved', (ga1.achievement_id IS NOT NULL)
+            'achieved', (ga1.achievement_id IS NOT NULL),
+            'trigger_id', t1.trigger_id
         ),
         jsonb_build_object(
             'tier', 2,
             'img_url', t2.image_url,
             'reward_xp', t2.reward_xp,
-            'achieved', (ga2.achievement_id IS NOT NULL)
+            'achieved', (ga2.achievement_id IS NOT NULL),
+            'trigger_id', t2.trigger_id
         ),
         jsonb_build_object(
             'tier', 3,
             'img_url', t3.image_url,
             'reward_xp', t3.reward_xp,
-            'achieved', (ga3.achievement_id IS NOT NULL)
+            'achieved', (ga3.achievement_id IS NOT NULL),
+            'trigger_id', t3.trigger_id
         )
     ) AS tiers
 

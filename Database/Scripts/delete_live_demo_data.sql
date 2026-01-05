@@ -1,0 +1,1 @@
+DELETE FROM smartmonitoring.sensor_b827eb0fae5c WHERE EXTRACT(YEAR FROM ts) = 2025;

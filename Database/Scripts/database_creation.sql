@@ -210,22 +210,26 @@ CREATE TABLE Settings (
     type TEXT NOT NULL DEFAULT 'double'
 );
 
-INSERT INTO Settings (key, value) VALUES
-('base_xp_per_level', '1000.0'),
-('xp_increase_per_level', '1.1'),
-('base_xp_per_km', '10.0'),
-('speed_soft_cap', '30.0'),
-('max_speed_allowed_ebike', '45.0'),
-('max_speed_allowed_bike', '30.0'),
-('max_speed_allowed_walk', '10.0'),
-('min_speed_allowed_ebike', '5.0'),
-('min_speed_allowed_bike', '3.0'),
-('min_speed_allowed_walk', '1.0'),
-('min_density_per_km', '5.0'),
-('max_density_per_km', '300.0'),
-('max_duration_multiplier', '2.0'),
-('min_distance_km', '0'),
-('min_duration_h', '0');
+INSERT INTO Settings ("key", value) VALUES
+('base_xp_per_level','1000.0'),
+('xp_increase_per_level','1.1'),
+('base_xp_per_km','10.0'),
+('speed_soft_cap','30.0'),
+('min_speed_allowed_walking','1.0'),
+('max_speed_allowed_walking','10.0'),
+('min_speed_allowed_bicycle','3.0'),
+('max_speed_allowed_bicycle','30.0'),
+('min_speed_allowed_scooter/eBike','5.0'),
+('max_speed_allowed_scooter/eBike','45.0'),
+('min_speed_allowed_car','10.0'),
+('max_speed_allowed_car','200.0'),
+('min_speed_allowed_motorcycle','10.0'),
+('max_speed_allowed_motorcycle','200.0'),
+('min_density_per_km','5.0'),
+('max_density_per_km','300.0'),
+('max_duration_multiplier','2.0'),
+('min_duration_h','0'),
+('min_distance_km','0');
 
 -- =========================================================
 --  Useful Indexes

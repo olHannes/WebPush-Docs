@@ -1,0 +1,526 @@
+openapi: 3.0.3
+info:
+  title: WebPush - REST API 
+  version: 1.0.0
+  description: >-
+    Diese OpenAPI/Swagger-Datei beschreibt die Schnittstellen in unserem Projekt **WebPush**.
+    <br>Für Datenbank-Zugriffe wird *SmartDataAirquality* verwendet, und muss daher erreichbar sein!
+servers:
+  - url: https://localhost:8181/WebPush/webpush
+    description: "Payara WebPush Instanz"
+paths:
+  /admin/achievement-icon:
+    post:
+      summary: AdminResource.uploadFile
+      description: "Ein Bild wird hiermit hochgeladen und als Datei gespeichert => in Achievement Erstellung verwendet."
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+                - file
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /admin/notification:
+    post:
+      summary: AdminResource.createNotification
+      description: "Erstellt eine neue Notification und behandelt Zwischentabellen für z.B. Actions."
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              description: JSON payload (im Code als String verarbeitet).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /admin/trigger/{id}:
+    delete:
+      summary: AdminResource.deleteTrigger
+      description: "Löscht einen Trigger (Notification cascading) und disabled den SmartData-Job."
+      tags:
+        - Admin
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /admin/trigger:
+    post:
+      summary: AdminResource.createTrigger
+      description: "Erstellt einen neuen Trigger + Conditions in der DB => nach Datenvalidierung."
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              description: JSON payload (im Code als String verarbeitet).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /admin/trigger/condition/{triggerId}:
+    post:
+      summary: AdminResource.createTriggerCondition
+      description: "Erstellt einzelne gegebene Conditions und verlinkt diese mit gegebener trigger-id."
+      tags:
+        - Admin
+      parameters:
+        - name: triggerId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              description: JSON payload (im Code als String verarbeitet).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /admin/achievement:
+    post:
+      summary: AdminResource.createAchievement
+      description: "Erstellt ein Achievemnt bestehend aus drei Tiers, einem Set und einem Trigger."
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              description: JSON payload (im Code als String verarbeitet).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /condition/count:
+    get:
+      summary: Count
+      description: "Zählt alle Datensetze der gegebenen Collection innerhalb des eingestellten Zeitraumes."
+      tags:
+        - Condition
+      parameters:
+        - name: smartdataurl
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: collection
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: storage
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: end
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "Anzahl der Datensätze innerhalb des Zeitraumes."
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '404':
+          description: "Collection wurde nicht gefunden"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '500':
+          description: "Server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /condition/progress/{triggerId}:
+    get:
+      summary: Progress
+      description: "Berechnet den Fortschritt der Conditions eines Triggers"
+      tags:
+        - Condition
+      parameters:
+        - name: triggerId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: groupId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: "Fortschritt der Conditions eines Triggers"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '404':
+          description: "Trigger wurde nicht gefunden"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '500':
+          description: "Server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /push/key:
+    get:
+      summary: PushResource.getKey
+      description: "Liefert den Key und baut einen neuen, wenn noch keiner vorhanden ist."
+      tags:
+        - Push
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /push/subscribe:
+    post:
+      summary: PushResource.subscribe
+      description: "Subscribed den User bei vorhandenem Endpunkt."
+      tags:
+        - Push
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PushSubscription'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /push/subscribe/{id}:
+    delete:
+      summary: PushResource.deleteSubscription
+      description: "Löscht die Subscription eines Users."
+      tags:
+        - Push
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /push/send:
+    post:
+      summary: PushResource.sendNotificationToAll
+      description: "Sendet eine Nachricht an alle registrierten Nutzer."
+      tags:
+        - Push
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessagePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SentNotificationResult'
+  /push/send/{id}:
+    post:
+      summary: PushResource.sendNotification
+      description: "Sendet die Nachricht an den Nutzer mit der gegebenen Id."
+      tags:
+        - Push
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessagePayload'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SentNotificationResult'
+
+  /webhook/tbl_observedobject_change:
+    post:
+      summary: WebhookResource.handleObjectChange
+      description: "Webmirroring auf SmartDataAirquality - bei Änderungen in der tbl_observedobjects Tabelle für die Synchronisation."
+      tags:
+        - Webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              description: JSON payload (im Code als String verarbeitet).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /webhook/sensor_push/{tablename}:
+    post:
+      summary: WebhookResource.reactOnNewData
+      description: "Trigger der Jobs bei Änderungen - neuen Daten - in einer Sensortabelle."
+      tags:
+        - Webhook
+      parameters:
+        - name: tablename
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              description: JSON payload (im Code als String verarbeitet).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+components:
+  schemas:
+    MessagePayload:
+      type: object
+      additionalProperties: false
+      properties:
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationAction'
+
+        vibration:
+          type: array
+          items:
+            type: integer
+            format: int32
+          description: Vibration pattern (values in ms), e.g. [200, 100, 200]
+
+        data:
+          type: object
+          additionalProperties: true
+          description: Arbitrary key/value payload delivered to the client
+
+        title:
+          type: string
+        badge:
+          type: string
+          description: Badge value or badge resource identifier (string per DTO)
+        image_url:
+          type: string
+          format: uri
+        body:
+          type: string
+        icon_url:
+          type: string
+          format: uri
+        lang:
+          type: string
+          description: BCP-47 language tag (e.g. "de", "en-US")
+        tag:
+          type: string
+          description: Notification tag for replacing/stacking notifications
+
+        requireInteraction:
+          type: boolean
+        renotify:
+          type: boolean
+        silent:
+          type: boolean
+
+        timestamp:
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds since epoch)
+
+      required:
+        - title
+
+    NotificationAction:
+      type: object
+      additionalProperties: false
+      properties:
+        action:
+          type: string
+          description: Identifier of the action that will be sent back when the user selects it
+        title:
+          type: string
+          description: Label shown to the user for this action
+        icon:
+          type: string
+          format: uri
+          description: Icon URL for the action button
+      required:
+        - action
+        - title
+
+    PushSubscription:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          description: Optional identifier or label for the subscription
+
+        endpoint:
+          type: string
+          format: uri
+          description: Push service endpoint URL
+
+        key:
+          type: string
+          description: Client public key (p256dh)
+
+        auth:
+          type: string
+          description: Authentication secret for the push subscription
+
+      required:
+        - endpoint
+        - key
+        - auth
+      
+    SentNotificationResult:
+      type: object
+      additionalProperties: false
+      properties:
+        sent:
+          type: array
+          description: Liste aller Endpoints, an die die Nachricht erfolgreich gesendet wurde.
+          items:
+            type: string
+            format: uri
+        failed:
+          type: array
+          description: Liste aller Endpoints, bei denen das Senden fehlgeschlagen ist.
+          items:
+            type: string
+            format: uri
+        deleted:
+          type: array
+          description: Liste aller Endpoints, die nicht mehr vorhanden sind und gelöscht wurden.
+          items:
+            type: string
+            format: uri
+      required:
+        - sent
+        - failed
+        - deleted

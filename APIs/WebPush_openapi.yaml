@@ -5,6 +5,7 @@ info:
   description: >-
     Diese OpenAPI/Swagger-Datei beschreibt die Schnittstellen in unserem Projekt **WebPush**.
     <br>Für Datenbank-Zugriffe wird *SmartDataAirquality* verwendet, und muss daher erreichbar sein!
+    <br>Außerdem muss die Datenbank **smartmonitoring_airquality** mit dem Schema **gamification** gebaut sein!
 servers:
   - url: https://localhost:8181/WebPush/webpush
     description: "Payara WebPush Instanz"
@@ -46,8 +47,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              additionalProperties: true
+              $ref: '#/components/schemas/AdminNotificaitonRequest'
               description: JSON payload (im Code als String verarbeitet).
       responses:
         '200':
@@ -89,8 +89,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              additionalProperties: true
+              $ref: '#/components/schemas/AdminTriggerRequest'
               description: JSON payload (im Code als String verarbeitet).
       responses:
         '200':
@@ -100,6 +99,7 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+                description: "Hier wird der Trigger-id als Ergebnis von SmartData zurückgegeben."
   /admin/trigger/condition/{triggerId}:
     post:
       summary: AdminResource.createTriggerCondition
@@ -358,7 +358,7 @@ paths:
             schema:
               type: object
               additionalProperties: true
-              description: JSON payload (im Code als String verarbeitet).
+              description: JSON payload (im Code als String verarbeitet).<br>Mirroring von SmartDataAirquality auf smartmonitoring.tbl_observed_objects (POST).
       responses:
         '200':
           description: OK
@@ -386,7 +386,7 @@ paths:
             schema:
               type: object
               additionalProperties: true
-              description: JSON payload (im Code als String verarbeitet).
+              description: JSON payload (im Code als String verarbeitet).<br>Mirroring von SmartDataAirquality auf die Sensortabellen (als Job Trigger bei neuen Daten).
       responses:
         '200':
           description: OK
@@ -398,6 +398,127 @@ paths:
 
 components:
   schemas:
+    AdminNotificaitonRequest:
+      type: object
+      required:
+      - title
+      - trigger_id
+      properties:
+        title:
+          type: string
+          description: Titel der Notification (Pflichtfeld)
+          example: Test-Title
+        body:
+          type: string
+          description: Text der Notification (empfohlen)
+          example: Test-Message
+        icon_url:
+          type: string
+          description: URL zum Icon der Notification
+          example: https://example.com/icon.png
+        image_url:
+          type: string
+          description: URL für ein Bild in der Notification
+          example: https://example.com/icon.png
+        renotify:
+          type: boolean
+          description: Erneutes Anzeigen der Notification
+          default: false
+          example: false
+        silent:
+          type: boolean
+          description: Notification ohne Sound/Vibration
+          default: false
+          example: false
+        trigger_id:
+          type: integer
+          description: Fremdschlüssel aus der gamification.Trigger Tabelle (Pflichtfeld)
+          example: 1
+        actions:
+          type: array
+          description: Liste an Action-IDs (als String)
+          items:
+            type: string
+          example:
+          - "1"
+          - "3"
+
+
+    AdminTriggerRequest:
+        type: object
+        description: >
+          Admin Trigger Create Payload. Pflicht: description und genau eins von
+          schedule_timestamp oder schedule_cron. Conditions werden nicht als Array,
+          sondern als dynamische Felder mit Suffix _<n> übertragen (z.B. type_id_1).
+        required:
+          - description
+        properties:
+          description:
+            type: string
+            description: Freitext-Beschreibung des Triggers
+            example: Test trigger
+
+          schedule_timestamp:
+            type: string
+            format: date-time
+            description: >
+              Zeitpunkt (lokales Datum/Zeit). Alternative zu schedule_cron.
+            example: "2026-01-09T00:00"
+
+          schedule_cron:
+            type: string
+            description: >
+              Cron-Ausdruck (Alternative zu schedule_timestamp)
+            example: "0 0 * * * ?"
+
+        oneOf:
+          - required: [description, schedule_timestamp]
+          - required: [description, schedule_cron]
+
+        additionalProperties: true
+
+        x-conditionFields:
+          description: >
+            Conditions werden als dynamische JSON-Felder übertragen:
+            - type_id_<n> (int, Pflicht)
+            - operator_<n> (string, Pflicht)
+            - threshold_<n> (number, Pflicht)
+            - period_id_<n> (int, Pflicht)
+            Optional je Condition:
+            - daily_time_start_<n> und daily_time_end_<n> (HH:mm)
+            - range_start_<n> und range_end_<n> (date-time)
+          pattern: "^(type_id|operator|threshold|period_id|daily_time_start|daily_time_end|range_start|range_end)_\\d+$"
+
+        example:
+          description: "test_2"
+          schedule_timestamp: "2026-01-09T00:00"
+          type_id_1: 8
+          operator_1: "=="
+          threshold_1: 24
+          period_id_1: 8
+          daily_time_start_1: "00:00"
+          daily_time_end_1: "22:22"
+          type_id_2: 14
+          operator_2: "=="
+          threshold_2: 32
+          period_id_2: 9
+          range_start_2: "2026-01-09T00:00"
+          range_end_2: "2026-01-22T00:00"
+
+    AdminTriggerRequestExampleCron:
+      allOf:
+        - $ref: "#/components/schemas/AdminTriggerRequest"
+      example:
+        description: "Test trigger"
+        schedule_cron: "0 0 * * * ?"
+        type_id_1: 10
+        operator_1: ">"
+        threshold_1: 48
+        period_id_1: 2
+
+
+
+
     MessagePayload:
       type: object
       additionalProperties: false

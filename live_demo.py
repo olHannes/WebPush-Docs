@@ -2,6 +2,26 @@ import pandas as pd
 import requests
 import json
 
+GET_URL = "http://localhost:8080/SmartDataAirquality/smartdata/records/settings?storage=gamification&filter=key,eq,first_server_start"
+
+# Send PUT request to change last_activity of group 9
+headers = {'Content-Type': 'application/json'}
+response = requests.get(GET_URL, headers=headers)
+print(f"Status code: {response.status_code}")
+print(f"Response: {response.text}")
+
+settings_id = response.json()['records'][0]['id']
+
+PUT_URL_SETTINGS = f"http://localhost:8080/SmartDataAirquality/smartdata/records/settings/{settings_id}?storage=gamification"
+
+body_settings = {"value": "2025-01-01T00:00:00.000"}
+payload_settings = json.dumps(body_settings)
+
+# Send PUT request to change first_server_start setting
+response = requests.put(PUT_URL_SETTINGS, data=payload_settings, headers=headers)
+print(f"Status code: {response.status_code}")
+print(f"Response: {response.text}")
+
 PUT_URL = "http://localhost:8080/SmartDataAirquality/smartdata/records/group/9?storage=gamification"
 
 body = {"last_activity": "2023-08-29T08:27:41.497"}

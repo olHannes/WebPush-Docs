@@ -214,7 +214,6 @@ INSERT INTO Settings ("key", value, type) VALUES
 ('first_server_start','', 'string');
 
 INSERT INTO Settings ("key", value) VALUES
-('first_server_start','', ),
 ('base_xp_per_level','1000.0'),
 ('xp_increase_per_level','1.1'),
 ('base_xp_per_km','10.0'),

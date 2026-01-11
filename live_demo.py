@@ -24,7 +24,12 @@ print(f"Response: {response.text}")
 
 PUT_URL = "http://localhost:8080/SmartDataAirquality/smartdata/records/group/9?storage=gamification"
 
-body = {"last_activity": "2023-08-29T08:27:41.497"}
+body = {
+        "last_activity": "2023-08-29T08:27:41.497",
+        "level_xp": 0,
+        "current_xp": 0,
+        "last_xp": 0
+        }
 payload = json.dumps(body)
 
 # Send PUT request to change last_activity of group 9

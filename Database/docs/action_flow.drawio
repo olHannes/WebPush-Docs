@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="zT2NzDmBc688VI3kjJsJ" name="Page-1">
-        <mxGraphModel dx="1612" dy="765" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1331" dy="676" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -86,7 +86,7 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="36" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;for all Groups check Conditions&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="24" vertex="1">
+                <mxCell id="36" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;for Group check Conditions&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="24" vertex="1">
                     <mxGeometry x="51.120000000000005" y="520" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="45" value="" style="edgeStyle=none;html=1;" parent="24" source="41" target="44" edge="1">
@@ -153,9 +153,10 @@
                 <mxCell id="63" value="yes" style="edgeStyle=none;html=1;" parent="24" source="64" target="65" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="407.12" y="470" as="targetPoint"/>
+                        <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="103" value="no" style="edgeStyle=none;html=1;" parent="24" source="64" target="56" edge="1">
+                <mxCell id="103" value="yes" style="edgeStyle=none;html=1;" parent="24" source="64" target="56" edge="1">
                     <mxGeometry x="-0.8018" y="-15" relative="1" as="geometry">
                         <Array as="points">
                             <mxPoint x="278.62" y="345"/>

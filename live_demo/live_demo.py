@@ -41,6 +41,7 @@ print(f"Response: {response.text}")
 
 POST_URL_DATA = "http://localhost:8080/SmartDataAirquality/smartdata/records/sensor_b827eb0fae5c?storage=smartmonitoring"
 CSV_PATH_DATA = "./sensor_b827eb0fae5c_202601051328.csv"
+#CSV_PATH_DATA = "./streak_test_data.csv"
 
 # Read CSV
 df = pd.read_csv(

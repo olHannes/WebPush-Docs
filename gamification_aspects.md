@@ -20,13 +20,19 @@
 - Ein Achievement hat einen `Trigger` mit mindestens Condition
 - Zusätzlich gibt es `reward_xp` als Belohnung bei Erreichen des Ziels
 
-## 4. Quests
+## 4. Distanz-Daten
+- Achievementes basierend auch Orten und Distanzen 
+- Map-Erkundung von unbekannten Orten
+
+---
+
+## 5. Quests
 - `Datenbasierte Trigger`:
     - "Heute 500 Meter gelaufen" / "5 Temperaturmessungen über 25°C"
     - gibt `reward_xp` -> wiederkehrendes Achievement
 - *zeitlich begrenzt -> z.B. nur im Sommer*
 
-## 5. Store & Items
+## 6. Store & Items
 - zusätzlicher `Coins` Eintrag pro Gruppe
 - erhöht sich durch `Achievements`
 - Können in *kleinem Shop* eingesetzt werden
@@ -35,7 +41,3 @@
         - Banner für App-Aussehen
     (neue Tabellen notwendig)
         - Luftfilter (Wiederherstellung der Streak)
-
-## 6. Distanz-Daten
-- Achievementes basierend auch Orten und Distanzen 
-- Map-Erkundung von unbekannten Orten

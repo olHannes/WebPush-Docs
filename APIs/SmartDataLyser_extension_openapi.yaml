@@ -1,0 +1,341 @@
+openapi: 3.0.3
+info:
+  title: SmartDataLyser - REST API [Extension]
+  version: 1.0.0
+  description: >-
+    Diese OpenAPI/Swagger-Datei beschreibt die Schnittstellen der SmartDataLyser
+    Extension. Diese API erweitert die Basis-SmartDataLyser-API
+servers:
+  - url: http://localhost:8080/SmartDataLyser/smartdatalyser/
+    description: "Payara SmartDataLyser Instanz"
+paths:
+  /geo/duration:
+    get:
+      summary: GeoResource.getDuration
+      description: "Gibt die Dauer zwischen allen Datensätzen die angegeben wurden zurück."
+      tags:
+        - GeoResource
+      parameters:
+        - name: smartdataurl
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: collection
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: storage
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: filter
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: dateattribute
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ts
+        - name: start
+          in: query
+          required: false
+          example: ["measurement_process,eq,[...]"]
+          schema:
+            type: string
+            default: now-30d
+        - name: end
+          in: query
+          required: false
+          schema:
+            type: string
+            default: now
+        - name: geoattr
+          in: query
+          required: false
+          schema:
+            type: string
+            default: pos
+      responses:
+        '200':
+          description: "Dauer zwischen dem ersten und letzten Datensatz."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeoDurationResponse'
+        '404':
+          description: "Collection wurde nicht gefunden"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '500':
+          description: "Internal error"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /geo/speed:
+    get:
+      summary: GeoResource.speed
+      description: "Gibt die durchschnittliche Geschwindigkeit zwischen allen Datensätzen die angegeben wurden zurück."
+      tags:
+        - GeoResource
+      parameters:
+        - name: smartdataurl
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: collection
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: storage
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: filter
+          in: query
+          required: false
+          example: ["measurement_process,eq,[...]"]
+          schema:
+            type: array
+            items:
+              type: string
+        - name: dateattribute
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ts
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: string
+            default: now-30d
+        - name: end
+          in: query
+          required: false
+          schema:
+            type: string
+            default: now
+        - name: geoattr
+          in: query
+          required: false
+          schema:
+            type: string
+            default: pos
+      responses:
+        '200':
+          description: "Durchschnittliche Geschwindigkeit zwischen dem ersten und letzten Datensatz."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeoSpeedResponse'
+        '404':
+          description: "Collection wurde nicht gefunden"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '500':
+          description: "Internal error"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /statistic/min:
+    get:
+      summary: StatisticResource.min
+      description: "Gibt den minimalen Wert aller Datensätze der gegebenen Spalte innerhalb des eingestellten Zeitraumes zurück."
+      tags:
+        - StatisticResource
+      parameters:
+        - name: smartdataurl
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: collection
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: storage
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: dateattribute
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ts
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: end
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: column
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "Minimum der Datensätze innerhalb des Zeitraumes."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticMinResponse'
+        '404':
+          description: "Collection wurde nicht gefunden"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '500':
+          description: "Server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /statistic/max:
+    get:
+      summary: StatisticResource.max
+      description: "Gibt den maximalen Wert aller Datensätze der gegebenen Spalte innerhalb des eingestellten Zeitraumes zurück."
+      tags:
+        - StatisticResource
+      parameters:
+        - name: smartdataurl
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: collection
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: storage
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: dateattribute
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ts
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: end
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: column
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "Maximum der Datensätze innerhalb des Zeitraumes."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticMaxResponse'
+        '404':
+          description: "Collection wurde nicht gefunden"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '500':
+          description: "Server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+
+components:
+  schemas:
+    GeoDurationResponse:
+      type: object
+      properties:
+        durationH:
+          type: number
+          format: double
+          example: 3.0
+      required:
+        - durationH
+      example:
+        durationH: 3.0
+    GeoSpeedResponse:
+      type: object
+      properties:
+        avgSpeedKMH:
+          type: number
+          format: double
+          example: 1225.08
+      required:
+        - avgSpeedKMH
+      example:
+        avgSpeedKMH: 1225.08
+    StatisticMinResponse:
+      type: object
+      properties:
+        min:
+          type: number
+          format: double
+          example: 0.0
+      required:
+        - min
+      example:
+        min: 0.0
+    StatisticMaxResponse:
+      type: object
+      properties:
+        max:
+          type: number
+          format: double
+          example: 42.0
+      required:
+        - max
+      example:
+        max: 42.0

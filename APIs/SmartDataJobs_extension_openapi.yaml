@@ -1,0 +1,173 @@
+openapi: 3.0.3
+info:
+  title: SmartDataJobs - REST API [Extension]
+  version: 1.0.0
+  description: >-
+    Diese OpenAPI/Swagger-Datei beschreibt die Schnittstellen der SmartDataJobs
+    Extension. Diese API erweitert die Basis-SmartDataJobs-API
+servers:
+  - url: http://localhost:8080/SmartDataJobs/smartdatajobs/
+    description: "Payara SmartDataJobs Instanz"
+paths:
+  /jobexecution/activate:
+    get:
+      summary: JobExecutionResource.activate
+      description: "Aktiviert einen angegebenen Job."
+      tags:
+        - JobExecutionResource
+      parameters:
+        - name: smartdataurl
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: collection
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: storage
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: number
+            format: long
+      responses:
+        '200':
+          description: "Job wurde aktiviert."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobExecutionActivateResponse'
+        '404':
+          description: "Collection wurde nicht gefunden"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '500':
+            description: "Internal error"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/JobExecutionActivateErrorResponse'
+  /jobexecution/deactivate:
+    get:
+      summary: JobExecutionResource.deactivate
+      description: "Deaktiviert einen angegebenen Job."
+      tags:
+        - JobExecutionResource
+      parameters:
+        - name: smartdataurl
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: collection
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: storage
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: number
+            format: long
+      responses:
+        '200':
+          description: "Job wurde deaktiviert."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobExecutionDeactivateResponse'
+        '404':
+          description: "Collection wurde nicht gefunden"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '500':
+            description: "Internal error"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/JobExecutionDeactivateErrorResponse'
+components:
+  schemas:
+    JobExecutionActivateResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            status:
+              type: string
+              example: "updated"
+            active:
+              type: boolean
+              example: true
+      required:
+        - result
+      example:
+        result:
+          status: "updated"
+          active: true
+    JobExecutionDeactivateResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            status:
+              type: string
+              example: "updated"
+            active:
+              type: boolean
+              example: false
+      required:
+        - result
+      example:
+        result:
+          status: "updated"
+          active: false
+    JobExecutionActivateErrorResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            error:
+              type: string
+              example: "Could not update column active to >true< of Job >42<"
+      required:
+        - result
+      example:
+        result:
+          error: "Could not update column active to >true< of Job >42<"
+    JobExecutionDeactivateErrorResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            error:
+              type: string
+              example: "Could not update column active to >false< of Job >42<"
+      required:
+        - result
+      example:
+        result:
+          error: "Could not update column active to >false< of Job >42<"

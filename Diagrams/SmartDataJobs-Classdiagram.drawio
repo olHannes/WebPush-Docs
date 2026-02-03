@@ -1,195 +1,203 @@
-<mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" background="none" math="0" shadow="0">
-  <root>
-    <mxCell id="0" />
-    <mxCell id="1" parent="0" />
-    <mxCell id="node11" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;AchievementService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ AchievementService(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ isAchievement(int): boolean&lt;br/&gt;- getAchievement(int): JsonArray&lt;br/&gt;+ addAchievementToGroup(int, int): JsonObject&lt;br/&gt;+ hasAchievement(int, int): boolean&lt;br/&gt;+ sendAchievement(int, JsonObject): JsonObject&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="257" y="3538" width="340" height="185" as="geometry" />
-    </mxCell>
-    <mxCell id="node3" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Action&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ Action(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- preJobsInfo: JsonObject&lt;br/&gt;- id: Long&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;# extractPreJobResult(): JsonValue&lt;br/&gt;+ getPreJobsInfo(): JsonObject&lt;br/&gt;+ getParamsDescription(): JsonArray&lt;br/&gt;+ setParams(JsonObject): void&lt;br/&gt;+ setId(Long): void&lt;br/&gt;+ call(): JsonObject&lt;br/&gt;- mergeJsonObjects(JsonObject, JsonObject): JsonObject&lt;br/&gt;+ getId(): Long&lt;br/&gt;+ setPreJobsInfo(JsonObject): void&lt;br/&gt;# getEffectivePayload(String, JsonValue): JsonValue&lt;br/&gt;- mergeJsonArrays(JsonArray, JsonArray): JsonArray&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="-33" y="421" width="400" height="379" as="geometry" />
-    </mxCell>
-    <mxCell id="node14" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;CheckEventTriggers&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ CheckEventTriggers(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- sensorTable: String&lt;br/&gt;- groupId: int&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getParamsDescription(): JsonArray&lt;br/&gt;- getLastActivity(String): LocalDateTime?&lt;br/&gt;+ setParams(JsonObject): void&lt;br/&gt;+ call(): JsonObject&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="541" y="945" width="292" height="211" as="geometry" />
-    </mxCell>
-    <mxCell id="node5" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;ConditionService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ ConditionService(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- compare(double, double, String): boolean&lt;br/&gt;+ checkConditions(JsonArray): boolean&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="795" y="554" width="305" height="122" as="geometry" />
-    </mxCell>
-    <mxCell id="node4" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;DataService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ DataService(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ SMARTDATA_RECORDS_URL: String&lt;br/&gt;+ SMARTDATA_STORAGE_PARAMS: String&lt;br/&gt;- SMARTDATA_URL: String&lt;br/&gt;- SMARTDATALYSER_URL: String&lt;br/&gt;+ STORAGE_SMARTMONITORING: String&lt;br/&gt;+ WEBPUSH_URL: String&lt;br/&gt;- client: HttpClient&lt;br/&gt;+ DISTANCE_URL: String&lt;br/&gt;+ SPEED_URL: String&lt;br/&gt;- HOST: String&lt;br/&gt;+ FMT: DateTimeFormatter&lt;br/&gt;+ DURATION_URL: String&lt;br/&gt;+ STATISTIC_URL: String&lt;br/&gt;+ STORAGE_GAMIFICATION: String&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ sendPUT(String, JsonObject): JsonObject&lt;br/&gt;- read(JsonObject): JsonArray?&lt;br/&gt;- write(JsonObject, JsonObject): JsonObject?&lt;br/&gt;+ sendPOST(String, JsonObject): JsonObject&lt;br/&gt;+ read(String, String, String, Map&amp;lt;String, Object&amp;gt;, List&amp;lt;String&amp;gt;): JsonArray&lt;br/&gt;+ sendGET(String): JsonObject&lt;br/&gt;- send(String, JsonObject, RequestType): JsonObject&lt;br/&gt;+ write(String, String, JsonObject): JsonObject&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="-116" y="2533" width="486" height="595" as="geometry" />
-    </mxCell>
-    <mxCell id="node0" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;HttpClientProvider&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ HttpClientProvider(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- client: HttpClient&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getClient(): HttpClient&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="909" y="3573" width="196" height="124" as="geometry" />
-    </mxCell>
-    <mxCell id="node9" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;JobExecutionResource&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ JobExecutionResource(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- jobrunner: JobRunner&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ stopAll(): Response&lt;br/&gt;+ state(String, String, String): Response&lt;br/&gt;+ start(String, String, String, Long): Response&lt;br/&gt;+ getActionsDescription(): Response&lt;br/&gt;+ startAll(String, String, String): Response&lt;br/&gt;+ stop(String, String, String, Long): Response&lt;br/&gt;+ activate(String, String, String, Long): Response&lt;br/&gt;+ deactivate(String, String, String, Long): Response&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="629" y="3229" width="357" height="283" as="geometry" />
-    </mxCell>
-    <mxCell id="node1" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;JobRunner&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ JobRunner(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- executorService: ManagedScheduledExecutorService&lt;br/&gt;- priorityExecutor: ScheduledExecutorService&lt;br/&gt;- stopped: boolean&lt;br/&gt;- futures: Map&amp;lt;String, Future&amp;lt;?&amp;gt;&amp;gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ setActiveOfJob(String, String, String, Long, boolean): JsonObject&lt;br/&gt;+ startJobChain(String, String, String, JsonObject): JsonArrayBuilder&lt;br/&gt;- loadJobParams(JsonArray, JsonObjectBuilder): JsonObject&lt;br/&gt;- runJobAsync(Action, String, String, String, JsonObject, long, LocalDateTime): void&lt;br/&gt;+ getJobCode(String, String, String, Long): String&lt;br/&gt;- calculateDelay(LocalDateTime, long): long&lt;br/&gt;- checkChanged(String, String, String, String, JsonObject): boolean&lt;br/&gt;+ stopJob(String, String, String, Long): JsonObject&lt;br/&gt;+ init(): void&lt;br/&gt;- executeJob(String, String, String, JsonObject, SmartDataAccessor, JsonObject): JsonObject&lt;br/&gt;+ getJobStates(String, String, String): JsonArray&lt;br/&gt;+ start(String, String, String, Long, JsonObject): JsonArray&lt;br/&gt;+ jobIsRunning(String, String, String, Long): boolean&lt;br/&gt;+ shutdownSmartDataJobs(): void&lt;br/&gt;+ startAll(String, String, String): JsonArray&lt;br/&gt;- saveResultLog(String, String, String, Long, JsonObject, boolean, boolean): void&lt;br/&gt;- getJobAction(JsonObject): Action&lt;br/&gt;+ stopAllJobs(): JsonObject&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="404" y="1913" width="486" height="595" as="geometry" />
-    </mxCell>
-    <mxCell id="node12" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;MemberCleanupService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ MemberCleanupService(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- CLIENT: HttpClient&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ findSubscriptionIdByEndpoint(String): int&lt;br/&gt;+ cleanupFromPushResult(String): JsonObject&lt;br/&gt;+ deleteUserById(int): boolean&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="68" y="3289" width="319" height="163" as="geometry" />
-    </mxCell>
-    <mxCell id="node8" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;NotificationService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ NotificationService(int): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- triggerId: int&lt;br/&gt;- client: HttpClient&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ sendNotificationToAllGroupMember(JsonObject): JsonObject&lt;br/&gt;+ sendNotificationToAllMember(): JsonObject&lt;br/&gt;- sendNotificationToAllGroupMemberWithoutHistory(JsonObject, JsonObject): JsonObject&lt;br/&gt;- updateHistory(JsonObject): JsonObject&lt;br/&gt;+ sendNotificationToAllGroups(JsonArray): JsonObject&lt;br/&gt;+ personalize(JsonObject, JsonObject): JsonObject&lt;br/&gt;+ sendNotificationToMember(JsonObject): JsonObject&lt;br/&gt;+ pickRandomNotification(): JsonObject&lt;br/&gt;- success(String): JsonObject&lt;br/&gt;- addMember(JsonObject, int): JsonObject&lt;br/&gt;- addActions(JsonObject): JsonObject&lt;br/&gt;- resolveMember(JsonObject): Map&amp;lt;Placeholder, String&amp;gt;&lt;br/&gt;- error(String): JsonObject&lt;br/&gt;- sendNotificationToMemberWithoutHistory(JsonObject, JsonObject): JsonObject&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="404" y="-55" width="527" height="451" as="geometry" />
-    </mxCell>
-    <mxCell id="node2" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Placeholder&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- Placeholder(String): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ EARNED_XP: &lt;br/&gt;+ NAME: &lt;br/&gt;+ STREAK: &lt;br/&gt;+ XP: &lt;br/&gt;+ COLLECTION: &lt;br/&gt;- token: String&lt;br/&gt;+ GROUP: &lt;br/&gt;+ LEVEL: &lt;br/&gt;+ ID: &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ replaceAll(String, Map&amp;lt;Placeholder, String&amp;gt;): String&lt;br/&gt;+ values(): Placeholder[]&lt;br/&gt;+ valueOf(String): Placeholder&lt;br/&gt;+ token(): String&lt;br/&gt;+ replace(String, Placeholder, String): String&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="722" y="2629" width="370" height="403" as="geometry" />
-    </mxCell>
-    <mxCell id="node13" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;ReadDataAction&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ ReadDataAction(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- preJobField: String&lt;br/&gt;- url: String&lt;br/&gt;- requestBody: JsonValue&lt;br/&gt;- smartdataurl: String&lt;br/&gt;- requestMethod: String&lt;br/&gt;- username: String&lt;br/&gt;- userpwd: String&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getParamsDescription(): JsonArray&lt;br/&gt;+ call(): JsonObject&lt;br/&gt;+ setParams(JsonObject): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="95" y="897" width="264" height="307" as="geometry" />
-    </mxCell>
-    <mxCell id="node15" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;/i&gt;&lt;br/&gt;&lt;b&gt;RequestType&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ RequestType(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ POST: &lt;br/&gt;+ PUT: &lt;br/&gt;+ GET: &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ valueOf(String): RequestType&lt;br/&gt;+ values(): RequestType[]&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="-66" y="3537" width="227" height="187" as="geometry" />
-    </mxCell>
-    <mxCell id="node10" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;SendNotificationAction&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ SendNotificationAction(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- triggerId: int&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getParamsDescription(): JsonArray&lt;br/&gt;+ call(): JsonObject&lt;br/&gt;+ setParams(JsonObject): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="315" y="1449" width="264" height="163" as="geometry" />
-    </mxCell>
-    <mxCell id="node6" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;WriteDataAction&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ WriteDataAction(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- smartdataurl: String&lt;br/&gt;- requestMethod: String&lt;br/&gt;- url: String&lt;br/&gt;- syncedField: String&lt;br/&gt;- username: String&lt;br/&gt;- requestBody: JsonObject&lt;br/&gt;- preJobField: String&lt;br/&gt;- userpwd: String&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getParamsDescription(): JsonArray&lt;br/&gt;- markAsSynced(JsonValue, String): JsonValue&lt;br/&gt;+ setParams(JsonObject): void&lt;br/&gt;+ call(): JsonObject&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="-117" y="1353" width="329" height="355" as="geometry" />
-    </mxCell>
-    <mxCell id="node7" parent="1" vertex="1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;XPService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ XPService(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- MIN_SPEED_ALLOWED: double&lt;br/&gt;- MIN_DENSITY_PER_KM: double&lt;br/&gt;- MAX_DENSITY_PER_KM: double&lt;br/&gt;- MAX_SPEED_ALLOWED: double&lt;br/&gt;- BASE_XP_PER_KM: double&lt;br/&gt;- MAX_DURATION_MULTIPLIER: double&lt;br/&gt;- MIN_DURATION: double&lt;br/&gt;- MIN_DISTANCE: double&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- getNextMeasurementProcess(String, String): String?&lt;br/&gt;- qualityDecreasing(double, double, double): double&lt;br/&gt;- resetXP(int): JsonObject&lt;br/&gt;+ resetLeaderboard(): JsonObject&lt;br/&gt;- merge(JsonObject, JsonObject): JsonObjectBuilder&lt;br/&gt;+ getRouteData(String, String): JsonObject&lt;br/&gt;+ updateGroup(JsonObject, int): JsonObject&lt;br/&gt;- qualityIncreasing(double, double, double): double&lt;br/&gt;+ calcXP(String, int, double, double, double): int&lt;br/&gt;- loadSettings(String): void&lt;br/&gt;- getNextLastActivity(String, String): String?&lt;br/&gt;- scale01to12(double): double&lt;br/&gt;- updateStreak(String, String, int): int&lt;br/&gt;- readDoubleSetting(String): double&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;">
-      <mxGeometry x="721" y="1233" width="373" height="595" as="geometry" />
-    </mxCell>
-    <mxCell id="edge0" edge="1" value="" parent="1" source="node14" target="node3" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=none;endArrow=block;endSize=12;strokeColor=#000082;exitX=0.000;exitY=0.500;exitDx=0;exitDy=0;entryX=1.000;entryY=0.500;entryDx=0;entryDy=0;">
-      <mxGeometry width="50" height="50" relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="458" y="1050" />
-          <mxPoint x="458" y="610" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="edge12" edge="1" value="" parent="1" source="node14" target="node8" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.000;exitY=0.429;exitDx=0;exitDy=0;entryX=0.000;entryY=0.500;entryDx=0;entryDy=0;">
-      <mxGeometry width="50" height="50" relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="386" y="1035" />
-          <mxPoint x="386" y="170" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="label74" parent="edge12" vertex="1" connectable="0" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;">
-      <mxGeometry x="361" y="792" as="geometry" />
-    </mxCell>
-    <mxCell id="edge9" edge="1" value="" parent="1" source="node4" target="node13" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.413;entryY=1.000;entryDx=0;entryDy=0;">
-      <mxGeometry width="50" height="50" relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="127" y="1868" />
-          <mxPoint x="238" y="1868" />
-          <mxPoint x="238" y="1335" />
-          <mxPoint x="204" y="1335" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="label56" parent="edge9" vertex="1" connectable="0" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;">
-      <mxGeometry x="158" y="1848" as="geometry" />
-    </mxCell>
-    <mxCell id="edge5" edge="1" value="" parent="1" source="node4" target="node6" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=1.000;exitY=0.500;exitDx=0;exitDy=0;entryX=1.000;entryY=0.794;entryDx=0;entryDy=0;">
-      <mxGeometry width="50" height="50" relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="387" y="2830" />
-          <mxPoint x="387" y="1635" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="label32" parent="edge5" vertex="1" connectable="0" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;">
-      <mxGeometry x="362" y="2446" as="geometry" />
-    </mxCell>
-    <mxCell id="edge10" edge="1" value="" parent="1" source="node9" target="node1" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=diamondThinstartSize=12;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.052;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;">
-      <mxGeometry width="50" height="50" relative="1" as="geometry">
-        <Array as="points" />
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="label60" parent="edge10" vertex="1" connectable="0" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;">
-      <mxGeometry x="636" y="3078" as="geometry" />
-    </mxCell>
-    <mxCell id="label64" parent="edge10" vertex="1" connectable="0" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;">
-      <mxGeometry x="636" y="2513" as="geometry" />
-    </mxCell>
-    <mxCell id="label65" parent="edge10" vertex="1" connectable="0" value="jobrunner" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;">
-      <mxGeometry x="647" y="2513" as="geometry" />
-    </mxCell>
-    <mxCell id="edge11" edge="1" value="" parent="1" source="node1" target="node14" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.582;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;">
-      <mxGeometry width="50" height="50" relative="1" as="geometry">
-        <Array as="points" />
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="label68" parent="edge11" vertex="1" connectable="0" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;">
-      <mxGeometry x="652" y="1706" as="geometry" />
-    </mxCell>
-    <mxCell id="edge6" edge="1" value="" parent="1" source="node1" target="node13" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.000;exitY=0.500;exitDx=0;exitDy=0;entryX=0.413;entryY=1.000;entryDx=0;entryDy=0;">
-      <mxGeometry width="50" height="50" relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="238" y="2210" />
-          <mxPoint x="238" y="1335" />
-          <mxPoint x="204" y="1335" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="label38" parent="edge6" vertex="1" connectable="0" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;">
-      <mxGeometry x="196" y="1350" as="geometry" />
-    </mxCell>
-    <mxCell id="edge7" edge="1" value="" parent="1" source="node1" target="node10" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.088;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;">
-      <mxGeometry width="50" height="50" relative="1" as="geometry">
-        <Array as="points" />
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="label44" parent="edge7" vertex="1" connectable="0" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;">
-      <mxGeometry x="432" y="1752" as="geometry" />
-    </mxCell>
-    <mxCell id="edge13" edge="1" value="" parent="1" source="node1" target="node6" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.000;exitY=0.475;exitDx=0;exitDy=0;entryX=1.000;entryY=0.794;entryDx=0;entryDy=0;">
-      <mxGeometry width="50" height="50" relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="387" y="2195" />
-          <mxPoint x="387" y="1635" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="label80" parent="edge13" vertex="1" connectable="0" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;">
-      <mxGeometry x="289" y="1615" as="geometry" />
-    </mxCell>
-    <mxCell id="edge1" edge="1" value="" parent="1" source="node13" target="node3" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=none;endArrow=block;endSize=12;strokeColor=#000082;exitX=1.000;exitY=0.083;exitDx=0;exitDy=0;entryX=1.000;entryY=0.500;entryDx=0;entryDy=0;">
-      <mxGeometry width="50" height="50" relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="458" y="922" />
-          <mxPoint x="458" y="610" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="edge4" edge="1" value="" parent="1" source="node15" target="node4" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=circlePlus;startFill=0;endArrow=none;strokeColor=#820000;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.335;entryY=1.000;entryDx=0;entryDy=0;">
-      <mxGeometry width="50" height="50" relative="1" as="geometry">
-        <Array as="points" />
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="edge2" edge="1" value="" parent="1" source="node10" target="node3" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=none;endArrow=block;endSize=12;strokeColor=#000082;exitX=0.000;exitY=0.500;exitDx=0;exitDy=0;entryX=1.000;entryY=0.500;entryDx=0;entryDy=0;">
-      <mxGeometry width="50" height="50" relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="264" y="1530" />
-          <mxPoint x="264" y="1426" />
-          <mxPoint x="458" y="1426" />
-          <mxPoint x="458" y="610" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="edge8" edge="1" value="" parent="1" source="node10" target="node8" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.485;exitY=0.000;exitDx=0;exitDy=0;entryX=0.000;entryY=0.500;entryDx=0;entryDy=0;">
-      <mxGeometry width="50" height="50" relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="443" y="1050" />
-          <mxPoint x="386" y="1050" />
-          <mxPoint x="386" y="170" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="label50" parent="edge8" vertex="1" connectable="0" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;">
-      <mxGeometry x="390" y="1050" as="geometry" />
-    </mxCell>
-    <mxCell id="edge3" edge="1" value="" parent="1" source="node6" target="node3" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=none;endArrow=block;endSize=12;strokeColor=#000082;exitX=1.000;exitY=0.500;exitDx=0;exitDy=0;entryX=1.000;entryY=0.500;entryDx=0;entryDy=0;">
-      <mxGeometry width="50" height="50" relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="264" y="1530" />
-          <mxPoint x="264" y="1426" />
-          <mxPoint x="458" y="1426" />
-          <mxPoint x="458" y="610" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-  </root>
-</mxGraphModel>
+<mxfile host="65bd71144e">
+    <diagram id="MUHiq1SsKwOTbnON7Rxh" name="Page-1">
+        <mxGraphModel dx="2324" dy="1398" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="node11" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;AchievementService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ AchievementService(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ isAchievement(int): boolean&lt;br/&gt;- getAchievement(int): JsonArray&lt;br/&gt;+ addAchievementToGroup(int, int): JsonObject&lt;br/&gt;+ hasAchievement(int, int): boolean&lt;br/&gt;+ sendAchievement(int, JsonObject): JsonObject&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="257" y="3538" width="340" height="192" as="geometry"/>
+                </mxCell>
+                <mxCell id="node3" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Action&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ Action(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- preJobsInfo: JsonObject&lt;br/&gt;- id: Long&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;# extractPreJobResult(): JsonValue&lt;br/&gt;+ getPreJobsInfo(): JsonObject&lt;br/&gt;+ getParamsDescription(): JsonArray&lt;br/&gt;+ setParams(JsonObject): void&lt;br/&gt;+ setId(Long): void&lt;br/&gt;+ call(): JsonObject&lt;br/&gt;- mergeJsonObjects(JsonObject, JsonObject): JsonObject&lt;br/&gt;+ getId(): Long&lt;br/&gt;+ setPreJobsInfo(JsonObject): void&lt;br/&gt;# getEffectivePayload(String, JsonValue): JsonValue&lt;br/&gt;- mergeJsonArrays(JsonArray, JsonArray): JsonArray&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="-33" y="421" width="400" height="389" as="geometry"/>
+                </mxCell>
+                <mxCell id="node14" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;CheckEventTriggers&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ CheckEventTriggers(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- sensorTable: String&lt;br/&gt;- groupId: int&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getParamsDescription(): JsonArray&lt;br/&gt;- getLastActivity(String): LocalDateTime?&lt;br/&gt;+ setParams(JsonObject): void&lt;br/&gt;+ call(): JsonObject&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="541" y="945" width="292" height="225" as="geometry"/>
+                </mxCell>
+                <mxCell id="node5" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;ConditionService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ ConditionService(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- compare(double, double, String): boolean&lt;br/&gt;+ checkConditions(JsonArray): boolean&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="795" y="554" width="305" height="136" as="geometry"/>
+                </mxCell>
+                <mxCell id="node4" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;DataService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ DataService(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ SMARTDATA_RECORDS_URL: String&lt;br/&gt;+ SMARTDATA_STORAGE_PARAMS: String&lt;br/&gt;- SMARTDATA_URL: String&lt;br/&gt;- SMARTDATALYSER_URL: String&lt;br/&gt;+ STORAGE_SMARTMONITORING: String&lt;br/&gt;+ WEBPUSH_URL: String&lt;br/&gt;- client: HttpClient&lt;br/&gt;+ DISTANCE_URL: String&lt;br/&gt;+ SPEED_URL: String&lt;br/&gt;- HOST: String&lt;br/&gt;+ FMT: DateTimeFormatter&lt;br/&gt;+ DURATION_URL: String&lt;br/&gt;+ STATISTIC_URL: String&lt;br/&gt;+ STORAGE_GAMIFICATION: String&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ sendPUT(String, JsonObject): JsonObject&lt;br/&gt;- read(JsonObject): JsonArray?&lt;br/&gt;- write(JsonObject, JsonObject): JsonObject?&lt;br/&gt;+ sendPOST(String, JsonObject): JsonObject&lt;br/&gt;+ read(String, String, String, Map&amp;lt;String, Object&amp;gt;, List&amp;lt;String&amp;gt;): JsonArray&lt;br/&gt;+ sendGET(String): JsonObject&lt;br/&gt;- send(String, JsonObject, RequestType): JsonObject&lt;br/&gt;+ write(String, String, JsonObject): JsonObject&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="-116" y="2533" width="486" height="595" as="geometry"/>
+                </mxCell>
+                <mxCell id="node0" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;HttpClientProvider&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ HttpClientProvider(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- client: HttpClient&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getClient(): HttpClient&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="909" y="3573" width="196" height="147" as="geometry"/>
+                </mxCell>
+                <mxCell id="node9" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;JobExecutionResource&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ JobExecutionResource(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- jobrunner: JobRunner&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ stopAll(): Response&lt;br/&gt;+ state(String, String, String): Response&lt;br/&gt;+ start(String, String, String, Long): Response&lt;br/&gt;+ getActionsDescription(): Response&lt;br/&gt;+ startAll(String, String, String): Response&lt;br/&gt;+ stop(String, String, String, Long): Response&lt;br/&gt;+ activate(String, String, String, Long): Response&lt;br/&gt;+ deactivate(String, String, String, Long): Response&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="629" y="3229" width="357" height="291" as="geometry"/>
+                </mxCell>
+                <mxCell id="node1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;JobRunner&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ JobRunner(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- executorService: ManagedScheduledExecutorService&lt;br/&gt;- priorityExecutor: ScheduledExecutorService&lt;br/&gt;- stopped: boolean&lt;br/&gt;- futures: Map&amp;lt;String, Future&amp;lt;?&amp;gt;&amp;gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ setActiveOfJob(String, String, String, Long, boolean): JsonObject&lt;br/&gt;+ startJobChain(String, String, String, JsonObject): JsonArrayBuilder&lt;br/&gt;- loadJobParams(JsonArray, JsonObjectBuilder): JsonObject&lt;br/&gt;- runJobAsync(Action, String, String, String, JsonObject, long, LocalDateTime): void&lt;br/&gt;+ getJobCode(String, String, String, Long): String&lt;br/&gt;- calculateDelay(LocalDateTime, long): long&lt;br/&gt;- checkChanged(String, String, String, String, JsonObject): boolean&lt;br/&gt;+ stopJob(String, String, String, Long): JsonObject&lt;br/&gt;+ init(): void&lt;br/&gt;- executeJob(String, String, String, JsonObject, SmartDataAccessor, JsonObject): JsonObject&lt;br/&gt;+ getJobStates(String, String, String): JsonArray&lt;br/&gt;+ start(String, String, String, Long, JsonObject): JsonArray&lt;br/&gt;+ jobIsRunning(String, String, String, Long): boolean&lt;br/&gt;+ shutdownSmartDataJobs(): void&lt;br/&gt;+ startAll(String, String, String): JsonArray&lt;br/&gt;- saveResultLog(String, String, String, Long, JsonObject, boolean, boolean): void&lt;br/&gt;- getJobAction(JsonObject): Action&lt;br/&gt;+ stopAllJobs(): JsonObject&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="390" y="1940" width="596" height="595" as="geometry"/>
+                </mxCell>
+                <mxCell id="node12" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;MemberCleanupService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ MemberCleanupService(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- CLIENT: HttpClient&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ findSubscriptionIdByEndpoint(String): int&lt;br/&gt;+ cleanupFromPushResult(String): JsonObject&lt;br/&gt;+ deleteUserById(int): boolean&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="68" y="3289" width="319" height="181" as="geometry"/>
+                </mxCell>
+                <mxCell id="node8" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;NotificationService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ NotificationService(int): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- triggerId: int&lt;br/&gt;- client: HttpClient&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ sendNotificationToAllGroupMember(JsonObject): JsonObject&lt;br/&gt;+ sendNotificationToAllMember(): JsonObject&lt;br/&gt;- sendNotificationToAllGroupMemberWithoutHistory(JsonObject, JsonObject): JsonObject&lt;br/&gt;- updateHistory(JsonObject): JsonObject&lt;br/&gt;+ sendNotificationToAllGroups(JsonArray): JsonObject&lt;br/&gt;+ personalize(JsonObject, JsonObject): JsonObject&lt;br/&gt;+ sendNotificationToMember(JsonObject): JsonObject&lt;br/&gt;+ pickRandomNotification(): JsonObject&lt;br/&gt;- success(String): JsonObject&lt;br/&gt;- addMember(JsonObject, int): JsonObject&lt;br/&gt;- addActions(JsonObject): JsonObject&lt;br/&gt;- resolveMember(JsonObject): Map&amp;lt;Placeholder, String&amp;gt;&lt;br/&gt;- error(String): JsonObject&lt;br/&gt;- sendNotificationToMemberWithoutHistory(JsonObject, JsonObject): JsonObject&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="404" y="-55" width="527" height="465" as="geometry"/>
+                </mxCell>
+                <mxCell id="node2" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;/i&gt;&lt;br/&gt;&lt;b&gt;Placeholder&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- Placeholder(String): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ EARNED_XP: &lt;br/&gt;+ NAME: &lt;br/&gt;+ STREAK: &lt;br/&gt;+ XP: &lt;br/&gt;+ COLLECTION: &lt;br/&gt;- token: String&lt;br/&gt;+ GROUP: &lt;br/&gt;+ LEVEL: &lt;br/&gt;+ ID: &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ replaceAll(String, Map&amp;lt;Placeholder, String&amp;gt;): String&lt;br/&gt;+ values(): Placeholder[]&lt;br/&gt;+ valueOf(String): Placeholder&lt;br/&gt;+ token(): String&lt;br/&gt;+ replace(String, Placeholder, String): String&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="762.5" y="2620" width="370" height="421" as="geometry"/>
+                </mxCell>
+                <mxCell id="node13" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;ReadDataAction&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ ReadDataAction(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- preJobField: String&lt;br/&gt;- url: String&lt;br/&gt;- requestBody: JsonValue&lt;br/&gt;- smartdataurl: String&lt;br/&gt;- requestMethod: String&lt;br/&gt;- username: String&lt;br/&gt;- userpwd: String&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getParamsDescription(): JsonArray&lt;br/&gt;+ call(): JsonObject&lt;br/&gt;+ setParams(JsonObject): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="95" y="897" width="264" height="323" as="geometry"/>
+                </mxCell>
+                <mxCell id="node15" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;/i&gt;&lt;br/&gt;&lt;b&gt;RequestType&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ RequestType(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ POST: &lt;br/&gt;+ PUT: &lt;br/&gt;+ GET: &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ valueOf(String): RequestType&lt;br/&gt;+ values(): RequestType[]&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="-66" y="3537" width="227" height="223" as="geometry"/>
+                </mxCell>
+                <mxCell id="node10" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;SendNotificationAction&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ SendNotificationAction(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- triggerId: int&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getParamsDescription(): JsonArray&lt;br/&gt;+ call(): JsonObject&lt;br/&gt;+ setParams(JsonObject): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="359" y="1440" width="264" height="181" as="geometry"/>
+                </mxCell>
+                <mxCell id="node6" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;WriteDataAction&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ WriteDataAction(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- smartdataurl: String&lt;br/&gt;- requestMethod: String&lt;br/&gt;- url: String&lt;br/&gt;- syncedField: String&lt;br/&gt;- username: String&lt;br/&gt;- requestBody: JsonObject&lt;br/&gt;- preJobField: String&lt;br/&gt;- userpwd: String&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getParamsDescription(): JsonArray&lt;br/&gt;- markAsSynced(JsonValue, String): JsonValue&lt;br/&gt;+ setParams(JsonObject): void&lt;br/&gt;+ call(): JsonObject&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="-117" y="1353" width="329" height="367" as="geometry"/>
+                </mxCell>
+                <mxCell id="node7" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;XPService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ XPService(): &lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- MIN_SPEED_ALLOWED: double&lt;br&gt;- MIN_DENSITY_PER_KM: double&lt;br&gt;- MAX_DENSITY_PER_KM: double&lt;br&gt;- MAX_SPEED_ALLOWED: double&lt;br&gt;- BASE_XP_PER_KM: double&lt;br&gt;- MAX_DURATION_MULTIPLIER: double&lt;br&gt;- MIN_DURATION: double&lt;br&gt;- MIN_DISTANCE: double&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- getNextMeasurementProcess(String, String): String&lt;br&gt;- qualityDecreasing(double, double, double): double&lt;br&gt;- resetXP(int): JsonObject&lt;br&gt;+ resetLeaderboard(): JsonObject&lt;br&gt;- merge(JsonObject, JsonObject): JsonObjectBuilder&lt;br&gt;+ getRouteData(String, String): JsonObject&lt;br&gt;+ updateGroup(JsonObject, int): JsonObject&lt;br&gt;- qualityIncreasing(double, double, double): double&lt;br&gt;+ calcXP(String, int, double, double, double): int&lt;br&gt;- loadSettings(String): void&lt;br&gt;- getNextLastActivity(String, String): String&lt;br&gt;- scale01to12(double): double&lt;br&gt;- updateStreak(String, String, int): int&lt;br&gt;- readDoubleSetting(String): double&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="780" y="1233" width="369" height="595" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge0" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=none;endArrow=block;endSize=12;strokeColor=#000082;exitX=0.000;exitY=0.500;exitDx=0;exitDy=0;entryX=1.000;entryY=0.500;entryDx=0;entryDy=0;" parent="1" source="node14" target="node3" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="458" y="1050"/>
+                            <mxPoint x="458" y="610"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="edge12" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.000;exitY=0.429;exitDx=0;exitDy=0;entryX=0.000;entryY=0.500;entryDx=0;entryDy=0;" parent="1" source="node14" target="node8" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="386" y="1035"/>
+                            <mxPoint x="386" y="170"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="label74" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;" parent="edge12" vertex="1" connectable="0">
+                    <mxGeometry x="361" y="792" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge9" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.413;entryY=1.000;entryDx=0;entryDy=0;" parent="1" source="node4" target="node13" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="127" y="1868"/>
+                            <mxPoint x="238" y="1868"/>
+                            <mxPoint x="238" y="1335"/>
+                            <mxPoint x="204" y="1335"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="label56" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;" parent="edge9" vertex="1" connectable="0">
+                    <mxGeometry x="158" y="1848" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge5" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;" parent="1" source="node4" target="node6" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="340" y="1635"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="label32" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;" parent="edge5" vertex="1" connectable="0">
+                    <mxGeometry x="320" y="2450" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge10" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=diamondThinstartSize=12;endArrow=openThin;endSize=12;strokeColor=#595959;" parent="1" source="node9" target="node1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="688" y="3080"/>
+                            <mxPoint x="688" y="3080"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="label60" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;" parent="edge10" vertex="1" connectable="0">
+                    <mxGeometry x="670" y="3200" as="geometry"/>
+                </mxCell>
+                <mxCell id="label64" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;" parent="edge10" vertex="1" connectable="0">
+                    <mxGeometry x="636" y="2500" as="geometry">
+                        <mxPoint x="7" y="45" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="label65" value="jobrunner" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;" parent="edge10" vertex="1" connectable="0">
+                    <mxGeometry x="660" y="2550" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge11" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;" parent="1" source="node1" target="node14" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="label68" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;" parent="edge11" vertex="1" connectable="0">
+                    <mxGeometry x="652" y="1706" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge6" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;" parent="1" source="node1" target="node13" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="-170" y="2210"/>
+                            <mxPoint x="-170" y="1335"/>
+                            <mxPoint x="204" y="1335"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="label38" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;" parent="edge6" vertex="1" connectable="0">
+                    <mxGeometry x="196" y="1350" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge7" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;" parent="1" source="node1" target="node10" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="label44" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;" parent="edge7" vertex="1" connectable="0">
+                    <mxGeometry x="432" y="1752" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge13" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;" parent="1" source="node1" target="node6" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="450" y="1635"/>
+                        </Array>
+                        <mxPoint x="510" y="1820" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="label80" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;" parent="edge13" vertex="1" connectable="0">
+                    <mxGeometry x="289" y="1615" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge1" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=none;endArrow=block;endSize=12;strokeColor=#000082;exitX=1.000;exitY=0.083;exitDx=0;exitDy=0;entryX=1.000;entryY=0.500;entryDx=0;entryDy=0;" parent="1" source="node13" target="node3" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="458" y="922"/>
+                            <mxPoint x="458" y="610"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="edge4" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=circlePlus;startFill=0;endArrow=none;strokeColor=#820000;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.335;entryY=1.000;entryDx=0;entryDy=0;" parent="1" source="node15" target="node4" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="edge2" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=none;endArrow=block;endSize=12;strokeColor=#000082;exitX=0.000;exitY=0.500;exitDx=0;exitDy=0;entryX=1.000;entryY=0.500;entryDx=0;entryDy=0;" parent="1" source="node10" target="node3" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="264" y="1530"/>
+                            <mxPoint x="264" y="1426"/>
+                            <mxPoint x="458" y="1426"/>
+                            <mxPoint x="458" y="610"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="edge8" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.485;exitY=0.000;exitDx=0;exitDy=0;entryX=0.000;entryY=0.500;entryDx=0;entryDy=0;" parent="1" source="node10" target="node8" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="443" y="1050"/>
+                            <mxPoint x="386" y="1050"/>
+                            <mxPoint x="386" y="170"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="label50" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=default;" parent="edge8" vertex="1" connectable="0">
+                    <mxGeometry x="390" y="1050" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge3" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=none;endArrow=block;endSize=12;strokeColor=#000082;exitX=1.000;exitY=0.500;exitDx=0;exitDy=0;entryX=1.000;entryY=0.500;entryDx=0;entryDy=0;" parent="1" source="node6" target="node3" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="264" y="1530"/>
+                            <mxPoint x="264" y="1426"/>
+                            <mxPoint x="458" y="1426"/>
+                            <mxPoint x="458" y="610"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
